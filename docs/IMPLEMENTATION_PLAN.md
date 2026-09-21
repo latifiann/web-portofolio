@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.0.0
+version: 1.6.0
 status: canonical
-last_updated: 2026-09-20
+last_updated: 2026-09-21
 owner: Latifian Iman
 testing_mode: manual-first
 ---
@@ -27,7 +27,7 @@ Foundation, configuration, build scripts, content schemas, and explicitly reques
 
 ## Phase 0: Workspace Baseline
 
-Status: next
+Status: completed
 
 Deliverables:
 
@@ -40,7 +40,7 @@ Checks: `npm run lint` and `npm run build`.
 
 ## Phase 1: Styling Foundation
 
-Status: pending
+Status: completed
 
 Deliverables:
 
@@ -68,7 +68,7 @@ Manual check:
 
 ## Phase 2: React Unit 1 - Project Metadata
 
-Status: pending
+Status: completed
 
 Latifian first attempt:
 
@@ -93,7 +93,7 @@ Manual check:
 
 ## Phase 3: React Unit 2 - Project Card
 
-Status: pending
+Status: completed
 
 Latifian first attempt:
 
@@ -120,7 +120,7 @@ Manual check:
 
 ## Phase 4: React Unit 3 - Selected Work
 
-Status: pending
+Status: completed
 
 Latifian first attempt:
 
@@ -146,7 +146,7 @@ Manual check:
 
 ## Phase 5: Semantic Shell and Navigation
 
-Status: pending
+Status: next
 
 Deliverables:
 
@@ -308,4 +308,4 @@ Public v1 remains blocked until bilingual content and media exist for all three 
 
 ## Current Next Unit
 
-Phase 1: Styling Foundation. Start after user asks for implementation or receives learning-unit objective.
+Phase 5: Semantic Shell and Navigation. Build the semantic page shell and accessible desktop and mobile navigation.
