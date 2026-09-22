@@ -90,6 +90,392 @@ button,
   transform: translateY(0);
 }
 
+.primary-navigation-link {
+  color: var(--color-ink-secondary);
+  background: transparent;
+  transition:
+    color var(--motion-base) ease-out,
+    background-color var(--motion-base) ease-out;
+}
+
+.primary-navigation-link:hover {
+  color: var(--color-primary);
+  background: var(--color-surface-soft);
+}
+
+.primary-navigation-link[aria-current="location"] {
+  color: var(--color-canvas);
+  background: var(--color-ink);
+}
+
+.primary-navigation-link[aria-current="location"]:hover {
+  color: var(--color-canvas);
+  background: var(--color-ink);
+}
+
+@media (min-width: 64rem) {
+  .primary-navigation-link {
+    color: var(--color-canvas);
+    background: transparent;
+  }
+
+  .primary-navigation-link:hover {
+    color: var(--color-canvas);
+    background: rgb(255 255 255 / 0.15);
+  }
+
+  .primary-navigation-link[aria-current="location"] {
+    color: var(--color-ink);
+    background: var(--color-canvas);
+  }
+
+  .primary-navigation-link[aria-current="location"]:hover {
+    color: var(--color-ink);
+    background: var(--color-canvas);
+  }
+
+  .header-contact-link {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-canvas);
+    font-family: var(--font-sans);
+  }
+
+  .header-contact-link:hover {
+    border-color: var(--color-ink-secondary);
+    background: var(--color-ink-secondary);
+    color: var(--color-canvas);
+  }
+
+  .header-contact-link:active {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-canvas);
+  }
+}
+
+.hero-information-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: var(--space-6);
+}
+
+.hero-information-grid-spacer {
+  display: none;
+}
+
+.hero-left-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-right-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 34ch;
+  margin-top: var(--space-6);
+  text-align: center;
+}
+
+.hero-availability {
+  min-height: 44px;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid rgb(37 99 235 / 0.28);
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.04),
+    0 8px 24px rgb(37 99 235 / 0.1);
+}
+
+.hero-availability-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.hero-focus-label {
+  margin-top: 1.5rem;
+  color: var(--color-primary);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.hero-focus-value {
+  margin-top: 0.5rem;
+  color: var(--color-ink);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.hero-supporting-text {
+  font-size: 0.875rem;
+}
+
+.hero-resume-link {
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition:
+    color var(--motion-base) ease-out,
+    background-color var(--motion-base) ease-out,
+    border-color var(--motion-base) ease-out;
+}
+
+.hero-resume-link:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-soft);
+  color: var(--color-primary);
+}
+
+.hero-resume-link:active {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary-active);
+}
+
+.hero-resume-arrow {
+  color: var(--color-primary);
+  font-size: 1rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 6px rgb(37 99 235 / 0.28));
+  transition:
+    transform var(--motion-base) ease-out,
+    filter var(--motion-base) ease-out;
+}
+
+.hero-resume-link:hover .hero-resume-arrow {
+  transform: translateX(4px);
+  filter: drop-shadow(0 0 8px rgb(37 99 235 / 0.34));
+}
+
+.hero-resume-link:active .hero-resume-arrow {
+  color: var(--color-primary-active);
+}
+
+@media (min-width: 48rem) {
+  .hero-information-grid {
+    position: absolute;
+    top: calc(50% + var(--space-12));
+    right: 0;
+    left: 0;
+    z-index: var(--z-raised);
+    display: grid;
+    grid-template-columns: 1fr minmax(28rem, 1fr) 1fr;
+    align-items: start;
+    gap: var(--space-8);
+    width: 100%;
+    margin-top: 0;
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+
+  .hero-information-grid-spacer {
+    display: block;
+  }
+
+  .hero-left-rail {
+    grid-column: 1;
+    align-items: flex-end;
+    padding-top: 0.5rem;
+    pointer-events: auto;
+    text-align: right;
+  }
+
+  .hero-right-rail {
+    grid-column: 3;
+    align-items: flex-start;
+    max-width: 34ch;
+    margin-top: 0;
+    pointer-events: auto;
+    text-align: left;
+  }
+}
+
+@media (min-width: 64rem) {
+  .hero-information-grid {
+    grid-template-columns: 1fr minmax(31rem, 1fr) 1fr;
+  }
+
+  .hero-availability {
+    gap: 0.625rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .hero-availability-dot {
+    width: 0.625rem;
+    height: 0.625rem;
+  }
+
+  .hero-focus-value {
+    font-size: 1.5rem;
+  }
+
+  .hero-supporting-text {
+    font-size: 1rem;
+  }
+}
+
+.hero-background {
+  background-image:
+    linear-gradient(
+      to bottom,
+      transparent 70%,
+      rgb(255 255 255 / 0.7) 86%,
+      var(--color-canvas) 100%
+    ),
+    radial-gradient(
+      ellipse 86% 58% at 50% 48%,
+      rgb(125 211 252 / 0.34) 0%,
+      rgb(59 130 246 / 0.18) 42%,
+      rgb(219 234 254 / 0.08) 70%,
+      transparent 84%
+    );
+}
+
+.hero-portrait {
+  height: 19rem;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 88%,
+    rgb(0 0 0 / 0.7) 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 88%,
+    rgb(0 0 0 / 0.7) 94%,
+    transparent 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.hero-title {
+  font-size: 2.75rem;
+}
+
+.hero-role {
+  font-size: 3.25rem;
+  line-height: 0.82;
+}
+
+@media (min-width: 40rem) {
+  .hero-portrait {
+    height: 23rem;
+  }
+}
+
+@media (min-width: 48rem) {
+  .hero-background {
+    background-image:
+      linear-gradient(
+        to bottom,
+        transparent 66%,
+        rgb(255 255 255 / 0.58) 84%,
+        var(--color-canvas) 100%
+      ),
+      radial-gradient(
+        ellipse 72% 64% at 50% 48%,
+        rgb(125 211 252 / 0.38) 0%,
+        rgb(59 130 246 / 0.22) 42%,
+        rgb(219 234 254 / 0.1) 68%,
+        transparent 82%
+      );
+  }
+
+  .hero-portrait {
+    height: 35rem;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black 0%,
+      black 78%,
+      rgb(0 0 0 / 0.75) 88%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      black 0%,
+      black 78%,
+      rgb(0 0 0 / 0.75) 88%,
+      transparent 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
+
+  .hero-title {
+    font-size: 4.5rem;
+  }
+
+  .hero-role {
+    margin-top: 0.5rem;
+    font-size: 5.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .hero-portrait {
+    height: 38.75rem;
+  }
+
+  .hero-title {
+    font-size: clamp(4.5rem, 8.125vw, 6.5rem);
+  }
+
+  .hero-role {
+    font-size: clamp(5.5rem, 9.6875vw, 7.75rem);
+    line-height: 1;
+  }
+}
+
+.about-title-accent {
+  color: var(--color-primary-active);
+  font-family: var(--font-sans);
+  font-style: normal;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .about-title-accent {
+    background-image: linear-gradient(
+      90deg,
+      #172554 0%,
+      var(--color-primary) 48%,
+      #3b82f6 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+@media (forced-colors: active) {
+  .about-title-accent {
+    background: none;
+    color: CanvasText;
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
