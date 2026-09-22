@@ -1,7 +1,7 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.6.0
+version: 1.9.1
 status: canonical
 last_updated: 2026-09-21
 owner: Latifian Iman
@@ -146,7 +146,7 @@ Manual check:
 
 ## Phase 5: Semantic Shell and Navigation
 
-Status: next
+Status: completed
 
 Deliverables:
 
@@ -170,9 +170,9 @@ Manual check:
 4. On mobile, open menu, click outside, select link, and confirm focus returns to trigger.
 5. Report focus trap, hidden focus, anchor obstruction, or console errors.
 
-## Phase 6: English Homepage Vertical Slice
+## Phase 6: Screenshot-aligned English Homepage Vertical Slice
 
-Status: pending
+Status: in progress
 
 Deliverables:
 
@@ -180,19 +180,84 @@ Deliverables:
 - approved English copy from `CONTENT.md`;
 - local typed data until structured content phase;
 - approved portrait only after media import; no invented media.
+- pixel-level homepage fidelity against approved Stitch references at desktop `1280px` and mobile `390px` after real fonts and media are available;
+- preserve approved content, accessibility, localization, and media boundaries when they require intentional reference deviations.
+
+### Phase 6A: Visual Reference Contract
+
+Status: completed
+
+Deliverables:
+
+- record homepage-only Stitch reference screens and desktop/mobile fidelity viewports in canonical documentation;
+- define screenshot content and media as presentation-only, never production approval;
+- define v1 theme-preview icon button with a non-blocking unavailable-feature toast;
+- create source folders for reference captures, portrait, fonts, project media, and resume asset.
+
+### Phase 6B: Header and Hero Fidelity
+
+Status: in progress
+
+Deliverables:
+
+- three-zone desktop header: language pill, centered navigation control, theme-preview and approved secondary contact action;
+- seven-item centered navigation (`Home`, `About`, `Projects`, `Experience`, `Capabilities`, `Technology`, `Contact`) shown horizontally from `>= 1024px` and as a mobile dropdown below it;
+- active item follows the in-view section (hero → `Home`, `#about` → `About`, `#projects` → `Projects`, `#experience` → `Experience`, `#skills` → `Capabilities`, `#technology` → `Technology`, `#contact`/footer → `Contact`), renders exactly one outline icon as local inline SVG, and keeps readable inactive-text contrast;
+- accessible theme-preview toast without theme change or persistence;
+- overlapping desktop hero and controlled mobile hero stack matching approved composition, with an asymmetric left rail (availability + `Building across / Mobile · Frontend · APIs` focus line) and right rail (supporting statement + `View resume` secondary action) sharing a symmetric grid anchor around the portrait;
+- render approved portrait with intrinsic dimensions and responsive geometry;
+- `View resume` opens the PDF asset in a new tab; hero motion is limited to hover, active, and focus states during Phase 6, with entrance and scroll-reveal animations deferred to the final visual pass.
 
 Acceptance criteria:
 
-- one `h1` communicates name, role, specialization, and next action;
-- hero CTA targets selected work and contact;
+- reference structure is close at `1280px` and `390px`;
+- one meaningful `h1` and complete first viewport communicate name, role, specialization context, and next actions;
+- portrait reserves its approved intrinsic geometry and does not obstruct hero content;
+- exactly one navigation item is active at any scroll position, with accessible `aria-current` and visible active icon.
+
+### Phase 6C: Engineering Statement and Selected Work Fidelity
+
+Status: in progress
+
+Deliverables:
+
+- three badges on each side of the desktop statement, with responsive logical reading order;
+- media-first selected-work cards retaining exactly FMS-CREATE, ReMi Mobile, and Semina;
+- compact reference-aligned card hierarchy without generated Stitch content.
+
+### Phase 6D: Experience and Capabilities Fidelity
+
+Status: in progress
+
+Deliverables:
+
+- desktop horizontal experience rail with vertical tablet/mobile flow;
+- two approved internships, education, and evidence density limits preserved;
+- two-by-three desktop capability grid using one outline icon family.
+
+### Phase 6E: Technology, Contact, and Footer Fidelity
+
+Status: in progress
+
+Deliverables:
+
+- thin technology rail with clear mobile overflow affordance;
+- centered pale-blue contact band and compact footer;
+- full homepage composition ready for real-media fidelity work.
+
+Acceptance criteria:
+
+- the hero region contains one meaningful `h1`; the complete first viewport communicates name, role, specialization context, and next actions;
+- hero CTA targets contact;
 - content remains meaningful when image fails;
+- phase cannot claim final pixel-level completion while approved portrait, project media, and canonical fonts are absent.
 - homepage is local-only and non-releaseable.
 
 Manual check:
 
 1. Run `npm run dev`.
 2. Open `/` at `360`, `390`, `768`, `1024`, `1280`, and `1440px`.
-3. Check reading order, CTA targets, portrait overlap, grid, timeline, and contact links.
+3. Check reading order, CTA targets, reserved portrait region or approved portrait overlap, grid, timeline, and contact links.
 4. Zoom to `200%` and use keyboard navigation.
 5. Report clipping, overlap, overflow, unreadable text, broken links, and console errors.
 
@@ -276,11 +341,12 @@ Status: blocked by content dependencies
 Needs:
 
 - complete EN/ID narratives for FMS-CREATE, ReMi Mobile, and Semina;
-- portrait, resume, WOFF2 files, licenses, alt text, captions, and social images;
+- portrait, resume, licensed TTF source fonts, generated WOFF2 files, licenses, alt text, captions, and social images;
+- final side-by-side fidelity pass with approved desktop and mobile Stitch reference captures;
 - responsive AVIF/WebP generation;
-- original Semina API media replacing prohibited `semina.webp`.
+- qualified Semina media with approved caption, alternative text, BuildWithAngga attribution, and backend-only framing.
 
-Publication requires complete bilingual content. FMS and ReMi keep existing qualifications. Semina keeps BuildWithAngga attribution and backend-only boundary.
+Publication requires complete bilingual content. FMS and ReMi keep existing qualifications. Semina keeps its approved qualified media caption, BuildWithAngga attribution, and backend-only boundary.
 
 ## Phase 11: Metadata and Output Validation
 
@@ -302,10 +368,10 @@ Checks:
 
 Status: deferred
 
-`docs/QA.md` will grow from successful manual checks. Browser automation, Playwright, axe, screenshot baselines, performance measurement, host adapter, deploy, and cutover are deferred until explicitly scheduled.
+`docs/QA.md` will grow from successful manual checks. Browser automation, Playwright, axe, automated screenshot baselines, performance measurement, host adapter, deploy, and cutover are deferred until explicitly scheduled. Owner-run side-by-side comparison with approved Stitch captures is a required manual final-fidelity gate.
 
 Public v1 remains blocked until bilingual content and media exist for all three projects, output has eight indexable routes plus non-indexable `404.html`, no private or prohibited content enters `dist/`, release checks are recorded, and hosting plus history-preserving cutover are approved.
 
 ## Current Next Unit
 
-Phase 5: Semantic Shell and Navigation. Build the semantic page shell and accessible desktop and mobile navigation.
+Phase 6 manual reference-fidelity review: compare the rebuilt homepage against approved Stitch desktop and mobile captures, then record intentional content, accessibility, and media deviations.

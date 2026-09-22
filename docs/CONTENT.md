@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: content-specification
-version: 1.0.0
+version: 1.5.0
 status: canonical
-last_updated: 2026-09-20
+last_updated: 2026-09-22
 owner: Latifian Iman
 default_locale: en
 supported_locales:
@@ -31,9 +31,12 @@ Use sources according to their domain of authority:
 | Project technical facts | Approved source code, tests, project documentation, and evidence |
 | Publication decision | Explicit owner approval |
 | Legacy portfolio | Comparison source only |
+| Google Stitch reference | Presentation reference only; not authority for copy, facts, links, attribution, or media rights |
 | Draft notes, internal paths, and private evidence | Internal only |
 
 The legacy portfolio and CV may guide research but do not independently prove a repeated claim. Do not turn missing evidence into production copy.
+
+Text, metrics, names, links, badges, project claims, and media visible in a design reference remain unapproved until independently supported by this document or a canonical project source.
 
 ## 2. Verification States
 
@@ -148,6 +151,7 @@ English is the default locale. Indonesian is a complete equivalent locale, not a
 | View selected work | Lihat karya pilihan |
 | View case study | Lihat studi kasus |
 | Contact me | Hubungi saya |
+| Get in touch | Hubungi saya |
 | View resume | Lihat CV |
 | Email me | Kirim email |
 | Open LinkedIn | Buka LinkedIn |
@@ -155,6 +159,8 @@ English is the default locale. Indonesian is a complete equivalent locale, not a
 | Skip to content | Lewati ke konten utama |
 | Open menu | Buka menu |
 | Close menu | Tutup menu |
+| Theme switcher | Pengubah tema |
+| Theme switcher is not available yet. | Pengubah tema belum tersedia. |
 | Previous project | Proyek sebelumnya |
 | Next project | Proyek berikutnya |
 | Back to projects | Kembali ke proyek |
@@ -165,13 +171,22 @@ Preferred Indonesian technical terms include `tugas`, `pengingat`, `tenggat`, `p
 
 | Context | English | Indonesian | Target |
 |---|---|---|---|
-| Homepage primary | View selected work | Lihat karya pilihan | `#projects` |
-| Homepage secondary | Contact me | Hubungi saya | `#contact` |
+| Homepage hero | Get in touch | Hubungi saya | `#contact` |
+| Homepage contact | Email me | Kirim email | `mailto:` |
 | Project | View case study | Lihat studi kasus | Project route |
 | Resume | View resume | Lihat CV | Public resume asset |
 | Email | Email me | Kirim email | `mailto:` |
 
 Do not introduce a server-backed contact form in public v1.
+
+### Theme-preview feedback
+
+The approved theme-preview toast is non-blocking and does not claim that a theme changed.
+
+| Locale | Accessible button label | Toast text |
+|---|---|---|
+| English | Theme switcher | Theme switcher is not available yet. |
+| Indonesian | Pengubah tema | Pengubah tema belum tersedia. |
 
 ## 9. Approved Homepage Copy
 
@@ -182,12 +197,15 @@ The copy below is `approved-with-qualification`: it is approved as the source fo
 ```text
 Hero greeting: Hi, I'm Latifian.
 Role: Software Developer
-Supporting statement: I build mobile and web products, integrate APIs and real-time systems, and organize software around clear, maintainable structures.
+Supporting statement: Passionate about creating intuitive digital experiences and reliable software systems that connect people with meaningful value.
 Availability: Open to opportunities
-Primary CTA: View selected work
-Secondary CTA: Contact me
+Hero focus label: Building across
+Hero focus value: Mobile · Frontend · APIs
+Hero CTA: Get in touch
+Hero secondary CTA: View resume
 
-Engineering statement: I connect product context, user experience, and engineering decisions to build software that remains understandable as it grows.
+Engineering eyebrow: Hello!
+Engineering statement: My focus is on blending clear strategy, thoughtful engineering, and product empathy to craft experiences that solve real problems.
 
 Selected work introduction: Three projects showing how I contribute across mobile development, software architecture, backend APIs, and product delivery.
 
@@ -204,12 +222,15 @@ Contact body: I'm open to employment opportunities, freelance projects, and prof
 ```text
 Hero greeting: Halo, saya Latifian.
 Role: Software Developer
-Supporting statement: Saya membangun produk mobile dan web, mengintegrasikan API dan sistem real-time, serta menyusun perangkat lunak dengan struktur yang jelas dan mudah dipelihara.
+Supporting statement: Bersemangat membangun digital experience yang intuitif dan software system yang andal untuk memberikan manfaat nyata bagi pengguna.
 Availability: Terbuka untuk peluang
-Primary CTA: Lihat karya pilihan
-Secondary CTA: Hubungi saya
+Hero focus label: Membangun lintas bidang
+Hero focus value: Mobile · Frontend · API
+Hero CTA: Hubungi saya
+Hero secondary CTA: Lihat CV
 
-Engineering statement: Saya menghubungkan konteks produk, pengalaman pengguna, dan keputusan engineering untuk membangun perangkat lunak yang tetap mudah dipahami saat berkembang.
+Engineering eyebrow: Halo!
+Engineering statement: Fokus saya adalah memadukan strategi yang jelas, engineering yang matang, dan empati terhadap produk untuk menciptakan experience yang menyelesaikan masalah nyata.
 
 Selected work introduction: Tiga proyek yang menunjukkan kontribusi saya dalam pengembangan mobile, arsitektur perangkat lunak, backend API, dan delivery produk.
 
@@ -249,12 +270,36 @@ Politeknik Elektronika Negeri Surabaya
 
 GPA, PEPT score, certifications, organization experience, secondary-school education, and complete contribution history remain resume-only.
 
+### Homepage experience copy
+
+The following English copy is approved for the local Phase 6 homepage draft. It is derived from the owner CV source and remains subject to normal editorial review before publication.
+
+#### PT Piramida Teknologi Informasi
+
+Context: `Mooda App · Four-person cross-functional team`
+
+1. Built a Flutter ride-hailing prototype covering authentication, booking, ratings, profiles, and trip history.
+2. Integrated team backend REST APIs and real-time trip updates with Dio and Socket.IO.
+3. Connected Google Maps, Riverpod, GoRouter, and Hive while manually testing customer and driver flows on Android.
+
+Supporting labels: `Flutter`, `Riverpod`, `Socket.IO`, `Google Maps`, `Figma`.
+
+#### Mitra Informatika
+
+Context: `NKRI · Six-person cross-functional team`
+
+1. Contributed to Flutter real-time communication modules with Riverpod, Isar, Dio, and AutoRoute.
+2. Helped migrate communication from Socket.IO to WebSocket with reconnect handling and user activity status.
+3. Built WebRTC call prototypes and message search, filtering, and chat-room pagination flows.
+
+Supporting labels: `Flutter`, `WebSocket`, `WebRTC`, `Riverpod`, `Isar`.
+
 ## 12. Capability Taxonomy
 
 Engineering-statement badges are concise signals:
 
 1. Mobile Development
-2. Frontend Engineering
+2. Frontend Development
 3. Backend & REST API
 4. Real-time Integration
 5. Software Quality Assurance
@@ -270,6 +315,19 @@ Capability cards retain the canonical design taxonomy:
 6. Project & Collaboration
 
 Badges and cards have different purposes. Cards must reference real project or internship evidence; they are not proficiency ratings or logo walls.
+
+### Homepage capability copy
+
+| Capability | Description | Supporting labels |
+|---|---|---|
+| Frontend Engineering | Build structured interfaces with React, JavaScript, and Tailwind CSS. | `React`, `JavaScript`, `Tailwind CSS` |
+| Backend & REST API | Integrate and develop REST API boundaries with validation and clear error handling. | `Node.js`, `Express`, `REST API`, `JWT` |
+| Mobile Development | Build Flutter applications with state management, navigation, and platform integrations. | `Flutter`, `Dart`, `Riverpod`, `BLoC` |
+| Databases | Work with relational and document data models used by project backends. | `SQL`, `PostgreSQL`, `MongoDB`, `Mongoose` |
+| Software Quality Assurance | Use manual and automated testing to check product behavior and architecture rules. | `Manual testing`, `Automated testing`, `Selenium`, `Katalon` |
+| Project & Collaboration | Work through shared Git workflows, Figma handoff, and Agile delivery. | `Git`, `GitHub`, `Figma`, `Agile` |
+
+Technology strip: `Flutter`, `React`, `TypeScript`, `Dart`, `Tailwind CSS`, `Node.js`, `Express`, `PostgreSQL`, `MongoDB`, `WebSocket`, `Git`, `Figma`.
 
 ## 13. Resume Policy
 
@@ -392,7 +450,19 @@ The class title and URL remain pending and must be added when found.
 
 ### Media rule
 
-The existing `semina.webp` is prohibited from public v1 because it depicts a third-party frontend template without confirmed reuse rights. Replace it with original API evidence, such as an architecture diagram, redacted API response, transaction-flow diagram, endpoint map, or API-documentation screenshot.
+`semina.webp` is owner-approved for publication with qualification. It represents event-platform context from authorized learning material; it is not evidence of personal frontend authorship. The Semina case study remains limited to backend API work.
+
+Approved caption:
+
+> EN: The visual represents the event-platform context from authorized learning material; this case study focuses on my backend API work, not frontend authorship.
+>
+> ID: Visual ini merepresentasikan konteks platform acara dari materi pembelajaran yang penggunaannya telah diizinkan; studi kasus ini berfokus pada pekerjaan backend API saya, bukan karya frontend saya.
+
+Approved alternative text:
+
+> EN: Dark event-platform landing page promoting technology events with a green Browse Now button.
+>
+> ID: Halaman utama platform acara bertema gelap yang mempromosikan acara teknologi dengan tombol hijau Browse Now.
 
 ### Prohibited claims
 
@@ -422,10 +492,12 @@ The existing `semina.webp` is prohibited from public v1 because it depicts a thi
 | Hero portrait | `owner-approved` | Import through media pipeline; never expose source path |
 | `fms-create.webp` | `approved-with-qualification` | Attribute dashboard as team/ecosystem context |
 | `remi-mobile.webp` | `approved-with-qualification` | Include approved cross-deliverable caption |
-| `semina.webp` | `prohibited` | Replace before publication |
+| `semina.webp` | `owner-approved-with-qualification` | Use approved caption and alt text; never imply frontend authorship or full platform ownership |
 | ReMi YouTube video | `pending` | Prefer external link; never autoplay |
 | Google Play screenshots | `pending` | Require reuse confirmation |
 | Private-source screenshots | `pending` | Require redaction and explicit approval |
+
+The Google Stitch homepage references are design-only artifacts. They must not be published as portfolio media, reused as project screenshots, or treated as approval for generated text, metrics, logos, portraits, links, or claims.
 
 Every meaningful image needs locale-specific alternative text. Captions establish attribution or context; alternative text explains visible content. Do not mechanically duplicate them.
 
@@ -499,5 +571,5 @@ An AI agent MUST NOT:
 - overstate FMS-CREATE ownership or testing evidence;
 - infer ReMi maintenance, iOS support, user impact, or individual awards;
 - remove mandatory BuildWithAngga attribution from Semina;
-- reuse `semina.webp` in public v1;
+- reuse `semina.webp` without its approved caption, alternative text, BuildWithAngga attribution, and backend-only framing;
 - write incomplete locale content as published production copy.

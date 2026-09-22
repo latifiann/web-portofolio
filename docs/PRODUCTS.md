@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: product-specification
-version: 1.1.0
+version: 1.1.1
 status: canonical
-last_updated: 2026-09-20
+last_updated: 2026-09-21
 owner: Latifian Iman
 primary_positioning: Software Developer
 primary_goal: Balanced opportunities
@@ -19,6 +19,8 @@ supported_locales:
 This document defines what `latifian.dev` is, who it serves, what it must accomplish, and what belongs in its initial release. It is the canonical product reference for people and AI agents working on the portfolio.
 
 Visual decisions belong in `DESIGN.md`. Copy belongs in `CONTENT.md`. Verified project facts and narratives belong under `content/projects/<slug>/`. Technical implementation decisions belong in `ARCHITECTURE.md`.
+
+The approved Google Stitch reference guides homepage presentation only. It cannot remove required product evidence, change project scope, or replace approved copy, facts, and media.
 
 ## 1. Product Summary
 
@@ -469,6 +471,10 @@ This supports every major audience and leads to evidence before asking for conta
 
 Avoid placing several equally prominent buttons in the same viewport. Visual priority must remain clear.
 
+### Theme-preview action
+
+The homepage header includes an icon-only theme-preview button to match the approved visual reference. In public v1 it does not change the light-only theme. Activating it displays an approved, non-blocking unavailable-feature toast. Dark mode remains outside initial-release scope.
+
 ## 14. Localization
 
 The product supports English and Indonesian.
@@ -771,18 +777,12 @@ An AI agent MUST NOT:
 
 The following information must be supplied or verified in subsequent documents before final production content is complete:
 
-- canonical English and Indonesian hero copy;
-- current availability statement;
-- public email address;
-- LinkedIn and GitHub URLs;
-- current résumé URL or asset;
-- verified facts, attribution, role boundaries, dates, status, links, and outcomes for FMS-CREATE, ReMi Mobile, and Semina;
+- current résumé asset import;
 - approved English and Indonesian narratives for all three public-v1 projects;
-- experience entries and dates;
-- public versus private repository status;
-- live-demo availability;
+- unresolved project-specific facts, attribution, dates, outcomes, and links listed in `CONTENT.md`;
+- release-time verification for availability, public contact URLs, repository status, and live-demo availability;
 - social-sharing image assets;
-- approved project media plus publication rights, meaningful alternative text, and media-pipeline import for the approved portrait source;
+- approved project media, captions, locale-specific alternative text, and media-pipeline import for the approved portrait source;
 - self-hosted font files and their required license notices.
 
 These are content dependencies, not reasons to change the product direction defined here.

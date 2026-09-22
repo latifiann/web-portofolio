@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: technical-architecture
-version: 1.1.0
+version: 1.4.0
 status: canonical
-last_updated: 2026-09-20
+last_updated: 2026-09-22
 owner: Latifian Iman
 application_type: statically generated portfolio
 package_manager: npm
@@ -100,6 +100,7 @@ Use the smallest package set that implements these decisions. Pin resolved versi
 **Application**
 
 - `react` and `react-dom`;
+- `react-icons` for the icon glyphs (imported directly from provider subpaths so only used icons enter the production bundle);
 - `react-router-dom`;
 - `react-helmet-async` for route-level head collection in server and browser rendering;
 - `react-markdown` with `remark-gfm` for approved project prose.
@@ -288,12 +289,25 @@ porto-latifiann/
 │   ├── ARCHITECTURE.md
 │   ├── IMPLEMENTATION_PLAN.md
 │   ├── QA.md
+│   ├── references/
+│   │   ├── homepage-desktop-1280.png
+│   │   └── homepage-mobile-390.png
 │   └── adr/
 ├── content/
 │   ├── site/
 │   │   ├── site.yaml
 │   │   ├── en.yaml
 │   │   └── id.yaml
+│   │   ├── media/
+│   │   │   └── portrait/
+│   │   │       └── latifian-iman-portrait.webp
+│   │   └── fonts/
+│   │       ├── geist/
+│   │       │   └── source/
+│   │       ├── instrument-serif/
+│   │       │   └── source/
+│   │       └── jetbrains-mono/
+│   │           └── source/
 │   ├── experience.yaml
 │   ├── capabilities.yaml
 │   └── projects/
@@ -317,6 +331,7 @@ porto-latifiann/
 │   ├── manifest.webmanifest
 │   ├── generated/
 │   │   └── media/
+│   │   └── fonts/
 │   └── resume/
 ├── scripts/
 │   ├── build-content.ts
@@ -506,7 +521,7 @@ interface ProjectSummary {
   slug: string
   title: string
   summary: string
-  year: number
+  timeline: ProjectTimeline
   status: ProjectStatus
   maintenance: MaintenanceState
   publication: PublicationState
@@ -514,6 +529,13 @@ interface ProjectSummary {
   roles: string[]
   stack: string[]
   hero: ProjectMedia
+}
+
+interface ProjectTimeline {
+  start: string
+  end: string | null
+  ongoing: boolean
+  display: string
 }
 
 interface ProjectDetail extends ProjectSummary {
@@ -626,10 +648,11 @@ The product's state is deliberately small.
 - disclosure state where semantically justified;
 - image loading or error presentation;
 - temporary focus and hover behavior.
+- temporary theme-preview toast visibility.
 
 ### Persisted preference
 
-Only an explicit locale choice may be persisted in local storage. The site must remain correct when storage is unavailable or cleared.
+Only an explicit locale choice may be persisted in local storage. The site must remain correct when storage is unavailable or cleared. The v1 theme-preview button is component-local feedback only: it does not change tokens, persist a preference, or create dark-mode state.
 
 React Context may provide the resolved locale and localized link helpers. Do not add a global state package unless a future feature demonstrates cross-route state that cannot be expressed cleanly through the URL, content manifest, or a narrow provider.
 
@@ -667,7 +690,7 @@ Tailwind theme aliases point to these variables. A component may use `bg-canvas`
 
 ### 12.3 Fonts
 
-- Self-host licensed WOFF2 files for all three canonical font families. If licensing prevents self-hosting, stop implementation and obtain an approved font decision rather than falling back to a remote CDN.
+- Retain licensed TTF source files and notices under `content/site/fonts/<family>/source/`, then generate self-hosted WOFF2 files for all three canonical font families under `public/generated/fonts/`. If licensing prevents self-hosting, stop implementation and obtain an approved font decision rather than falling back to a remote CDN.
 - Load only the weights used by the design system.
 - Preload only the font files required above the fold.
 - Use `font-display: swap`.
@@ -689,6 +712,10 @@ Mobile is an intentional composition, not a scaled desktop canvas. Components sh
 ### 13.1 Source and generated assets
 
 - Original project media stays beside its project content.
+- Owner-provided hero portrait source stays at `content/site/media/portrait/`.
+- Licensed source fonts and notices stay under `content/site/fonts/` by family.
+- `scripts/generate-fonts.ts` generates only browser-used WOFF2 weights and styles under `public/generated/fonts/`; `npm run fonts:generate` runs before the Vite production build; source TTF files never load directly in production.
+- Approved Stitch reference captures stay under `docs/references/` and are excluded from source manifests and production output.
 - `scripts/generate-images.ts` produces web-ready AVIF and WebP variants plus a fallback where justified.
 - Generated filenames include a content hash.
 - Components receive a media manifest, not guessed file paths.
@@ -897,8 +924,9 @@ Manual coverage grows across:
 - anchor links and 404 recovery;
 - horizontal overflow, reduced motion, and 200% zoom;
 - essential content when JavaScript is unavailable, when practical.
+- side-by-side review against approved Stitch references at desktop `1280px` and mobile `390px` after final fonts and media are available.
 
-Future `docs/QA.md` turns repeated manual checks into maintained release cases. Playwright, axe, and visual screenshot baselines remain deferred; they are not current learning-phase gates.
+Future `docs/QA.md` turns repeated manual checks into maintained release cases. Manual side-by-side reference review is allowed and distinct from automated visual screenshot baselines. Playwright, axe, and automated visual screenshot baselines remain deferred; they are not current learning-phase gates.
 
 ### 20.5 Generated-output tests
 

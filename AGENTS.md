@@ -137,7 +137,7 @@ Static checks remain allowed when relevant:
 - Never expose phone numbers, street addresses, credentials, private URLs, internal evidence, local paths, or draft notes.
 - ReMi awards and Google Play publication are team claims.
 - FMS-CREATE dashboard visual is team or ecosystem context, not personal dashboard ownership.
-- Semina is backend API only, requires BuildWithAngga attribution, and must never use `semina.webp` in public v1.
+- Semina is backend API only and requires BuildWithAngga attribution. `semina.webp` may appear only with its approved qualification caption; it must never imply frontend authorship or full event-platform ownership.
 
 ## Technical and UI Rules
 
