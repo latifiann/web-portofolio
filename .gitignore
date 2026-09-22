@@ -16,6 +16,7 @@ lerna-debug.log*
 # Generated application files
 /src/generated/
 /public/generated/media/
+/public/generated/fonts/
 
 # Environment files
 .env
@@ -37,3 +38,4 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+.playwright-mcp
