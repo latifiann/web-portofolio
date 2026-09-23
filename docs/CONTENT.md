@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: content-specification
-version: 1.5.0
+version: 1.7.0
 status: canonical
-last_updated: 2026-09-22
+last_updated: 2026-09-23
 owner: Latifian Iman
 default_locale: en
 supported_locales:
@@ -343,9 +343,41 @@ The resume source may contain contact details that are not permitted elsewhere o
 |---|---|---|---|---|---|---|---|
 | `fms-create` | FMS-CREATE | FMS-CREATE | Fleet management | Dec 2025-Jul 2026 | Completed / Selesai | Mobile Developer | Private |
 | `remi-mobile` | ReMi Mobile | ReMi - Remind Me | Academic mobile productivity | 2024 | Completed, unmaintained / Selesai, tidak dipelihara | Mobile Developer | Private team repository |
-| `semina` | Semina | Semina | Event-management backend API | Aug-Sep 2026; ongoing | Ongoing learning project / Proyek pembelajaran aktif | Backend Developer | Public |
+| `semina` | Semina | Semina | Event-management backend API | Aug-Sep 2026 | Ongoing learning project / Proyek pembelajaran aktif | Backend Developer | Public |
 
 All three need complete English and Indonesian project content before `publication: published`.
+
+### Project card context labels
+
+Landing cards show a short context label identifying the project's company or type. Approved values:
+
+| Project | Context (EN) | Context (origin) |
+|---|---|---|
+| FMS-CREATE | Final academic project | Tugas akhir perkuliahan |
+| ReMi Mobile | Agile Teknik | Agile Teknik |
+| Semina | Personal project | Proyek pribadi |
+
+In-progress or project-status wording (for example `ongoing`) is internal card metadata, not public card copy. It may be stored in the content model but must not render on landing cards.
+
+### Project preview type labels
+
+Preview images carry a short neutral badge identifying the project type as shown on the card. Approved values:
+
+| Project | Preview label |
+|---|---|
+| FMS-CREATE | Mobile App |
+| ReMi Mobile | Mobile App |
+| Semina | Backend API |
+
+### Landing card technology badges
+
+| Project | Approved stack badges |
+|---|---|
+| FMS-CREATE | Flutter, Modular architecture, REST API, SSE, Google Maps |
+| ReMi Mobile | Flutter, BLoC, REST API |
+| Semina | MongoDB, Express, React, Node.js |
+
+Landing cards show at most three technology badges plus an overflow count (for example `Flutter`, `Modular architecture`, `REST API`, `+2`). The full stack remains in the project record and appears on the detail page. Landing cards do not render a media qualification note; contribution and media boundaries stay preserved through visible card copy, role, title, and alternative text, and full qualification belongs to the detail case study.
 
 ### Approved project card copy
 
@@ -353,7 +385,7 @@ All three need complete English and Indonesian project content before `publicati
 |---|---|---|
 | FMS-CREATE | A passenger-side Flutter application for electric-vehicle fleet operations, built with modular architecture, REST APIs, SSE, and Google Maps. | Aplikasi Flutter sisi penumpang untuk operasional armada kendaraan listrik, dibangun dengan arsitektur modular, REST API, SSE, dan Google Maps. |
 | ReMi Mobile | An academic task and reminder application for students, delivered as a mobile project and published by the team on Google Play. | Aplikasi pengelolaan tugas dan pengingat untuk mahasiswa, dikembangkan sebagai proyek akademik mobile dan dipublikasikan oleh tim di Google Play. |
-| Semina | An ongoing backend learning project for event management and ticket checkout, extended from BuildWithAngga material. | Proyek pembelajaran backend yang masih dikembangkan untuk manajemen acara dan checkout tiket, berangkat dari materi BuildWithAngga. |
+| Semina | A backend learning project for event management and ticket checkout, extended from BuildWithAngga material. | Proyek pembelajaran backend untuk manajemen acara dan checkout tiket, berangkat dari materi BuildWithAngga. |
 
 ## 15. FMS-CREATE Content Boundary
 
@@ -368,7 +400,7 @@ All three need complete English and Indonesian project content before `publicati
 
 ### Approved-with-qualification
 
-Existing hero media may be used with attribution. Any dashboard shown in the visual represents team or ecosystem context, not personal frontend ownership. Testing remains qualitative; do not publish audit counts or dated architecture-test metrics.
+Existing hero media may be used with attribution. Any dashboard shown in the visual represents team or ecosystem context, not personal frontend ownership. Landing cards render the media without a visible qualification note; the card copy (`passenger-side Flutter application`) and alternative text preserve the boundary, and full qualification lives on the detail page. Testing remains qualitative; do not publish audit counts or dated architecture-test metrics.
 
 ### Prohibited claims
 
@@ -403,7 +435,7 @@ Existing hero media may be used with attribution. Any dashboard shown in the vis
 
 ### Media qualification
 
-The existing ReMi image may be used only with a caption that distinguishes the separate web deliverable:
+The existing ReMi image is used to distinguish the separate web deliverable. Landing cards render the media without a visible qualification note; card copy (`mobile project`), role, title, and alternative text preserve that the work covers ReMi Mobile, and full qualification lives on the detail page:
 
 > The visual presents the broader ReMi product context. The laptop interface belongs to the separate ReMi Web deliverable; this case study focuses on my ReMi Mobile contribution.
 
@@ -450,9 +482,9 @@ The class title and URL remain pending and must be added when found.
 
 ### Media rule
 
-`semina.webp` is owner-approved for publication with qualification. It represents event-platform context from authorized learning material; it is not evidence of personal frontend authorship. The Semina case study remains limited to backend API work.
+`semina.webp` is owner-approved for publication with qualification. It represents event-platform context from authorized learning material; it is not evidence of personal frontend authorship. The Semina case study remains limited to backend API work. Landing cards render the media without a visible qualification note; card copy (`backend learning project ... BuildWithAngga material`), role (`Backend Developer`), and alternative text preserve the boundary, and full qualification lives on the detail page.
 
-Approved caption:
+Detail-page caption:
 
 > EN: The visual represents the event-platform context from authorized learning material; this case study focuses on my backend API work, not frontend authorship.
 >

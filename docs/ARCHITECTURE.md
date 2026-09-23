@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: technical-architecture
-version: 1.4.0
+version: 1.5.0
 status: canonical
-last_updated: 2026-09-22
+last_updated: 2026-09-23
 owner: Latifian Iman
 application_type: statically generated portfolio
 package_manager: npm
@@ -47,6 +47,8 @@ When these goals conflict, prefer accurate and accessible static content over no
 Public v1 is one complete bilingual release. The English-first vertical slice is an internal, local learning milestone only; it must not replace the existing public portfolio or enter a remote public preview. Every project in the production manifest requires validated English and Indonesian content.
 
 Public v1 contains exactly three case studies, ordered on the homepage as FMS-CREATE, ReMi Mobile, and Semina. No card-only or fourth project enters the v1 production artifact.
+
+The homepage Selected Work section is a curated preview with future capacity: it targets up to six landing slots but currently renders the three verified projects at every width. Item visibility beyond the current set uses stable CSS (`hidden lg:block`), never `window.innerWidth`, to keep markup identical for hydration and static generation. A curated project index (`/projects/`) is approved future scope; it must not ship before its detail routes are complete.
 
 ## 2. Constraints and Non-goals
 
@@ -218,6 +220,7 @@ Before completing route, metadata, locale, or content-loading work, an agent mus
 | Purpose | English | Indonesian |
 |---|---|---|
 | Homepage | `/` | `/id/` |
+| Projects index (approved future) | `/projects/` | `/id/projects/` |
 | FMS-CREATE | `/projects/fms-create/` | `/id/projects/fms-create/` |
 | ReMi Mobile | `/projects/remi-mobile/` | `/id/projects/remi-mobile/` |
 | Semina | `/projects/semina/` | `/id/projects/semina/` |
@@ -225,7 +228,7 @@ Before completing route, metadata, locale, or content-loading work, an agent mus
 
 Trailing-slash directory URLs are canonical because they map directly to static `index.html` files.
 
-Public v1 therefore has exactly eight indexable routes: two homepages and six localized case studies. `404.html` is generated but is not indexable and never enters the sitemap.
+Public v1 currently has exactly eight indexable routes: two homepages and six localized case studies. `404.html` is generated but is not indexable and never enters the sitemap. Adding the list-oriented project index later adds two indexable routes and requires the route-count validator to be updated in the same change.
 
 ### 6.2 Locale behavior
 

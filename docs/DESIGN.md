@@ -1,8 +1,8 @@
 ---
 name: Latifian Editorial Portfolio
-version: 2.10.0
+version: 2.17.0
 status: canonical
-last_updated: 2026-09-22
+last_updated: 2026-09-23
 description: Canonical UI/UX and implementation specification for latifian.dev.
 fonts:
   sans: Geist
@@ -258,6 +258,22 @@ Do not invent a completely different header treatment for each section. The hero
 
 ## 6. Surfaces, Borders, Radius, and Elevation
 
+### Section boundaries
+
+Homepage sections flow through spacing and continuous background transitions rather than full-width divider rules. Section-level horizontal dividers are not used between the hero, engineering statement, selected work, experience, capabilities, technology, contact, and footer.
+
+Internal structural dividers remain allowed where they organize content inside a section: the education divider, experience timeline rail, the two short lines beside the technology heading, card borders, and control borders.
+
+Multiple homepage sections share one semantic vertical padding so the page reads as a continuous, flowing composition rather than separate framed blocks. These values live in `tokens.css`, are tuned from one file, and are applied through the `homepage-section-spacing` class:
+
+- About, Selected Work, Experience, Capabilities: `64px` mobile, `80px` desktop.
+- Hero uses dedicated tokens for its portrait composition (`pt` mobile `12px`/`24px` desktop, `pb` `32px`/`80px`).
+- Technology has its own top margin (`48px`/`64px`) and `24px` block padding.
+- Contact closing band uses `64px`/`96px`.
+- Footer uses `24px` top and bottom.
+
+Internal spacing between section heading, grid, list, and CTA is separate and must not be changed when tuning section boundaries.
+
 ### Radius roles
 
 - `8px`: controls, small tags, tooltips.
@@ -272,7 +288,7 @@ Corner radius is consistent at `12px` across the header controls (language selec
 
 - Default: `1px solid #e2e8f0`.
 - Hover or emphasized: `#cbd5e1` or a low-opacity primary blue.
-- Dividers remain 1px; do not simulate structure with shadows.
+- Internal structural dividers remain `1px`; do not simulate structure with shadows.
 
 ### Shadows
 
@@ -391,55 +407,88 @@ Do not reuse these tones for cards, buttons, links, or section backgrounds. The 
 
 ## 10. Selected Work
 
-Selected Work is the primary evidence section. It must present projects as concise engineering case studies, not a screenshot gallery.
+Selected Work is the primary evidence section. It must present projects as concise engineering case studies, not a screenshot gallery. A light `Explore all N projects` action below the grid links to the curated project index when enough published projects exist; `N` is the total count of available projects and is a navigational link, not a button.
 
 ### Project selection
 
-- Public v1 shows exactly three projects in this order: FMS-CREATE, ReMi Mobile, and Semina.
-- Every public-v1 card links to a complete bilingual case study; card-only projects are not shown.
+- The landing preview shows at most six projects: exactly three on mobile and tablet, up to six on desktop.
+- Current verified set contains exactly three, in this order: FMS-CREATE, ReMi Mobile, and Semina.
+- Every card links to a complete bilingual case study; card-only projects are not shown.
+- Item visibility across an unset project count is CSS-driven (`hidden lg:block`), never `window.innerWidth`. Current three-item set renders identically at every width.
 - Prioritize relevance, engineering depth, clear ownership, and credible outcomes.
 - Do not fill space with weaker projects.
 
 ### Project card anatomy
 
-Every card contains:
+Every landing card contains:
 
 1. preview image;
-2. category and approved year or timeline;
-3. project name;
-4. one-sentence product or problem description;
-5. Latifian's role;
-6. compact technology metadata;
-7. `View case study` action.
+2. project name and approved timeline on one row;
+3. role and project context (company/type) on one compact line;
+4. one-sentence product or problem description, visually limited to three lines;
+5. compact technology badges, at most three visible plus an overflow count.
+
+Landing cards do not render a media qualification note; visible card copy and alternative text preserve the contribution boundary, and full media qualification belongs to the detail case study. Card detail is intentionally general: full problem statement, responsibilities, architecture, decisions, challenges, and outcomes live on the detail page, not the landing card.
 
 The project name and contribution must be understandable without inspecting the image.
 
 ### Card layout
 
-- Desktop: three-column grid with equal card hierarchy.
-- Tablet: two columns.
-- Mobile: one column.
+- Desktop: three-column grid; up to six cards.
+- Tablet: two columns; at most three.
+- Mobile: one column; at most three.
 - Card order comes from the validated content manifest, not CSS positioning.
 - Keep metadata attached to its project when reflowing.
-- Cards may vary in preview imagery but must share the same text hierarchy, padding, radius, and state behavior.
+- Cards share the same text hierarchy, padding, radius, and state behavior.
 
 ### Preview image treatment
 
-- Use a consistent aspect ratio within the same card tier; default `4:3`, featured `16:10`.
-- Use `object-fit: cover` only when the crop does not remove essential UI.
-- Prefer `object-fit: contain` for dashboards, mobile-screen compilations, and screenshots with critical edges.
-- Use a pale neutral or blue-tinted backing surface.
+- Use a consistent `16:10` aspect ratio on landing cards, matching the source media's intrinsic ratio.
+- Use `object-fit: contain` for dashboards, mobile-screen compilations, and screenshots with critical edges.
+- Use solid `surface-soft` as the preview backing so transparent media has a calm pale-blue default; do not use checkerboard, gradient, or decorative patterns for transparency.
+- A small neutral type badge sits in the preview's top-left (`Mobile App`, `Backend API`, etc.) and a circular neutral arrow indicator sits top-right (`FiArrowUpRight`).
+- Both overlays are opaque `canvas` with a slate border and small neutral shadow so they stay legible on light, dark, or full-color media; they are purely decorative and must not become links or buttons.
+- Overlay badges do not scale with the image on hover.
 - Avoid mockups whose device chrome overwhelms the actual product.
 - Provide meaningful alt text; decorative backgrounds use empty alt text.
 
+### Preview indicators
+
+- The type badge is static. The arrow indicator is visible by default on mobile/tablet (touch) and hidden by default on desktop, appearing on card hover or keyboard focus.
+- Indicator motion is a short opacity/translate (max `4px`) using the fast motion token; reduced-motion collapses it to near-instant.
+
+### Card body
+
+- Compact layout: title and timeline on one row; role and context on one line; summary clamped to three lines; stack badges at the foot.
+- Card uses a flat surface: `canvas` background, `border`, `16px` radius, no permanent blue glow or gradient; structure comes from spacing and dividers, not nested panels.
+- The card shell carries uniform `16px` padding; the preview image sits inside that padding so its inset matches the text body, and the image container uses `rounded-lg`.
+- Body spacing stays tight but readable; do not stretch metadata vertically to fill the card.
+
+### Section background
+
+- The Selected Work section renders a full-viewport, abstract pale-blue wash; the section is full-width so the wash reaches both viewport edges, while its inner content stays constrained by the visual canvas.
+- The wash (assembled from `surface-soft`/`surface-accent` radial and linear layers) is applied to a masked pseudo-element whose all layers share one vertical mask, so every layer fades to `canvas` at the top and bottom edges and transitions smoothly into the engineering statement and experience sections without painting inside cards.
+- The wash uses only canonical blue-family tokens, no blur filter, no animation, no glow, and no new accent colors; cards remain opaque `canvas` to preserve contrast.
+
+### Card glow
+
+- Cards may carry a restrained, blue-tinted elevation shadow by default and a slightly stronger one on hover/focus; the glow comes from elevation, never a glowing border.
+- Default shadow stays subtle; hover/focus intensifies the blue tint modestly and lifts the card at most `-2px`.
+- Glowing borders, per-card blur blobs, gradient cards, and neon treatments remain prohibited.
+
+### Explore CTA
+
+- The `Explore all N projects` action gives its arrow icon a reserved layout column (inline SVG) so translating on hover never pushes the glyph outside the border; the label may wrap without squeezing the icon, and the control keeps a `44px` minimum target.
+- Main content CTAs use `24px` horizontal padding and `12px` vertical padding (`px-(--space-6)` / `py-(--space-3)`). Only reference spacing tokens that exist; never use an undefined token such as `--space-5`. Compact header/hero/footer actions keep their own contextual padding.
+
 ### Card interaction
 
+- The whole card is a single interactive destination linking to the case study.
+- One semantic anchor wraps the card content; no nested links or buttons.
+- Focus ring wraps the full card; `Enter` opens the detail page.
 - Image scale: maximum `1.03`.
-- Border becomes slightly stronger.
-- Link arrow moves `2–4px`.
-- Optional card translation: maximum `-2px`.
+- Border becomes slightly stronger; card lifts at most `-2px`; shadow warms.
 - No 3D tilt, rotation, cursor-follow effects, or large glow.
-- Do not create nested interactive elements. Use a semantically clear title or case-study action instead of invalid link-button combinations.
 
 ## 11. Project Case Study Pages
 

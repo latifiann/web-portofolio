@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: product-specification
-version: 1.1.1
+version: 1.2.0
 status: canonical
-last_updated: 2026-09-21
+last_updated: 2026-09-23
 owner: Latifian Iman
 primary_positioning: Software Developer
 primary_goal: Balanced opportunities
@@ -202,13 +202,17 @@ The site must not split into separate recruiter and client experiences in the fi
 
 ### Public v1 selected work
 
-Public v1 contains exactly three selected projects, in this homepage order:
+The homepage Selected Work section is a curated preview, not a screenshot gallery. It presents concise, general project information and links each card to its full case study.
+
+The landing preview shows at most six selected projects on desktop and at most three on mobile and tablet. Current verified set contains exactly three, in this homepage order:
 
 1. FMS-CREATE;
 2. ReMi Mobile;
 3. Semina.
 
-Every selected-work card in public v1 must link to a complete case study. Card-only projects and a fourth public project are outside the v1 scope. Additional projects may be prepared as drafts but must not appear in production navigation, routes, metadata, or generated artifacts.
+Every selected-work card must link to a complete case study. Card-only projects are outside the approved set. Additional projects may be prepared as drafts but must not appear in production navigation, routes, metadata, or generated artifacts until their content and facts are complete and verified.
+
+A curated project index at `/projects/` is an approved future scope. It reuses the same verified project cards and never bypasses the detail-page requirement.
 
 ## 8. Core Value Proposition
 
@@ -226,7 +230,7 @@ Every significant claim should be supported by a project, experience, artifact, 
 
 ## 9. Information Architecture
 
-The initial product contains two primary page types.
+The initial product contains two primary page types, with a curated project index approved as future page type.
 
 ```text
 Homepage
@@ -260,10 +264,11 @@ Required conceptual routes:
 
 ```text
 /
+/projects/
 /projects/:slug
 ```
 
-Locale routing strategy is a technical decision for `ARCHITECTURE.md`. The product requirement is that language state remains consistent during navigation.
+Locale routing strategy is a technical decision for `ARCHITECTURE.md`. The product requirement is that language state remains consistent during navigation. The `/projects/` index is approved future scope and must not ship until its detail pages are complete.
 
 The primary-navigation label `About` maps to the engineering-statement section. Public v1 does not add a separate long-form biography section.
 
@@ -523,7 +528,6 @@ Translation is not permission to rewrite or exaggerate project claims.
 - writing or notes section;
 - dark mode;
 - richer architecture diagrams;
-- additional project index page;
 - contact form with validation and abuse protection.
 
 Optional features must not delay the quality of the core homepage and case studies.

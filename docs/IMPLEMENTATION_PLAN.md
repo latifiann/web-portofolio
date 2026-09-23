@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.9.1
+version: 1.9.2
 status: canonical
-last_updated: 2026-09-21
+last_updated: 2026-09-23
 owner: Latifian Iman
 testing_mode: manual-first
 ---
@@ -223,7 +223,10 @@ Deliverables:
 
 - three badges on each side of the desktop statement, with responsive logical reading order;
 - media-first selected-work cards retaining exactly FMS-CREATE, ReMi Mobile, and Semina;
-- compact reference-aligned card hierarchy without generated Stitch content.
+- card anatomy with general info only (context label, timeline, title, summary, role, stack badges) plus required media captions;
+- whole-card interactive link to each detail route; `Explore all projects` action linking to the approved future `/projects/` index;
+- landing selector targets up to six desktop projects, with CSS-only visibility limiting mobile/tablet to three; current three-item set renders identically at every width;
+- no data invented from the Stitch reference and no dependency added for routing or listing yet.
 
 ### Phase 6D: Experience and Capabilities Fidelity
 
