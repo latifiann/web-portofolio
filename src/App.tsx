@@ -107,15 +107,15 @@ function App() {
 
         <PageContainer visual>
           <EngineeringStatementSection />
+        </PageContainer>
 
-          <div className="py-20 md:py-28">
-            <SelectedWorkSection />
-          </div>
+        <SelectedWorkSection />
 
+        <PageContainer visual>
           <Section
             id="experience"
             labelledBy="experience-title"
-            className="border-t border-(--color-border) py-20 md:py-28"
+            className="homepage-section-spacing"
           >
             <header className="mx-auto max-w-3xl text-center">
               <p className="font-serif text-xl italic text-(--color-ink-muted)">
@@ -198,7 +198,7 @@ function App() {
           <Section
             id="skills"
             labelledBy="skills-title"
-            className="border-t border-(--color-border) py-20 md:py-28"
+            className="homepage-section-spacing"
           >
             <header className="mx-auto max-w-3xl text-center">
               <p className="font-serif text-xl italic text-(--color-ink-muted)">
@@ -253,7 +253,7 @@ function App() {
         <section
           id="technology"
           aria-labelledby="technology-title"
-          className="mt-(--space-16) scroll-mt-(--anchor-offset) border-y border-(--color-border) bg-(--color-canvas) py-(--space-8) md:mt-(--space-24)"
+          className="mt-(--technology-margin-top-mobile) scroll-mt-(--anchor-offset) bg-(--color-canvas) py-(--technology-padding-block) md:mt-(--technology-margin-top-desktop)"
         >
           <PageContainer>
             <div className="flex items-center gap-(--space-3)">
@@ -288,7 +288,7 @@ function App() {
         <section
           id="contact"
           aria-labelledby="contact-title"
-          className="relative scroll-mt-(--anchor-offset) overflow-hidden bg-[linear-gradient(180deg,var(--color-canvas)_0%,var(--color-surface-soft)_45%,var(--color-surface-accent)_100%)] py-24 md:py-36"
+          className="relative scroll-mt-(--anchor-offset) overflow-hidden bg-[linear-gradient(180deg,var(--color-canvas)_0%,var(--color-surface-soft)_45%,var(--color-surface-accent)_100%)] py-(--contact-padding-mobile) md:py-(--contact-padding-desktop)"
         >
           <div
             aria-hidden="true"
@@ -310,7 +310,7 @@ function App() {
               <div className="mt-(--space-8) flex flex-wrap justify-center gap-(--space-3)">
                 <a
                   href="mailto:latifian.iman44@gmail.com"
-                  className="inline-flex min-h-11 items-center gap-2 rounded-full bg-(--color-primary) px-(--space-5) font-semibold text-(--color-canvas) no-underline shadow-[0_6px_16px_rgb(37_99_235_/_0.22)] transition-colors duration-(--motion-fast) hover:bg-(--color-primary-hover)"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-full bg-(--color-primary) px-(--space-6) font-semibold text-(--color-canvas) no-underline shadow-[0_6px_16px_rgb(37_99_235_/_0.22)] transition-colors duration-(--motion-fast) hover:bg-(--color-primary-hover)"
                 >
                   Email me
                 </a>

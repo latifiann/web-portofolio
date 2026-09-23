@@ -1,3 +1,4 @@
+import { FiArrowUpRight } from "react-icons/fi";
 import ProjectMetadata from "./ProjectMetadata";
 
 export type ProjectCardProps = {
@@ -9,85 +10,80 @@ export type ProjectCardProps = {
     alt: string;
     width: number;
     height: number;
+    label: string;
   };
-  caption?: string;
   metadata: {
-    category: string;
+    context: string;
     timeline: string;
     role: string;
     stack: string[];
   };
 };
 
-function ProjectCard({
-  title,
-  summary,
-  href,
-  preview,
-  caption,
-  metadata,
-}: ProjectCardProps) {
+function ProjectCard({ title, summary, href, preview, metadata }: ProjectCardProps) {
   return (
-    <article className="group flex h-full flex-col gap-(--space-3)">
-      <div className="aspect-4/3 overflow-hidden rounded-xl border border-(--color-border) bg-(--color-canvas) p-2 shadow-[0_8px_24px_rgb(37_99_235_/_0.1)] transition-shadow duration-(--motion-base) group-hover:shadow-[0_10px_30px_rgb(37_99_235_/_0.16)]">
-        {preview.src ? (
-          <img
-            src={preview.src}
-            alt={preview.alt}
-            width={preview.width}
-            height={preview.height}
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full rounded-lg object-contain transition-transform duration-(--motion-base) group-hover:scale-[1.03]"
-          />
-        ) : (
-          <div
-            className="flex h-full items-center justify-center bg-(--color-surface-soft)"
-            aria-hidden="true"
-          >
-            <span className="font-mono text-xs uppercase tracking-wider text-(--color-ink-muted)">
-              Project preview
-            </span>
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-1 flex-col px-1">
-        <div className="flex flex-wrap items-start justify-between gap-2">
-          <h3 className="text-xl leading-tight font-semibold text-(--color-ink)">{title}</h3>
-          <div className="flex flex-wrap justify-end gap-1">
-            <span className="rounded-full border border-(--color-border) bg-(--color-surface) px-2 py-0.5 font-mono text-[0.625rem] text-(--color-ink-muted)">{metadata.category}</span>
-            <span className="rounded-full border border-(--color-border) bg-(--color-surface) px-2 py-0.5 font-mono text-[0.625rem] text-(--color-ink-muted)">{metadata.timeline}</span>
-          </div>
-        </div>
-
-        <p className="mt-2 text-sm leading-relaxed text-(--color-ink-secondary)">
-          {summary}
-        </p>
-
-        <ProjectMetadata {...metadata} showCategoryAndTimeline={false} />
-
-        {caption && (
-          <p className="mt-(--space-4) text-sm text-(--color-ink-muted)">
-            {caption}
-          </p>
-        )}
-
-        <div className="mt-auto pt-(--space-4)">
-          <a
-            href={href}
-            className="inline-flex min-h-11 w-fit items-center gap-(--space-2) rounded-sm font-semibold text-(--color-primary) no-underline transition-colors duration-(--motion-fast) hover:text-(--color-primary-hover)"
-          >
-            View case study
-            <span
+    <article className="group h-full">
+      <a
+        href={href}
+        className="project-card-link flex h-full flex-col rounded-lg border border-(--color-border) bg-(--color-canvas) p-(--space-4) shadow-[0_1px_2px_rgb(15_23_42_/_0.04),0_8px_24px_rgb(37_99_235_/_0.08)] transition-all duration-(--motion-base) hover:-translate-y-0.5 hover:border-(--color-border-strong) hover:shadow-[0_1px_2px_rgb(15_23_42_/_0.05),0_12px_30px_rgb(37_99_235_/_0.16)]"
+      >
+        <div className="relative aspect-16/10 overflow-hidden rounded-lg bg-(--color-surface-soft)">
+          {preview.src ? (
+            <img
+              src={preview.src}
+              alt={preview.alt}
+              width={preview.width}
+              height={preview.height}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-contain transition-transform duration-(--motion-base) group-hover:scale-[1.03]"
+            />
+          ) : (
+            <div
+              className="flex h-full items-center justify-center"
               aria-hidden="true"
-              className="transition-transform duration-(--motion-fast) group-hover:translate-x-1"
             >
-              &rarr;
-            </span>
-          </a>
+              <span className="font-mono text-xs uppercase tracking-wider text-(--color-ink-muted)">
+                Project preview
+              </span>
+            </div>
+          )}
+
+          <span className="absolute top-(--space-3) left-(--space-3) z-(--z-raised) rounded-md border border-(--color-border-strong) bg-(--color-canvas) px-(--space-3) py-(--space-2) font-mono text-xs font-medium uppercase tracking-wider text-(--color-ink-secondary) shadow-[0_1px_2px_rgb(15_23_42_/_0.08)]">
+            {preview.label}
+          </span>
+
+          <span
+            aria-hidden="true"
+            className="project-card-indicator absolute top-(--space-3) right-(--space-3) z-(--z-raised) flex size-10 items-center justify-center rounded-full border border-(--color-border-strong) bg-(--color-canvas) text-(--color-ink) shadow-[0_1px_2px_rgb(15_23_42_/_0.08)] transition-opacity duration-(--motion-fast)"
+          >
+            <FiArrowUpRight className="size-4" />
+          </span>
         </div>
-      </div>
+
+        <div className="flex flex-1 flex-col pt-(--space-4)">
+          <div className="flex items-start justify-between gap-4">
+            <h3 className="text-xl leading-tight font-semibold tracking-tight text-(--color-ink)">
+              {title}
+            </h3>
+            <p className="whitespace-nowrap font-mono text-xs text-(--color-ink-muted)">
+              {metadata.timeline}
+            </p>
+          </div>
+
+          <p className="mt-(--space-2) text-sm leading-snug text-(--color-ink-muted)">
+            {metadata.role} · {metadata.context}
+          </p>
+
+          <p className="mt-(--space-3) line-clamp-3 text-sm leading-relaxed text-(--color-ink-secondary)">
+            {summary}
+          </p>
+
+          <div className="mt-auto pt-(--space-4)">
+            <ProjectMetadata stack={metadata.stack} />
+          </div>
+        </div>
+      </a>
     </article>
   );
 }

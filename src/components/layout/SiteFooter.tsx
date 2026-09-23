@@ -2,8 +2,8 @@ import PageContainer from "./PageContainer";
 
 function SiteFooter() {
   return (
-    <footer className="bg-(--color-surface-accent) pb-(--space-8)">
-      <PageContainer className="border-t border-(--color-border) pt-(--space-6)">
+    <footer className="bg-(--color-surface-accent) pb-(--footer-padding-bottom)">
+      <PageContainer className="pt-(--footer-padding-top)">
 
         <nav aria-label="Footer navigation">
           <ul className="m-0 flex list-none flex-wrap justify-center gap-1 p-0">

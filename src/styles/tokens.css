@@ -36,6 +36,24 @@
   --space-24: 6rem;
   --space-32: 8rem;
 
+  --section-padding-mobile: 4rem;
+  --section-padding-desktop: 5rem;
+
+  --hero-padding-top-mobile: 0.75rem;
+  --hero-padding-top-desktop: 1.5rem;
+  --hero-padding-bottom-mobile: 2rem;
+  --hero-padding-bottom-desktop: 5rem;
+
+  --technology-margin-top-mobile: 3rem;
+  --technology-margin-top-desktop: 4rem;
+  --technology-padding-block: 1.5rem;
+
+  --contact-padding-mobile: 4rem;
+  --contact-padding-desktop: 6rem;
+
+  --footer-padding-top: 1.5rem;
+  --footer-padding-bottom: 1.5rem;
+
   --container-max: 80rem;
   --visual-canvas-max: 90rem;
   --container-padding-mobile: 1.25rem;

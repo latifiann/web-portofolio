@@ -1,5 +1,6 @@
 import ProjectCard from "../../features/projects/ProjectCard";
 import type { ProjectCardProps } from "../../features/projects/ProjectCard";
+import PageContainer from "../layout/PageContainer";
 import fmsCreatePreview from "../../../content/projects/fms-create/media/fms-create.webp";
 import remiMobilePreview from "../../../content/projects/remi-mobile/media/remi-mobile.webp";
 import seminaPreview from "../../../content/projects/semina/media/semina.webp";
@@ -15,9 +16,10 @@ const projects = [
       alt: "FMS-CREATE fleet-management ecosystem showing passenger mobile screens and team dashboard context.",
       width: 1280,
       height: 800,
+      label: "Mobile App",
     },
     metadata: {
-      category: "Fleet management",
+      context: "Final academic project",
       timeline: "Dec 2025-Jul 2026",
       role: "Mobile Developer",
       stack: [
@@ -39,9 +41,10 @@ const projects = [
       alt: "ReMi Mobile task and reminder screens beside a separate ReMi Web laptop interface.",
       width: 1280,
       height: 800,
+      label: "Mobile App",
     },
     metadata: {
-      category: "Academic mobile productivity",
+      context: "Agile Teknik",
       timeline: "2024",
       role: "Mobile Developer",
       stack: ["Flutter", "BLoC", "REST API"],
@@ -50,55 +53,87 @@ const projects = [
   {
     title: "Semina",
     summary:
-      "An ongoing backend learning project for event management and ticket checkout, extended from BuildWithAngga material.",
+      "A backend learning project for event management and ticket checkout, extended from BuildWithAngga material.",
     href: "/projects/semina/",
     preview: {
       src: seminaPreview,
       alt: "Dark event-platform landing page promoting technology events with a green Browse Now button.",
       width: 1280,
       height: 800,
+      label: "Backend API",
     },
-    caption:
-      "The visual represents the event-platform context from authorized learning material; this case study focuses on my backend API work, not frontend authorship.",
     metadata: {
-      category: "Event-management backend API",
-      timeline: "Aug-Sep 2026; ongoing",
+      context: "Personal project",
+      timeline: "Aug-Sep 2026",
       role: "Backend Developer",
-      stack: [],
+      stack: ["MongoDB", "Express", "React", "Node.js"],
     },
   },
 ] satisfies ProjectCardProps[];
+
+const landingProjects = projects.slice(0, 6);
+const projectCount = projects.length;
 
 function SelectedWorkSection() {
   return (
     <section
       id="projects"
       aria-labelledby="selected-work-title"
-      className="scroll-mt-(--anchor-offset)"
+      className="selected-work-section homepage-section-spacing scroll-mt-(--anchor-offset)"
     >
-      <header className="mx-auto max-w-3xl text-center">
-        <p className="font-serif text-xl italic text-(--color-ink-muted)">
-          / Selected Work
-        </p>
+      <PageContainer visual>
+        <header className="mx-auto max-w-3xl text-center">
+          <p className="font-serif text-xl italic text-(--color-ink-muted)">
+            / Best Projects
+          </p>
 
-        <h2
-          id="selected-work-title"
-          className="mt-(--space-3) text-4xl leading-tight font-semibold tracking-tight text-(--color-ink) md:text-5xl"
-        >
-          Selected work
-        </h2>
+          <h2
+            id="selected-work-title"
+            className="mt-(--space-3) text-4xl leading-tight font-semibold tracking-tight text-(--color-ink) md:text-5xl"
+          >
+            Selected Works
+          </h2>
+        </header>
 
-        <p className="mt-(--space-6) text-lg text-(--color-ink-secondary)">
-          Three projects showing how I contribute across mobile development,
-          software architecture, backend APIs, and product delivery.
-        </p>
-      </header>
+        <div className="mt-(--space-12) grid grid-cols-1 gap-(--space-8) md:grid-cols-2 lg:grid-cols-3">
+          {landingProjects.map((project, index) => (
+            <div
+              key={project.href}
+              className={index >= 3 ? "hidden lg:block" : ""}
+            >
+              <ProjectCard {...project} />
+            </div>
+          ))}
+        </div>
 
-      <div className="mt-(--space-12) grid grid-cols-1 gap-(--space-8) md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
-          <ProjectCard key={project.href} {...project} />
-        ))}
-      </div>
+        <div className="mt-(--space-8) flex justify-center">
+          <a
+            href="/projects/"
+            className="group inline-grid min-h-11 max-w-full grid-cols-[minmax(0,1fr)_1.25rem] items-center gap-(--space-3) rounded-md border border-(--color-border-strong) bg-(--color-canvas) px-(--space-6) py-(--space-3) font-semibold text-(--color-ink) no-underline transition-colors duration-(--motion-fast) hover:border-(--color-primary) hover:text-(--color-primary)"
+          >
+            <span className="min-w-0 text-center">
+              Explore all {projectCount} projects
+            </span>
+            <span
+              aria-hidden="true"
+              className="flex size-5 shrink-0 items-center justify-center text-current transition-transform duration-(--motion-fast) group-hover:translate-x-0.5"
+            >
+              <svg
+                viewBox="0 0 16 16"
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 8h10" />
+                <path d="m9 4 4 4-4 4" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </PageContainer>
     </section>
   );
 }

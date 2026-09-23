@@ -50,7 +50,7 @@ function EngineeringStatementSection() {
     <Section
       id="about"
       labelledBy="about-title"
-      className="border-b border-(--color-border) py-20 md:py-28"
+      className="homepage-section-spacing"
     >
       <div className="relative grid gap-(--space-6) lg:grid-cols-12 lg:items-center lg:gap-(--space-8)">
         <div className="order-2 lg:order-1 lg:col-span-3">
