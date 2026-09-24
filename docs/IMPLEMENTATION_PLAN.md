@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.9.2
+version: 1.10.1
 status: canonical
-last_updated: 2026-09-23
+last_updated: 2026-09-24
 owner: Latifian Iman
 testing_mode: manual-first
 ---
@@ -234,8 +234,12 @@ Status: in progress
 
 Deliverables:
 
-- desktop horizontal experience rail with vertical tablet/mobile flow;
-- two approved internships, education, and evidence density limits preserved;
+- vertical editorial experience timeline at every width, container-aligned content, integrated entry metadata with a shared role/date row on desktop, visible contribution bullets, and education as the final differentiated node;
+- short product descriptions in body type replacing the mono context line;
+- education entry mirrors the internship structure; unverified education detail remains an explicit local placeholder pending owner review;
+- self-hosted variable WOFF2 per variable font family with a matching `weight` range and `font-synthesis: none`;
+- period shows as a compact month-year neutral badge; timeline nodes use filled briefcase and graduation-cap glyphs; Experience body may use the scoped system sans fallback when canonical-sans rasterization defects appear in target browsers;
+- two approved internships with evidence density limits preserved;
 - two-by-three desktop capability grid using one outline icon family.
 
 ### Phase 6E: Technology, Contact, and Footer Fidelity

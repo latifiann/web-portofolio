@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: content-specification
-version: 1.7.0
+version: 1.8.1
 status: canonical
-last_updated: 2026-09-23
+last_updated: 2026-09-24
 owner: Latifian Iman
 default_locale: en
 supported_locales:
@@ -257,8 +257,10 @@ Homepage experience contains only two internships, each with at most three contr
 
 | ID | Role | Organization | Period | State |
 |---|---|---|---|---|
-| `pt-piramida-mobile-developer-intern-2025` | Mobile Developer Intern | PT Piramida Teknologi Informasi | 21 Jul 2025-5 Dec 2025 | `verified` |
-| `mitra-informatika-mobile-developer-intern-2025` | Mobile Developer Intern | Mitra Informatika | 13 Jan 2025-6 Jun 2025 | `verified` |
+| `pt-piramida-mobile-developer-intern-2025` | Mobile Developer Intern | PT Piramida Teknologi Informasi | Jul 2025-Dec 2025 | `verified` |
+| `mitra-informatika-mobile-developer-intern-2025` | Mobile Developer Intern | Mitra Informatika | Jan 2025-Jun 2025 | `verified` |
+
+Homepage periods are display ranges in month/year form. Precise day-level dates remain available in the CV source when needed.
 
 Education appears as a subsection inside Experience:
 
@@ -278,8 +280,10 @@ The following English copy is approved for the local Phase 6 homepage draft. It 
 
 Context: `Mooda App · Four-person cross-functional team`
 
-1. Built a Flutter ride-hailing prototype covering authentication, booking, ratings, profiles, and trip history.
-2. Integrated team backend REST APIs and real-time trip updates with Dio and Socket.IO.
+Description: `Flutter ride-hailing prototype for Mooda App, built with a four-person team, covering authentication, booking, ratings, profiles, and trip history.`
+
+1. Built the Flutter prototype running authentication, booking, ratings, profiles, and trip history.
+2. Integrated the team backend REST APIs and real-time trip updates with Dio and Socket.IO.
 3. Connected Google Maps, Riverpod, GoRouter, and Hive while manually testing customer and driver flows on Android.
 
 Supporting labels: `Flutter`, `Riverpod`, `Socket.IO`, `Google Maps`, `Figma`.
@@ -288,11 +292,23 @@ Supporting labels: `Flutter`, `Riverpod`, `Socket.IO`, `Google Maps`, `Figma`.
 
 Context: `NKRI · Six-person cross-functional team`
 
+Description: `Flutter real-time communication modules for NKRI, built with a six-person team, covering messaging, presence, WebRTC calls, search, and pagination.`
+
 1. Contributed to Flutter real-time communication modules with Riverpod, Isar, Dio, and AutoRoute.
 2. Helped migrate communication from Socket.IO to WebSocket with reconnect handling and user activity status.
 3. Built WebRTC call prototypes and message search, filtering, and chat-room pagination flows.
 
 Supporting labels: `Flutter`, `WebSocket`, `WebRTC`, `Riverpod`, `Isar`.
+
+The education entry mirrors the experience layout, but only the program, institution, and period are verified:
+
+```text
+Title: Sarjana Terapan (D4) Teknik Informatika
+Organization: Politeknik Elektronika Negeri Surabaya
+Period: 2021-2026
+```
+
+Education description, contributions, and supporting labels remain local placeholders pending owner review; they are not approved public content and must be replaced before release.
 
 ## 12. Capability Taxonomy
 

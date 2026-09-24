@@ -1,8 +1,8 @@
 ---
 name: Latifian Editorial Portfolio
-version: 2.17.0
+version: 2.21.0
 status: canonical
-last_updated: 2026-09-23
+last_updated: 2026-09-24
 description: Canonical UI/UX and implementation specification for latifian.dev.
 fonts:
   sans: Geist
@@ -514,16 +514,32 @@ The representative hero visual is required for every published case study. Galle
 
 ## 12. Experience
 
-The experience section uses a compact horizontal editorial rail with hollow blue nodes at desktop reference width. Tablet and mobile use a vertical spine. It should be faster to scan than a résumé.
+The experience section uses a vertical editorial timeline across viewport sizes. Timeline content fills the same horizontal boundaries as the surrounding homepage sections. Entry metadata is integrated into the main content; no separate metadata rail or column is used. It should be faster to scan than a résumé. Experience entries are not rendered as cards, panels, or boxed surfaces.
+
+### Rail and nodes
+
+- A thin vertical spine runs in the left rail and stops at the final node.
+- Every node is vertically centered against the full height of its entry.
+- Nodes are large enough to read as clear markers but remain restrained.
+- Internship nodes use a hollow blue circle with a filled briefcase glyph.
+- The education node uses a graduation-cap glyph so entry type does not depend on color alone.
+- Node and spine geometry use repository tokens; no per-entry surface, shadow, or background is introduced.
+
+### Period badge
+
+The date range displays as a compact neutral metadata badge rather than a plain mono label.
+
+- month/year range only (for example `Jul 2025-Dec 2025`);
+- neutral surface, thin border, mono text;
+- never styled as a status, category, or interactive control;
+- aligns right beside the role on desktop and stacks below the role on tablet and mobile.
 
 ### Item anatomy
 
-- role;
-- company or organization;
-- employment type when relevant;
-- date range and location;
-- one-line context;
-- two or three highest-value contribution bullets;
+- role and date range;
+- company or organization, employment type, and location on one line;
+- a short product description in body type (not mono metadata);
+- two or three highest-value contribution bullets with a visible marker;
 - compact technology tags.
 
 ### Density limits
@@ -533,7 +549,30 @@ The experience section uses a compact horizontal editorial rail with hollow blue
 - Maximum 5 technology tags per item.
 - Use the CV or LinkedIn for complete history.
 
-On mobile, dates move above or below the role/company block. They must not compress the main text into a narrow column.
+### Reading flow
+
+- On desktop, role and date share one row: role left, date right.
+- On tablet and mobile, date stacks below the role.
+- Organization, employment type, and location wrap naturally and never form a separate narrow column.
+- Contribution and product-description text stays inside the main reading flow.
+
+### Education
+
+Education uses the same entry structure and layout as internships and closes the timeline as the final differentiated node.
+
+- the outline glyph differs: education uses a book glyph, internships use a briefcase;
+- program becomes the entry title;
+- institution, period, description, bullets, and tags follow the same arrangement as an internship entry;
+- only facts that are verified render as content; unverified detail may use an explicit local placeholder marked pending owner review;
+- no separate horizontal divider.
+
+### Product descriptions
+
+The short product description replaces the previous mono context line. It is written in body type with comfortable line-height and secondary ink so it reads as a sentence, not metadata.
+
+### Font fallback scope
+
+If the canonical sans (Geist) shows rasterization defects in target browsers, the Experience entry body may use the system sans stack (`ui-sans-serif, system-ui, sans-serif`) scoped to that section. Headings, serif eyebrows, and JetBrains Mono metadata keep their canonical fonts. This is a scoped rendering fallback, not a change to the product font roles.
 
 ## 13. Skills and Capabilities
 
