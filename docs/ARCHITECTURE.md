@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: technical-architecture
-version: 1.5.0
+version: 1.6.0
 status: canonical
-last_updated: 2026-09-23
+last_updated: 2026-09-24
 owner: Latifian Iman
 application_type: statically generated portfolio
 package_manager: npm
@@ -694,10 +694,12 @@ Tailwind theme aliases point to these variables. A component may use `bg-canvas`
 ### 12.3 Fonts
 
 - Retain licensed TTF source files and notices under `content/site/fonts/<family>/source/`, then generate self-hosted WOFF2 files for all three canonical font families under `public/generated/fonts/`. If licensing prevents self-hosting, stop implementation and obtain an approved font decision rather than falling back to a remote CDN.
+- Variable font families (Geist, JetBrains Mono) are converted to a single variable WOFF2 per family and declared with a `font-weight` range that matches the `wght` axis. Do not generate multiple static filenames from the same variable source.
 - Load only the weights used by the design system.
 - Preload only the font files required above the fold.
 - Use `font-display: swap`.
 - Define resilient fallback stacks that minimize layout shift.
+- Disable `font-synthesis` for the product font roles so the browser does not invent synthetic weights.
 - Geist, Instrument Serif, and JetBrains Mono are the only product font roles.
 
 ### 12.4 Responsive behavior
@@ -717,7 +719,7 @@ Mobile is an intentional composition, not a scaled desktop canvas. Components sh
 - Original project media stays beside its project content.
 - Owner-provided hero portrait source stays at `content/site/media/portrait/`.
 - Licensed source fonts and notices stay under `content/site/fonts/` by family.
-- `scripts/generate-fonts.ts` generates only browser-used WOFF2 weights and styles under `public/generated/fonts/`; `npm run fonts:generate` runs before the Vite production build; source TTF files never load directly in production.
+- `scripts/generate-fonts.ts` generates only browser-used WOFF2 files under `public/generated/fonts/` (one variable WOFF2 per variable family plus the static italic); `npm run fonts:generate` runs before the Vite production build; source TTF files never load directly in production.
 - Approved Stitch reference captures stay under `docs/references/` and are excluded from source manifests and production output.
 - `scripts/generate-images.ts` produces web-ready AVIF and WebP variants plus a fallback where justified.
 - Generated filenames include a content hash.

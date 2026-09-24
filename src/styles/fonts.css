@@ -1,16 +1,8 @@
 @font-face {
   font-family: "Geist";
-  src: url("/generated/fonts/geist/geist-regular.woff2") format("woff2");
+  src: url("/generated/fonts/geist/geist-variable.woff2") format("woff2");
   font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Geist";
-  src: url("/generated/fonts/geist/geist-semibold.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 600;
+  font-weight: 100 900;
   font-display: swap;
 }
 
@@ -24,9 +16,9 @@
 
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("/generated/fonts/jetbrains-mono/jetbrains-mono-medium.woff2") format("woff2");
+  src: url("/generated/fonts/jetbrains-mono/jetbrains-mono-variable.woff2") format("woff2");
   font-style: normal;
-  font-weight: 500;
+  font-weight: 100 800;
   font-display: swap;
 }
 
@@ -34,4 +26,11 @@
   --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+
+  font-synthesis: none;
+}
+
+:is(h1, h2, h3, h4, h5, h6),
+:is(.font-sans, .font-serif, .font-mono) {
+  font-synthesis: none;
 }

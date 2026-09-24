@@ -5,21 +5,17 @@ import ttf2woff2 from "ttf2woff2";
 const fonts = [
   {
     source: "content/site/fonts/geist/source/Geist-VariableFont_wght.ttf",
-    output: "public/generated/fonts/geist/geist-regular.woff2",
+    output: "public/generated/fonts/geist/geist-variable.woff2",
   },
   {
-    source: "content/site/fonts/geist/source/Geist-VariableFont_wght.ttf",
-    output: "public/generated/fonts/geist/geist-semibold.woff2",
+    source: "content/site/fonts/jetbrains-mono/source/JetBrainsMono-VariableFont_wght.ttf",
+    output:
+      "public/generated/fonts/jetbrains-mono/jetbrains-mono-variable.woff2",
   },
   {
     source: "content/site/fonts/instrument-serif/source/InstrumentSerif-Italic.ttf",
     output:
       "public/generated/fonts/instrument-serif/instrument-serif-italic.woff2",
-  },
-  {
-    source:
-      "content/site/fonts/jetbrains-mono/source/JetBrainsMono-VariableFont_wght.ttf",
-    output: "public/generated/fonts/jetbrains-mono/jetbrains-mono-medium.woff2",
   },
 ];
 
