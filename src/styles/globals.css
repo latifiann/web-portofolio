@@ -486,6 +486,126 @@ button,
   }
 }
 
+.experience-timeline {
+  --experience-node: 2.5rem;
+  --experience-colgap: 2rem;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  margin-top: var(--space-12);
+  padding-left: calc(var(--experience-node) + var(--experience-colgap));
+}
+
+.experience-timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--experience-node) / 2);
+  width: 1px;
+  background: var(--color-border-strong);
+}
+
+.experience-entry {
+  position: relative;
+}
+
+.experience-node {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: calc(-1 * (var(--experience-node) + var(--experience-colgap)));
+  display: flex;
+  width: var(--experience-node);
+  height: var(--experience-node);
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-full);
+  background: var(--color-canvas);
+}
+
+.experience-node-icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-primary);
+}
+
+.experience-entry:first-child::before,
+.experience-entry--education::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(var(--experience-node) / 2 - 1px);
+  width: 2px;
+  height: 50%;
+  background: var(--color-canvas);
+}
+
+.experience-entry--education::after {
+  top: 50%;
+  height: 50%;
+}
+
+.experience-content {
+  min-width: 0;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.experience-period-badge {
+  width: fit-content;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  padding: var(--space-1) var(--space-3);
+  color: var(--color-ink-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.experience-heading-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.experience-organization-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.experience-contributions {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding-left: var(--space-4);
+  list-style: disc;
+}
+
+.experience-contributions li::marker {
+  color: var(--color-primary);
+}
+
+@media (min-width: 64rem) {
+  .experience-heading-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .experience-timeline {
+    gap: var(--space-16);
+  }
+}
+
 .project-card-link:focus-visible .project-card-indicator {
   opacity: 1;
   transform: translateY(0);

@@ -4,34 +4,8 @@ import SiteFooter from "./components/layout/SiteFooter";
 import SiteHeader from "./components/layout/SiteHeader";
 import SelectedWorkSection from "./components/sections/SelectedWorkSection";
 import EngineeringStatementSection from "./components/sections/EngineeringStatementSection";
+import ExperienceSection from "./components/sections/ExperienceSection";
 import HeroSection from "./components/sections/HeroSection";
-
-const experiences = [
-  {
-    organization: "PT Piramida Teknologi Informasi",
-    mode: "Remote",
-    period: "Jul 21-Dec 5, 2025",
-    context: "Mooda App · Four-person cross-functional team",
-    bullets: [
-      "Built a Flutter ride-hailing prototype covering authentication, booking, ratings, profiles, and trip history.",
-      "Integrated team backend REST APIs and real-time trip updates with Dio and Socket.IO.",
-      "Connected Google Maps, Riverpod, GoRouter, and Hive while manually testing customer and driver flows on Android.",
-    ],
-    tags: ["Flutter", "Riverpod", "Socket.IO", "Google Maps", "Figma"],
-  },
-  {
-    organization: "Mitra Informatika",
-    mode: "On-site",
-    period: "Jan 13-Jun 6, 2025",
-    context: "NKRI · Six-person cross-functional team",
-    bullets: [
-      "Contributed to Flutter real-time communication modules with Riverpod, Isar, Dio, and AutoRoute.",
-      "Helped migrate communication from Socket.IO to WebSocket with reconnect handling and user activity status.",
-      "Built WebRTC call prototypes and message search, filtering, and chat-room pagination flows.",
-    ],
-    tags: ["Flutter", "WebSocket", "WebRTC", "Riverpod", "Isar"],
-  },
-];
 
 const capabilities = [
   {
@@ -112,88 +86,7 @@ function App() {
         <SelectedWorkSection />
 
         <PageContainer visual>
-          <Section
-            id="experience"
-            labelledBy="experience-title"
-            className="homepage-section-spacing"
-          >
-            <header className="mx-auto max-w-3xl text-center">
-              <p className="font-serif text-xl italic text-(--color-ink-muted)">
-                / Career Journey
-              </p>
-              <h2
-                id="experience-title"
-                className="mt-(--space-3) text-4xl leading-tight font-semibold tracking-tight text-(--color-ink) md:text-5xl"
-              >
-                Experience
-              </h2>
-              <p className="mt-(--space-6) text-lg text-(--color-ink-secondary)">
-                Professional internship experience and applied-informatics
-                education that shaped how I work across product and engineering
-                teams.
-              </p>
-            </header>
-            <ol className="mx-auto mt-(--space-12) max-w-6xl list-none border-l border-(--color-border) p-0">
-              {experiences.map((experience) => (
-                <li
-                  key={experience.organization}
-                  className="relative ml-(--space-6) pb-(--space-12) last:pb-0"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="absolute top-(--space-2) -left-[1.8125rem] size-4 rounded-full border-2 border-(--color-primary) bg-(--color-canvas)"
-                  />
-                  <article className="grid gap-(--space-4) lg:grid-cols-12 lg:gap-(--space-8)">
-                    <div className="lg:col-span-4">
-                      <p className="font-mono text-xs font-semibold uppercase tracking-wider text-(--color-primary)">
-                        {experience.mode} · Surabaya
-                      </p>
-                      <p className="mt-(--space-2) font-mono text-sm text-(--color-ink-muted)">
-                        {experience.period}
-                      </p>
-                    </div>
-                    <div className="lg:col-span-8">
-                      <h3 className="text-2xl leading-tight font-semibold text-(--color-ink)">
-                        Mobile Developer Intern
-                      </h3>
-                      <p className="mt-(--space-2) text-lg text-(--color-ink-secondary)">
-                        {experience.organization}
-                      </p>
-                      <p className="mt-(--space-4) font-mono text-xs text-(--color-ink-muted)">
-                        {experience.context}
-                      </p>
-                      <ul className="mt-(--space-4) grid gap-(--space-3) pl-(--space-4) text-(--color-ink-secondary)">
-                        {experience.bullets.map((bullet) => (
-                          <li key={bullet}>{bullet}</li>
-                        ))}
-                      </ul>
-                      <ul className="mt-(--space-6) flex list-none flex-wrap gap-(--space-2) p-0">
-                        {experience.tags.map((tag) => (
-                          <li
-                            key={tag}
-                            className="rounded-sm border border-(--color-border) bg-(--color-surface) px-(--space-3) py-(--space-2) font-mono text-xs text-(--color-ink-secondary)"
-                          >
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </article>
-                </li>
-              ))}
-            </ol>
-            <div className="mt-(--space-8) border-t border-(--color-border) pt-(--space-6)">
-              <p className="font-mono text-xs font-semibold uppercase tracking-wider text-(--color-primary)">
-                Education
-              </p>
-              <h3 className="mt-(--space-3) text-xl font-semibold text-(--color-ink)">
-                Sarjana Terapan (D4) Teknik Informatika
-              </h3>
-              <p className="mt-(--space-2) text-(--color-ink-secondary)">
-                Politeknik Elektronika Negeri Surabaya · 2021-2026
-              </p>
-            </div>
-          </Section>
+          <ExperienceSection />
 
           <Section
             id="skills"
