@@ -217,7 +217,7 @@ function SiteHeader() {
         <div className="relative flex items-center justify-between">
           <span
             aria-label="English is the current language; Indonesian is coming soon"
-            className="inline-flex min-h-10 items-center gap-1 rounded-md border border-(--color-border) bg-(--color-canvas)/95 px-(--space-3) font-sans text-[0.625rem] font-medium tracking-wide text-(--color-ink-muted) shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm md:min-h-9 lg:min-h-14 lg:px-(--space-4) lg:text-xs"
+            className="inline-flex min-h-10 items-center gap-1 rounded-full border border-(--color-border) bg-(--color-canvas)/95 px-(--space-3) font-sans text-[0.625rem] font-medium tracking-wide text-(--color-ink-muted) shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm md:min-h-9 lg:min-h-14 lg:px-(--space-4) lg:text-xs"
           >
             <svg
               aria-hidden="true"
@@ -238,7 +238,7 @@ function SiteHeader() {
           <nav
             id="primary-navigation"
             aria-label="Primary navigation"
-            className={`absolute top-full right-0 left-0 z-(--z-dropdown) mt-(--space-2) rounded-md border border-(--color-border) bg-(--color-canvas) p-(--space-2) shadow-[0_8px_24px_rgb(15_23_42_/_0.06)] lg:top-0 lg:left-1/2 lg:mt-0 lg:block lg:w-fit lg:-translate-x-1/2 lg:rounded-md lg:bg-(--color-ink) lg:p-2 ${isMenuOpen ? "block" : "hidden"}`}
+            className={`absolute top-full right-0 left-0 z-(--z-dropdown) mt-(--space-2) rounded-md border border-(--color-border) bg-(--color-canvas) p-(--space-2) shadow-[0_8px_24px_rgb(15_23_42_/_0.06)] lg:top-0 lg:left-1/2 lg:mt-0 lg:block lg:w-fit lg:-translate-x-1/2 lg:rounded-full lg:bg-(--color-ink) lg:p-2 ${isMenuOpen ? "block" : "hidden"}`}
           >
             <ul className="m-0 flex list-none flex-col gap-1 p-0 lg:flex-row lg:gap-1">
               {navigationItems.map((item) => {
@@ -248,7 +248,7 @@ function SiteHeader() {
                     <a
                       href={item.href}
                       aria-current={isActive ? "location" : undefined}
-                      className="primary-navigation-link flex min-h-10 items-center rounded-md px-(--space-3) text-sm font-medium no-underline lg:min-h-0 lg:px-3 lg:py-2 lg:leading-6 lg:text-[0.6875rem] lg:font-semibold"
+                      className="primary-navigation-link flex min-h-10 items-center rounded-md px-(--space-3) text-sm font-medium no-underline lg:min-h-0 lg:rounded-full lg:px-3 lg:py-2 lg:leading-6 lg:text-[0.6875rem] lg:font-semibold"
                       onClick={handleNavigation}
                     >
                       <span
@@ -269,7 +269,7 @@ function SiteHeader() {
             <button
               type="button"
               aria-label="Theme switcher"
-              className="inline-flex size-10 items-center justify-center rounded-md border border-(--color-border) bg-(--color-canvas)/95 text-(--color-ink) shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm transition-colors hover:border-(--color-primary) hover:bg-(--color-surface-soft) hover:text-(--color-primary) lg:size-14"
+              className="inline-flex size-10 items-center justify-center rounded-full border border-(--color-border) bg-(--color-canvas)/95 text-(--color-ink) shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm transition-colors hover:border-(--color-primary) hover:bg-(--color-surface-soft) hover:text-(--color-primary) lg:size-14"
               onClick={() => setIsThemeToastVisible(true)}
             >
               <svg
@@ -286,7 +286,7 @@ function SiteHeader() {
             </button>
             <a
               href="#contact"
-              className="header-contact-link hidden min-h-9 items-center rounded-md border border-(--color-border) bg-(--color-canvas)/95 px-(--space-3) font-sans text-[0.625rem] font-medium text-(--color-ink) no-underline shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm transition-colors hover:border-(--color-primary) hover:text-(--color-primary) lg:inline-flex lg:min-h-14 lg:px-5 lg:text-xs lg:font-semibold lg:shadow-[0_1px_2px_rgb(15_23_42_/_0.04),0_8px_24px_rgb(15_23_42_/_0.06)] lg:backdrop-blur-none"
+              className="header-contact-link hidden min-h-9 items-center rounded-full border border-(--color-border) bg-(--color-canvas)/95 px-(--space-3) font-sans text-[0.625rem] font-medium text-(--color-ink) no-underline shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm transition-colors hover:border-(--color-primary) hover:text-(--color-primary) lg:inline-flex lg:min-h-14 lg:px-5 lg:text-xs lg:font-semibold lg:shadow-[0_1px_2px_rgb(15_23_42_/_0.04),0_8px_24px_rgb(15_23_42_/_0.06)] lg:backdrop-blur-none"
             >
               Get in touch
             </a>
@@ -296,7 +296,7 @@ function SiteHeader() {
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMenuOpen}
               aria-controls="primary-navigation"
-              className="inline-flex size-10 items-center justify-center rounded-md bg-(--color-ink) text-(--color-canvas) shadow-[0_4px_12px_rgb(15_23_42_/_0.16)] lg:hidden"
+              className="inline-flex size-10 items-center justify-center rounded-full bg-(--color-ink) text-(--color-canvas) shadow-[0_4px_12px_rgb(15_23_42_/_0.16)] lg:hidden"
               onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
             >
               <span className="sr-only">{isMenuOpen ? "Close" : "Open"}</span>

@@ -1,12 +1,47 @@
+import { FaGithubSquare, FaInstagramSquare, FaLinkedin } from "react-icons/fa";
 import PageContainer from "./PageContainer";
+
+const socialLinks = [
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/latifian-iman",
+    Icon: FaLinkedin,
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/latifiann",
+    Icon: FaGithubSquare,
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/latifiann",
+    Icon: FaInstagramSquare,
+  },
+];
 
 function SiteFooter() {
   return (
-    <footer className="bg-(--color-surface-accent) pb-(--footer-padding-bottom)">
+    <footer className="bg-white pb-(--footer-padding-bottom)">
       <PageContainer className="pt-(--footer-padding-top)">
 
+        <nav aria-label="Social links">
+          <ul className="m-0 flex list-none justify-center gap-(--space-2) p-0">
+            {socialLinks.map(({ label, href, Icon }) => (
+              <li key={label}>
+                <a
+                  href={href}
+                  aria-label={label}
+                  className="inline-flex size-11 items-center justify-center rounded-sm text-(--color-ink-secondary) no-underline transition-colors duration-(--motion-fast) hover:text-(--color-primary)"
+                >
+                  <Icon aria-hidden="true" className="size-6" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
         <nav aria-label="Footer navigation">
-          <ul className="m-0 flex list-none flex-wrap justify-center gap-1 p-0">
+          <ul className="m-0 mt-(--space-3) flex list-none flex-wrap justify-center gap-1 p-0">
             <li>
               <a
                 href="/"
@@ -40,24 +75,6 @@ function SiteFooter() {
                 className="inline-flex min-h-9 items-center rounded-sm px-(--space-2) text-xs font-medium text-(--color-ink-secondary) no-underline hover:text-(--color-primary)"
               >
                 Contact
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="https://www.linkedin.com/in/latifian-iman"
-                className="inline-flex min-h-9 items-center rounded-sm px-(--space-2) text-xs font-medium text-(--color-ink-secondary) no-underline hover:text-(--color-primary)"
-              >
-                LinkedIn
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="https://github.com/latifiann"
-                className="inline-flex min-h-9 items-center rounded-sm px-(--space-2) text-xs font-medium text-(--color-ink-secondary) no-underline hover:text-(--color-primary)"
-              >
-                GitHub
               </a>
             </li>
           </ul>

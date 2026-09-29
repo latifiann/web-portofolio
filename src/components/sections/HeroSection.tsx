@@ -34,7 +34,7 @@ export default function HeroSection() {
 
           <div className="hero-information-grid">
             <div className="hero-left-rail">
-              <span className="hero-availability inline-flex items-center gap-2 rounded-md bg-(--color-canvas)/95 text-(--color-ink)">
+              <span className="hero-availability inline-flex items-center rounded-full bg-(--color-canvas)/95 text-(--color-ink)">
                 <span
                   aria-hidden="true"
                   className="hero-availability-dot rounded-full bg-(--color-primary)"
@@ -66,7 +66,7 @@ export default function HeroSection() {
                 href="/resume/latifian-iman-cv-ats.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hero-resume-link mt-(--space-4) inline-flex min-h-11 items-center gap-2 rounded-md border border-(--color-border) bg-(--color-canvas) px-(--space-4) no-underline"
+                className="hero-resume-link mt-(--space-4) inline-flex items-center rounded-full border border-(--color-border) bg-(--color-canvas) no-underline"
                 aria-label="View resume (PDF, opens in a new tab)"
               >
                 <span>View resume</span>
