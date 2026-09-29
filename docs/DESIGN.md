@@ -1,8 +1,8 @@
 ---
 name: Latifian Editorial Portfolio
-version: 2.21.0
+version: 2.26.3
 status: canonical
-last_updated: 2026-09-24
+last_updated: 2026-09-29
 description: Canonical UI/UX and implementation specification for latifian.dev.
 fonts:
   sans: Geist
@@ -266,9 +266,9 @@ Internal structural dividers remain allowed where they organize content inside a
 
 Multiple homepage sections share one semantic vertical padding so the page reads as a continuous, flowing composition rather than separate framed blocks. These values live in `tokens.css`, are tuned from one file, and are applied through the `homepage-section-spacing` class:
 
-- About, Selected Work, Experience, Capabilities: `64px` mobile, `80px` desktop.
+- About, Selected Work, Experience, Capabilities: `64px` mobile, `80px` desktop. Capabilities keeps this top padding but reduces its bottom padding to `8px` mobile / `24px` desktop so it sits compactly above Technology.
 - Hero uses dedicated tokens for its portrait composition (`pt` mobile `12px`/`24px` desktop, `pb` `32px`/`80px`).
-- Technology has its own top margin (`48px`/`64px`) and `24px` block padding.
+- Technology uses `24px` block padding with contextual boundaries: `32px`/`48px` below Capabilities and `64px`/`80px` before Contact.
 - Contact closing band uses `64px`/`96px`.
 - Footer uses `24px` top and bottom.
 
@@ -280,9 +280,9 @@ Internal spacing between section heading, grid, list, and CTA is separate and mu
 - `12px`: standard cards, compact media, and small interactive surfaces.
 - `16px`: project preview containers and large content cards.
 - `24px`: rare large visual blocks.
-- Full pill: circular indicators and shapes only (status dots, icon discs, and elements whose form is inherently round).
+- Full pill: circular indicators and shapes (status dots, icon discs, round elements), and the pill-shaped header/hero controls defined below.
 
-Corner radius is consistent at `12px` across the header controls (language selector, compact navigation container and items, theme button, `Get in touch`, mobile menu trigger), the hero availability badge, and the engineering-statement badges in the `#about` section. Do not reintroduce full-pill radius on those surfaces.
+Corner radius on the header and hero controls is full-pill across the language selector, theme button (a circle), header `Get in touch`, mobile menu trigger (a circle), and hero availability badge and hero `View resume` action. The primary navigation container and each navigation item are full-pill on desktop (`>=64rem`) and `12px` on mobile and tablet, so the tall mobile dropdown panel does not render as an oversized capsule. The engineering-statement badges in the `#about` section are full-pill to match the pill-shell language of the other compact controls; do not reintroduce `12px` on the pill surfaces above.
 
 ### Borders
 
@@ -304,7 +304,7 @@ Do not stack large diffuse shadows. Cards must not resemble floating SaaS dashbo
 
 ## 7. Navigation
 
-Desktop navigation has three visual zones: a compact static `EN / ID` language control on the left during the English-only draft, a floating `12px`-radius control centered near the top, then a theme-preview icon button and `Get in touch` contact CTA on the right. Supporting actions remain visually quieter than primary navigation.
+Desktop navigation has three visual zones: a compact static `EN / ID` language control on the left during the English-only draft, a floating full-pill control centered near the top, then a theme-preview icon button and `Get in touch` contact CTA on the right. Supporting actions remain visually quieter than primary navigation.
 
 The floating navigation contains seven order: `Home`, `About`, `Projects`, `Experience`, `Capabilities`, `Technology`, `Contact`. `About` links to the engineering-statement section. `Experience`, `Capabilities`, and `Technology` expose the sections that previously had no dedicated navigation item. They do not introduce separate biography pages in public v1.
 
@@ -378,6 +378,7 @@ The initial verified status is `Open to opportunities`. It is a maintained profe
 - The portrait supports the name and role; it must not obscure them.
 - Availability badge and supporting paragraph balance the portrait horizontally on desktop.
 - Supporting copy should be direct and no longer than two or three short lines.
+- The availability badge and the hero `View resume` action share the same full-pill sizing: `44px` minimum height, `10px 16px` padding, `14px/600` sans text, `8px` gap, and a light neutral two-layer shadow. Their widths follow their content. Borders may differ by role (the availability badge keeps a subtle blue status border; `View resume` keeps a neutral border).
 - On mobile, resolve overlaps into a controlled vertical stack; do not merely scale the desktop composition down.
 
 At desktop reference width, the greeting and serif role overlap the portrait region without crossing the face; the portrait remains a centered visual anchor over a pale-blue radial wash; availability and the engineering-focus line balance on the left; supporting copy and the resume action balance on the right. The two side rails form an intentional asymmetric grid: they share one vertical center anchor and sit in symmetric columns around a reserved portrait-safe center, so neither rail chases the portrait or uses independent offsets on desktop. Every gap and offset uses a canonical spacing token. The overlay grid sits above the portrait (`--z-raised`) so `View resume` and tablet `Get in touch` remain clickable, uses `pointer-events: none` on the grid with `pointer-events: auto` on the two rails so the center spacer does not block the portrait, and drops `24px` below the vertical center. The availability chip may carry one restrained blue accent shadow (neutral base shadow plus a `rgb(37 99 235 / 0.10)` halo) without gradient, glow border, neon, or heavy blur; it must not become a nested card. The right rail stays flat. `View resume` uses a functional `→` accent (primary blue, subtle glow) that translates `4px` on hover instead of a document icon. On desktop the availability badge renders at `14px` text with wider padding, the focus value at `24px`, and the supporting paragraph at `16px` with a `38ch` measure for readability. The title group is nudged `16px` lower and the supporting paragraph wrapper `16px` lower relative to its tablet position so the portrait floats slightly over `Software Developer` and the supporting text floats over the portrait while staying legible. The portrait wrapper is raised `16px` from tablet up to compensate for the wider role text gap, keeping the overlap consistent. At mobile reference width, resolve this into a legible vertical stack before adding decorative overlap.
@@ -392,7 +393,7 @@ The approved engineering statement is defined in `CONTENT.md`. This document def
 
 Render up to six approved engineering-statement badges from `CONTENT.md` or validated structured content. At desktop reference width, three badges align on each side of the centered statement. On mobile, preserve logical reading order and use a readable grid or wrap without crossing or covering the statement.
 
-Each badge shows a distinct solid glyph matched to its label, supplied by the `react-icons` package (imported directly from its provider subpaths so the production bundle keeps only the used icons), rendered in white on a small rounded disc colored with one muted, medium-dark category tone. Badge surface, border, and text stay neutral; only the disc carries color. This badge set is an explicit category-color exception: it uses the exact approved tone list below and is not constrained by the general muted/desaturated disc rule, nor by white-glyph contrast targets, because the glyph is decorative and the visible label carries the meaning. These tones must not be neon-bordered, gradient, or repeated beyond this set, and must not be reused for cards, buttons, links, or section backgrounds. Sizing may be tuned per icon to balance differing optical weight across providers. The badge label, icon, and tone mapping:
+Each badge is a full-pill shell showing a distinct solid glyph matched to its label, supplied by the `react-icons` package (imported directly from its provider subpaths so the production bundle keeps only the used icons), rendered in white on a small rounded disc colored with one muted, medium-dark category tone. Badge surface, border, and text stay neutral; only the disc carries color. This badge set is an explicit category-color exception: it uses the exact approved tone list below and is not constrained by the general muted/desaturated disc rule, nor by white-glyph contrast targets, because the glyph is decorative and the visible label carries the meaning. These tones must not be neon-bordered, gradient, or repeated beyond this set, and must not be reused for cards, buttons, links, or section backgrounds. Sizing may be tuned per icon to balance differing optical weight across providers. The badge label, icon, and tone mapping:
 
 | Capability | Provider / icon | Tone |
 |---|---|---|
@@ -587,27 +588,46 @@ Canonical groups:
 - Software Quality Assurance
 - Project & Collaboration
 
-Each card contains an icon, capability title, one concise description, and up to four supporting labels. Capability and evidence are more important than logo count.
+Each card contains a capability title, one concise evidence description, and up to four supporting badges. Capability cards do not use decorative icon blocks, blue top rails, category markers, or logo walls. Capability and evidence are more important than logo count.
+
+### Section background
+
+The Capabilities section renders a full-width, vertical pale-blue wash that fades into `canvas` at the top and bottom so it transitions smoothly from Experience into the Technology strip. The wash uses only canonical blue-family tokens, no blur, no animation, and no radial glow, and its inner content stays constrained by the visual canvas.
+
+### Card treatment
+
+- cards start directly with the title;
+- opaque `canvas` surface, `border`, `12px` radius, uniform `24px` padding;
+- labels render as compact neutral badges in mono type, grouped at the bottom of the card;
+- badge groups align across each grid row;
+- cards may carry a restrained blue-tinted elevation shadow;
+- no glowing border, no gradient card, no blur blob, and no hover lift or faux interaction on a non-interactive card.
 
 ### Technology strip
 
-The `Core Technologies & Ecosystem` strip is secondary evidence.
+The `Core Technologies & Ecosystem` strip is secondary evidence. It renders as a single left-moving marquee of grayscale brand icons paired with sans labels.
 
-- Prefer a static, wrapping list on desktop.
-- On narrow screens, allow horizontal overflow with visible affordance.
-- If a marquee is used, it must move slowly, pause on hover/focus, stop under reduced-motion, and retain access to every item without waiting.
+- renders all 18 local grayscale SVG icons, each paired with a sans label;
+- icon `24px`, sans label `14px`; the label carries the meaning and the icon is decorative;
+- smooth `54s` linear loop of two identical visual groups so the seam is invisible;
+- animation pauses on hover and on keyboard focus;
+- under reduced motion the duplicate visual group is removed and one static, wrapping list remains;
+- a missing or failed icon is hidden and the label stays visible;
+- items are plain icon-plus-text; no card, badge, border, glow, shadow, or per-item animation;
+- thin edge masks fade items at the viewport edges and are disabled under reduced motion and forced colors;
+- boundary spacing is compact after Capabilities (`32px` mobile / `48px` desktop) and spacious before Contact (`64px` mobile / `80px` desktop).
 
 ## 14. Contact and Footer
 
-The contact section may use a stronger pale-blue band but remains minimal.
+The contact section uses a vertical top-to-bottom wash that starts from `surface-accent`, blends through `surface-soft`, and fades to white at the bottom edge.
 
-At reference widths, center the contact heading, body, and primary action within the pale-blue band. Secondary profile actions remain available without competing with email.
+At reference widths, center the contact heading, body, and primary action within the wash. The heading renders on one line on desktop (`>=64rem`) and may wrap on mobile and tablet without overflowing the viewport. Body copy is narrower than the heading so line lengths stay comfortable.
 
 The approved contact heading is defined in `CONTENT.md`.
 
-Include a short collaboration statement and one clear primary action. Email, LinkedIn, and GitHub may appear as secondary actions.
+Include a short collaboration statement and one clear primary action: `Email me`. The email CTA uses an `ink` background with white text. LinkedIn and GitHub are not rendered as Contact buttons.
 
-The footer contains only essential navigation, social links, name, copyright year, and an optional implementation note. Do not create a multi-column corporate footer.
+The footer uses a white background that continues seamlessly from the contact wash. It contains only essential navigation, a row of icon-only social links (LinkedIn, GitHub, Instagram), name, copyright year, and an optional implementation note. Do not create a multi-column corporate footer. The social icons form a separate row above the text navigation; the text navigation lists `Home`, `About`, `Projects`, and `Contact`.
 
 ## 15. Components
 
@@ -654,6 +674,8 @@ External destinations use one consistent visual indicator and descriptive text o
 - Do not mix filled, outlined, 3D, and emoji icon styles.
 - Every icon-only control requires an accessible label.
 - Exception: the engineering-statement badges in `#about` (`Section 9`) use solid glyphs from `react-icons` (mixed providers, imported by direct subpath) on muted single-color discs. This exception is scoped to that badge set only; the rest of the site keeps the outline family.
+- Exception: the Technology strip uses trusted local grayscale brand SVG marks beside readable sans labels. This is scoped to that strip only; the visible label carries the meaning and the mark is decorative.
+- Exception: footer social links use tuned brand glyphs from `react-icons/fa` at `24px`. These are icon-only controls `44px × 44px`, each with an accessible name (`LinkedIn`, `GitHub`, `Instagram`) and a neutral-to-primary hover. This is scoped to the footer social row only; every icon-only control carries a non-hidden accessible label.
 
 ### Forms
 

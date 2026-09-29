@@ -1,7 +1,7 @@
 ---
 product: latifian.dev
 document: technical-architecture
-version: 1.6.0
+version: 1.6.2
 status: canonical
 last_updated: 2026-09-24
 owner: Latifian Iman
@@ -747,6 +747,34 @@ The hero portrait may load eagerly with appropriate priority. Below-the-fold pro
 - Do not encode text only inside images.
 - Animated media is optional, muted, and never required to understand the project.
 - Remote hotlinking is disallowed by default.
+
+### 13.4 Technology icons
+
+Trusted grayscale brand SVG marks for the Technology strip live locally under `public/technology-icons/`. A local provenance note and license record stay beside them in `README.md`.
+
+- Exact filename mapping used by `src/components/sections/TechnologyStrip.tsx`:
+  - Flutter → `flutter.svg`;
+  - Dart → `dart.svg`;
+  - React → `react.svg`;
+  - TypeScript → `typescript.svg`;
+  - JavaScript → `js.svg`;
+  - HTML5 → `html5.svg`;
+  - CSS3 → `css3.svg`;
+  - Tailwind CSS → `tailwindcss.svg`;
+  - Node.js → `nodejs.svg`;
+  - Express → `expressjs.svg`;
+  - Java → `java.svg`;
+  - PostgreSQL → `postgresql.svg`;
+  - MySQL → `mysql.svg`;
+  - MongoDB → `mongodb.svg`;
+  - Docker → `docker.svg`;
+  - Git → `git.svg`;
+  - GitHub → `github.svg`;
+  - Figma → `figma.svg`.
+- Remote hotlinking of icon assets is disallowed.
+- The icons are third-party (`tech-stack-icons`, MIT); provenance and license must be retained.
+- Before publication each SVG is reviewed to contain no script, event handler, external URL, embedded raster, or `foreignObject`.
+- A missing or failed icon is hidden at runtime; the visible technology label must never be blocked or hidden as a consequence.
 
 ## 14. Interaction and Motion
 

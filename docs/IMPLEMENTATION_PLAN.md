@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.10.1
+version: 1.10.10
 status: canonical
-last_updated: 2026-09-24
+last_updated: 2026-09-29
 owner: Latifian Iman
 testing_mode: manual-first
 ---
@@ -200,11 +200,11 @@ Status: in progress
 
 Deliverables:
 
-- three-zone desktop header: language pill, centered navigation control, theme-preview and approved secondary contact action;
+- three-zone desktop header with full-pill language selector, centered navigation control, theme-preview and approved secondary contact action; the theme button and mobile menu trigger are circles, the header `Get in touch` is a pill, and the primary navigation container and its items are full-pill on desktop and `12px` on mobile and tablet;
 - seven-item centered navigation (`Home`, `About`, `Projects`, `Experience`, `Capabilities`, `Technology`, `Contact`) shown horizontally from `>= 1024px` and as a mobile dropdown below it;
 - active item follows the in-view section (hero → `Home`, `#about` → `About`, `#projects` → `Projects`, `#experience` → `Experience`, `#skills` → `Capabilities`, `#technology` → `Technology`, `#contact`/footer → `Contact`), renders exactly one outline icon as local inline SVG, and keeps readable inactive-text contrast;
 - accessible theme-preview toast without theme change or persistence;
-- overlapping desktop hero and controlled mobile hero stack matching approved composition, with an asymmetric left rail (availability + `Building across / Mobile · Frontend · APIs` focus line) and right rail (supporting statement + `View resume` secondary action) sharing a symmetric grid anchor around the portrait;
+- approved desktop hero and controlled mobile hero stack matching approved composition, with an asymmetric left rail (availability badge + `Building across / Mobile · Frontend · APIs` focus line) and right rail (supporting statement + `View resume` secondary action) sharing a symmetric grid anchor around the portrait; the availability badge and `View resume` action are full-pill with shared sizing (`44px` height, `10px 16px` padding, `14px/600` text, `8px` gap) and a light neutral shadow, differing only in border role;
 - render approved portrait with intrinsic dimensions and responsive geometry;
 - `View resume` opens the PDF asset in a new tab; hero motion is limited to hover, active, and focus states during Phase 6, with entrance and scroll-reveal animations deferred to the final visual pass.
 
@@ -221,7 +221,7 @@ Status: in progress
 
 Deliverables:
 
-- three badges on each side of the desktop statement, with responsive logical reading order;
+- three full-pill capability badges on each side of the desktop statement, with responsive logical reading order;
 - media-first selected-work cards retaining exactly FMS-CREATE, ReMi Mobile, and Semina;
 - card anatomy with general info only (context label, timeline, title, summary, role, stack badges) plus required media captions;
 - whole-card interactive link to each detail route; `Explore all projects` action linking to the approved future `/projects/` index;
@@ -240,7 +240,7 @@ Deliverables:
 - self-hosted variable WOFF2 per variable font family with a matching `weight` range and `font-synthesis: none`;
 - period shows as a compact month-year neutral badge; timeline nodes use filled briefcase and graduation-cap glyphs; Experience body may use the scoped system sans fallback when canonical-sans rasterization defects appear in target browsers;
 - two approved internships with evidence density limits preserved;
-- two-by-three desktop capability grid using one outline icon family.
+- icon-free two-by-three desktop capability grid with aligned supporting badges and restrained blue-tinted elevation; a full-width pale-blue section wash fades into adjacent canvas sections.
 
 ### Phase 6E: Technology, Contact, and Footer Fidelity
 
@@ -248,8 +248,9 @@ Status: in progress
 
 Deliverables:
 
-- thin technology rail with clear mobile overflow affordance;
-- centered pale-blue contact band and compact footer;
+- single left-moving grayscale technology marquee of all 18 local SVG icons with sans labels, a `54s` loop, hover/focus pause, missing-icon fallback, and a static wrapping reduced-motion mode; compact boundary below Capabilities and spacious `64px`/`80px` spacing before Contact;
+- centered contact band with a vertical `surface-accent → surface-soft → white` wash, a single `Email me` CTA using an `ink` background and white text, and a contact heading that renders on one line on desktop while wrapping safely on mobile;
+- white footer that continues seamlessly from the contact wash, with a separate icon-only social row (LinkedIn, GitHub, Instagram from `react-icons/fa`, each `44px × 44px` with an accessible name) above the text navigation (`Home`, `About`, `Projects`, `Contact`);
 - full homepage composition ready for real-media fidelity work.
 
 Acceptance criteria:

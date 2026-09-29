@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: content-specification
-version: 1.8.1
+version: 1.10.0
 status: canonical
-last_updated: 2026-09-24
+last_updated: 2026-09-27
 owner: Latifian Iman
 default_locale: en
 supported_locales:
@@ -108,12 +108,13 @@ Availability includes employment opportunities, freelance or project work, and p
 | `site.contact.email` | `latifian.iman44@gmail.com` | `owner-approved` |
 | `site.profiles.linkedin` | `https://www.linkedin.com/in/latifian-iman` | `owner-approved` |
 | `site.profiles.github` | `https://github.com/latifiann` | `owner-approved` |
+| `site.profiles.instagram` | `https://www.instagram.com/latifiann` | `owner-approved` |
 
-Email is the primary direct-contact channel. LinkedIn and GitHub are supporting channels.
+Email is the primary direct-contact channel. LinkedIn, GitHub, and Instagram are supporting channels.
 
 ### Privacy
 
-Public content may include full name, professional role, Surabaya, Indonesia, approved email, LinkedIn, GitHub, approved resume, and approved project links.
+Public content may include full name, professional role, Surabaya, Indonesia, approved email, LinkedIn, GitHub, Instagram, approved resume, and approved project links.
 
 The following are prohibited from public site content unless a future explicit decision changes this contract:
 
@@ -343,7 +344,7 @@ Badges and cards have different purposes. Cards must reference real project or i
 | Software Quality Assurance | Use manual and automated testing to check product behavior and architecture rules. | `Manual testing`, `Automated testing`, `Selenium`, `Katalon` |
 | Project & Collaboration | Work through shared Git workflows, Figma handoff, and Agile delivery. | `Git`, `GitHub`, `Figma`, `Agile` |
 
-Technology strip: `Flutter`, `React`, `TypeScript`, `Dart`, `Tailwind CSS`, `Node.js`, `Express`, `PostgreSQL`, `MongoDB`, `WebSocket`, `Git`, `Figma`.
+Technology strip: `Flutter`, `Dart`, `React`, `TypeScript`, `JavaScript`, `HTML5`, `CSS3`, `Tailwind CSS`, `Node.js`, `Express`, `Java`, `PostgreSQL`, `MySQL`, `MongoDB`, `Docker`, `Git`, `GitHub`, `Figma`.
 
 ## 13. Resume Policy
 
