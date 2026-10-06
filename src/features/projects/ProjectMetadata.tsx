@@ -11,18 +11,21 @@ function ProjectMetadata({ stack }: ProjectMetadataProps) {
   const remainingCount = stack.length - visibleStack.length;
 
   return (
-    <ul className="flex list-none flex-wrap gap-(--space-2) p-0" aria-label="Technologies">
+    <ul
+      className="flex list-none flex-wrap gap-(--space-2) p-0"
+      aria-label="Technologies"
+    >
       {visibleStack.map((technology) => (
         <li
           key={technology}
-          className="rounded-sm border border-(--color-border) bg-(--color-surface) px-(--space-2) py-(--space-1) font-mono text-xs text-(--color-ink-secondary)"
+          className="rounded-full bg-(--color-chip) px-(--space-2) py-(--space-1) text-xs leading-[1.5] font-normal text-(--color-ink-secondary)"
         >
           {technology}
         </li>
       ))}
 
       {remainingCount > 0 && (
-        <li className="rounded-sm border border-(--color-border) bg-(--color-surface) px-(--space-2) py-(--space-1) font-mono text-xs text-(--color-ink-muted)">
+        <li className="rounded-full bg-(--color-chip) px-(--space-2) py-(--space-1) text-xs leading-[1.5] font-normal text-(--color-ink-secondary)">
           +{remainingCount}
         </li>
       )}

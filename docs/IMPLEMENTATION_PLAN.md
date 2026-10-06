@@ -1,7 +1,7 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.10.10
+version: 1.10.11
 status: canonical
 last_updated: 2026-09-29
 owner: Latifian Iman
@@ -223,6 +223,7 @@ Deliverables:
 
 - three full-pill capability badges on each side of the desktop statement, with responsive logical reading order;
 - media-first selected-work cards retaining exactly FMS-CREATE, ReMi Mobile, and Semina;
+- compact preview overlays: a full-pill `32px` type badge and a `32 × 32px` full-round arrow indicator, with full-pill stack badges and overflow count;
 - card anatomy with general info only (context label, timeline, title, summary, role, stack badges) plus required media captions;
 - whole-card interactive link to each detail route; `Explore all projects` action linking to the approved future `/projects/` index;
 - landing selector targets up to six desktop projects, with CSS-only visibility limiting mobile/tablet to three; current three-item set renders identically at every width;

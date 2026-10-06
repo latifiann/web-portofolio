@@ -59,7 +59,7 @@ function EngineeringStatementSection() {
               <CapabilityBadge
                 key={badge.label}
                 {...badge}
-                className={index === 0 ? "lg:-translate-x-3 lg:-rotate-2" : ""}
+                className={index === 0 ? "lg:translate-x-3 lg:-rotate-2" : ""}
               />
             ))}
           </ul>
@@ -87,7 +87,7 @@ function EngineeringStatementSection() {
               <CapabilityBadge
                 key={badge.label}
                 {...badge}
-                className={index === 0 ? "lg:translate-x-3 lg:rotate-2" : ""}
+                className={index === 0 ? "lg:-translate-x-3 lg:rotate-2" : ""}
               />
             ))}
           </ul>

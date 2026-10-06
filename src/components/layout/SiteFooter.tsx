@@ -21,7 +21,7 @@ const socialLinks = [
 
 function SiteFooter() {
   return (
-    <footer className="bg-white pb-(--footer-padding-bottom)">
+    <footer className="bg-(--color-canvas) pb-(--footer-padding-bottom)">
       <PageContainer className="pt-(--footer-padding-top)">
 
         <nav aria-label="Social links">

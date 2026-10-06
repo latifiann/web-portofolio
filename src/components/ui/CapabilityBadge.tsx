@@ -15,11 +15,11 @@ function CapabilityBadge({
 }: CapabilityBadgeProps) {
   return (
     <li
-      className={`flex w-fit items-center gap-3 rounded-full border border-(--color-border) bg-(--color-canvas) px-(--space-4) py-(--space-3) text-[0.8125rem] text-(--color-ink-secondary) shadow-[0_4px_10px_rgb(15_23_42_/_0.1)] ${className}`}
+      className={`flex w-fit max-w-full items-center gap-3 rounded-full border border-(--color-border) bg-(--color-canvas) px-(--space-4) py-(--space-3) text-[0.8125rem] text-(--color-ink-secondary) shadow-[0_4px_10px_rgb(15_23_42_/_0.1)] ${className}`}
     >
       <span
         aria-hidden="true"
-        className="inline-flex size-7 items-center justify-center rounded-full text-white"
+        className="inline-flex size-7 shrink-0 items-center justify-center rounded-full text-white"
         style={{ backgroundColor: accent }}
       >
         <Icon className="size-4" />

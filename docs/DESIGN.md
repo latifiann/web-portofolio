@@ -1,18 +1,19 @@
 ---
 name: Latifian Editorial Portfolio
-version: 2.26.3
+version: 2.26.11
 status: canonical
-last_updated: 2026-09-29
+last_updated: 2026-10-06
 description: Canonical UI/UX and implementation specification for latifian.dev.
 fonts:
   sans: Geist
   serif: Instrument Serif
   mono: JetBrains Mono
 colors:
-  canvas: '#ffffff'
+  canvas: '#f5f7fb'
   surface: '#f8fafc'
   surface-soft: '#eff6ff'
   surface-accent: '#dbeafe'
+  chip: '#e3e5e9'
   ink: '#0f172a'
   ink-secondary: '#334155'
   ink-muted: '#64748b'
@@ -124,7 +125,7 @@ The palette is a white and slate foundation with a disciplined blue accent. The 
 
 | Token | Value | Role |
 |---|---:|---|
-| `canvas` | `#ffffff` | Page background and primary content surface |
+| `canvas` | `#f5f7fb` | Page background and primary content surface |
 | `surface` | `#f8fafc` | Subtle cards and alternating content areas |
 | `surface-soft` | `#eff6ff` | Large pale-blue bands and quiet emphasis |
 | `surface-accent` | `#dbeafe` | Hero portrait block and selected accent surfaces |
@@ -137,6 +138,7 @@ The palette is a white and slate foundation with a disciplined blue accent. The 
 | `primary-hover` | `#1d4ed8` | Hover state |
 | `primary-active` | `#1e40af` | Pressed state |
 | `primary-soft` | `#dbeafe` | Blue badges and highlighted backgrounds |
+| `chip` | `#e3e5e9` | Neutral chip fill on project-card stack badges, experience metadata, and capability labels |
 
 ### Usage ratio
 
@@ -188,6 +190,8 @@ Constraints:
 Use only for compact technical metadata: dates, section indices, tags, categories, project years, and small system labels.
 
 Do not use monospace for headings or long paragraphs.
+
+Project-card metadata is the deliberate exception: timeline, stack badges, and overflow count render in Geist sans regular (`400`) and the preview type badge in sans medium (`500`), instead of mono, to keep the selected-work cards in the sans language of adjacent sections. The experience-section period badge, technology tags, and capability-card labels also render as borderless `chip` pills in regular sans. The remaining compact metadata, such as the hero focus label, stays in mono.
 
 ### Font delivery
 
@@ -391,7 +395,7 @@ This section introduces Latifian's working philosophy through a centered editori
 
 The approved engineering statement is defined in `CONTENT.md`. This document defines its composition and presentation, not its final wording.
 
-Render up to six approved engineering-statement badges from `CONTENT.md` or validated structured content. At desktop reference width, three badges align on each side of the centered statement. On mobile, preserve logical reading order and use a readable grid or wrap without crossing or covering the statement.
+Render up to six approved engineering-statement badges from `CONTENT.md` or validated structured content. At desktop reference width, three badges align on each side of the centered statement. On mobile, preserve logical reading order and use a readable grid or wrap without crossing or covering the statement. Badges must stay inside the content container bounds: decorative rotation and inward offsets may overlap other badges, but no badge or its label may extend past the container edge. Long labels wrap rather than overflow, and the icon disc never shrinks.
 
 Each badge is a full-pill shell showing a distinct solid glyph matched to its label, supplied by the `react-icons` package (imported directly from its provider subpaths so the production bundle keeps only the used icons), rendered in white on a small rounded disc colored with one muted, medium-dark category tone. Badge surface, border, and text stay neutral; only the disc carries color. This badge set is an explicit category-color exception: it uses the exact approved tone list below and is not constrained by the general muted/desaturated disc rule, nor by white-glyph contrast targets, because the glyph is decorative and the visible label carries the meaning. These tones must not be neon-bordered, gradient, or repeated beyond this set, and must not be reused for cards, buttons, links, or section backgrounds. Sizing may be tuned per icon to balance differing optical weight across providers. The badge label, icon, and tone mapping:
 
@@ -455,12 +459,16 @@ The project name and contribution must be understandable without inspecting the 
 
 ### Preview indicators
 
+- The type badge is full-pill, `32px` minimum height, `10px` medium uppercase sans text, and `4px 8px` padding.
+- The arrow indicator is a `32 × 32px` full-round surface with a `14px` glyph.
+- Both overlays stay `12px` from the preview edges.
 - The type badge is static. The arrow indicator is visible by default on mobile/tablet (touch) and hidden by default on desktop, appearing on card hover or keyboard focus.
 - Indicator motion is a short opacity/translate (max `4px`) using the fast motion token; reduced-motion collapses it to near-instant.
 
 ### Card body
 
-- Compact layout: title and timeline on one row; role and context on one line; summary clamped to three lines; stack badges at the foot.
+- Compact layout: title and timeline on one row (vertically centered against each other); role and context on one line; summary clamped to three lines; stack badges at the foot.
+- The card stack badges and their overflow count (`+N`) are full-pill borderless chips on a `chip` fill with slate text in `12px` regular sans; the overflow count (`+N`) uses `ink-secondary` text, matching the technology badges.
 - Card uses a flat surface: `canvas` background, `border`, `16px` radius, no permanent blue glow or gradient; structure comes from spacing and dividers, not nested panels.
 - The card shell carries uniform `16px` padding; the preview image sits inside that padding so its inset matches the text body, and the image container uses `rounded-lg`.
 - Body spacing stays tight but readable; do not stretch metadata vertically to fill the card.
@@ -528,10 +536,11 @@ The experience section uses a vertical editorial timeline across viewport sizes.
 
 ### Period badge
 
-The date range displays as a compact neutral metadata badge rather than a plain mono label.
+The date range displays as a compact neutral full-pill chip rather than a plain mono label.
 
 - month/year range only (for example `Jul 2025-Dec 2025`);
-- neutral surface, thin border, mono text;
+- borderless `chip` fill, `12px` regular sans text, `4px 8px` padding;
+- technology tags in the same entry reuse this exact chip style for consistency;
 - never styled as a status, category, or interactive control;
 - aligns right beside the role on desktop and stacks below the role on tablet and mobile.
 
@@ -541,7 +550,7 @@ The date range displays as a compact neutral metadata badge rather than a plain 
 - company or organization, employment type, and location on one line;
 - a short product description in body type (not mono metadata);
 - two or three highest-value contribution bullets with a visible marker;
-- compact technology tags.
+- compact technology tags rendered as the same full-pill `chip` badge as the period badge.
 
 ### Density limits
 
@@ -552,7 +561,7 @@ The date range displays as a compact neutral metadata badge rather than a plain 
 
 ### Reading flow
 
-- On desktop, role and date share one row: role left, date right.
+- On desktop, role and date share one row across the full content width: role left, date right.
 - On tablet and mobile, date stacks below the role.
 - Organization, employment type, and location wrap naturally and never form a separate narrow column.
 - Contribution and product-description text stays inside the main reading flow.
@@ -598,7 +607,7 @@ The Capabilities section renders a full-width, vertical pale-blue wash that fade
 
 - cards start directly with the title;
 - opaque `canvas` surface, `border`, `12px` radius, uniform `24px` padding;
-- labels render as compact neutral badges in mono type, grouped at the bottom of the card;
+- labels render as borderless full-pill `chip` badges in `12px` regular sans, grouped at the bottom of the card, matching the project-card stack chips and experience chips;
 - badge groups align across each grid row;
 - cards may carry a restrained blue-tinted elevation shadow;
 - no glowing border, no gradient card, no blur blob, and no hover lift or faux interaction on a non-interactive card.
@@ -619,7 +628,7 @@ The `Core Technologies & Ecosystem` strip is secondary evidence. It renders as a
 
 ## 14. Contact and Footer
 
-The contact section uses a vertical top-to-bottom wash that starts from `surface-accent`, blends through `surface-soft`, and fades to white at the bottom edge.
+The contact section uses a vertical top-to-bottom wash that starts from `surface-accent`, blends through `surface-soft`, and fades to `canvas` at the bottom edge.
 
 At reference widths, center the contact heading, body, and primary action within the wash. The heading renders on one line on desktop (`>=64rem`) and may wrap on mobile and tablet without overflowing the viewport. Body copy is narrower than the heading so line lengths stay comfortable.
 
@@ -627,7 +636,7 @@ The approved contact heading is defined in `CONTENT.md`.
 
 Include a short collaboration statement and one clear primary action: `Email me`. The email CTA uses an `ink` background with white text. LinkedIn and GitHub are not rendered as Contact buttons.
 
-The footer uses a white background that continues seamlessly from the contact wash. It contains only essential navigation, a row of icon-only social links (LinkedIn, GitHub, Instagram), name, copyright year, and an optional implementation note. Do not create a multi-column corporate footer. The social icons form a separate row above the text navigation; the text navigation lists `Home`, `About`, `Projects`, and `Contact`.
+The footer uses the `canvas` background that continues seamlessly from the contact wash. It contains only essential navigation, a row of icon-only social links (LinkedIn, GitHub, Instagram), name, copyright year, and an optional implementation note. Do not create a multi-column corporate footer. The social icons form a separate row above the text navigation; the text navigation lists `Home`, `About`, `Projects`, and `Contact`.
 
 ## 15. Components
 

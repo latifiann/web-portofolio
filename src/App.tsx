@@ -37,7 +37,7 @@ function App() {
         <section
           id="contact"
           aria-labelledby="contact-title"
-          className="relative scroll-mt-(--anchor-offset) overflow-hidden bg-[linear-gradient(180deg,var(--color-surface-accent)_0%,var(--color-surface-soft)_45%,#ffffff_100%)] py-(--contact-padding-mobile) md:py-(--contact-padding-desktop)"
+          className="relative scroll-mt-(--anchor-offset) overflow-hidden bg-[linear-gradient(180deg,var(--color-surface-accent)_0%,var(--color-surface-soft)_45%,var(--color-canvas)_100%)] py-(--contact-padding-mobile) md:py-(--contact-padding-desktop)"
         >
           <PageContainer>
             <div className="relative mx-auto text-center">
@@ -55,7 +55,7 @@ function App() {
               <div className="mt-(--space-8) flex flex-wrap justify-center gap-(--space-3)">
                 <a
                   href="mailto:latifian.iman44@gmail.com"
-                  className="inline-flex min-h-11 items-center gap-2 rounded-full bg-(--color-ink) px-(--space-6) font-semibold text-white no-underline shadow-[0_6px_16px_rgb(15_23_42_/_0.22)] transition-colors duration-(--motion-fast) hover:bg-(--color-ink-secondary)"
+                  className="contact-email-link inline-flex min-h-11 items-center gap-2 rounded-full bg-(--color-ink) px-(--space-6) font-semibold text-white no-underline shadow-[0_6px_16px_rgb(15_23_42_/_0.22)] transition-colors duration-(--motion-fast) hover:bg-(--color-ink-secondary)"
                 >
                   Email me
                 </a>

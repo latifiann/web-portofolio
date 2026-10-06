@@ -20,7 +20,13 @@ export type ProjectCardProps = {
   };
 };
 
-function ProjectCard({ title, summary, href, preview, metadata }: ProjectCardProps) {
+function ProjectCard({
+  title,
+  summary,
+  href,
+  preview,
+  metadata,
+}: ProjectCardProps) {
   return (
     <article className="group h-full">
       <a
@@ -43,30 +49,30 @@ function ProjectCard({ title, summary, href, preview, metadata }: ProjectCardPro
               className="flex h-full items-center justify-center"
               aria-hidden="true"
             >
-              <span className="font-mono text-xs uppercase tracking-wider text-(--color-ink-muted)">
+              <span className="text-xs uppercase tracking-wider text-(--color-ink-muted)">
                 Project preview
               </span>
             </div>
           )}
 
-          <span className="absolute top-(--space-3) left-(--space-3) z-(--z-raised) rounded-md border border-(--color-border-strong) bg-(--color-canvas) px-(--space-3) py-(--space-2) font-mono text-xs font-medium uppercase tracking-wider text-(--color-ink-secondary) shadow-[0_1px_2px_rgb(15_23_42_/_0.08)]">
+          <span className="absolute top-(--space-3) left-(--space-3) z-(--z-raised) inline-flex min-h-8 items-center rounded-full border border-(--color-border-strong) bg-(--color-canvas) px-(--space-2) py-(--space-1) font-medium text-[0.625rem] uppercase tracking-wider text-(--color-ink-secondary) shadow-[0_1px_2px_rgb(15_23_42_/_0.08)]">
             {preview.label}
           </span>
 
           <span
             aria-hidden="true"
-            className="project-card-indicator absolute top-(--space-3) right-(--space-3) z-(--z-raised) flex size-10 items-center justify-center rounded-full border border-(--color-border-strong) bg-(--color-canvas) text-(--color-ink) shadow-[0_1px_2px_rgb(15_23_42_/_0.08)] transition-opacity duration-(--motion-fast)"
+            className="project-card-indicator absolute top-(--space-3) right-(--space-3) z-(--z-raised) flex size-8 items-center justify-center rounded-full border border-(--color-border-strong) bg-(--color-canvas) text-(--color-ink) shadow-[0_1px_2px_rgb(15_23_42_/_0.08)] transition-opacity duration-(--motion-fast)"
           >
-            <FiArrowUpRight className="size-4" />
+            <FiArrowUpRight className="size-3.5" />
           </span>
         </div>
 
         <div className="flex flex-1 flex-col pt-(--space-4)">
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center justify-between gap-4">
             <h3 className="text-xl leading-tight font-semibold tracking-tight text-(--color-ink)">
               {title}
             </h3>
-            <p className="whitespace-nowrap font-mono text-xs text-(--color-ink-muted)">
+            <p className="whitespace-nowrap text-xs font-normal text-(--color-ink-muted)">
               {metadata.timeline}
             </p>
           </div>

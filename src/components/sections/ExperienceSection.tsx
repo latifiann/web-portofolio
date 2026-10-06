@@ -110,7 +110,7 @@ function ExperienceSection() {
                   {entry.organization}
                 </span>
                 {entry.organizationNote && (
-                  <span className="font-mono text-xs uppercase tracking-wider text-(--color-ink-muted)">
+                  <span className="text-xs uppercase tracking-wider text-(--color-ink-muted)">
                     {entry.organizationNote}
                   </span>
                 )}
@@ -132,7 +132,7 @@ function ExperienceSection() {
                 {entry.technologies.map((technology) => (
                   <li
                     key={technology}
-                    className="rounded-sm border border-(--color-border) bg-(--color-surface) px-(--space-3) py-(--space-2) font-mono text-xs text-(--color-ink-secondary)"
+                    className="rounded-full bg-(--color-chip) px-(--space-2) py-(--space-1) text-xs leading-[1.5] text-(--color-ink-secondary)"
                   >
                     {technology}
                   </li>
