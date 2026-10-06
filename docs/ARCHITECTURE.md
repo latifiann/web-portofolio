@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: technical-architecture
-version: 1.6.2
+version: 1.6.3
 status: canonical
-last_updated: 2026-09-24
+last_updated: 2026-10-07
 owner: Latifian Iman
 application_type: statically generated portfolio
 package_manager: npm
@@ -834,7 +834,7 @@ Required foundations:
 - locale-correct `lang` attributes;
 - descriptive external-link text.
 
-During current learning phase, Latifian performs manual checks for homepage, case-study routes, mobile navigation, and not-found behavior. Playwright and automated axe checks are deferred until later explicit quality phase. Manual success does not replace future release accessibility review.
+During current learning phase, Latifian performs manual checks for homepage, case-study routes, mobile navigation, and not-found behavior. Playwright and automated axe checks are deferred until later explicit quality phase, unless Latifian explicitly requests them for a task. Manual success does not replace future release accessibility review.
 
 ## 17. Error Handling and Resilience
 
@@ -947,7 +947,7 @@ Use Testing Library for behavior rather than implementation details:
 
 ### 20.4 Manual browser checks
 
-Latifian tests UI behavior manually during current learning phase. Agent supplies exact route, viewport widths, mouse and keyboard actions, then records user-reported outcome without using MCP Playwright or browser automation.
+Latifian tests UI behavior manually during current learning phase. Agent supplies exact route, viewport widths, mouse and keyboard actions, then records user-reported outcome unless Latifian explicitly requests automation; if requested, the automation result is reported as automation and does not stand in for a user manual outcome.
 
 Manual coverage grows across:
 
@@ -959,7 +959,7 @@ Manual coverage grows across:
 - essential content when JavaScript is unavailable, when practical.
 - side-by-side review against approved Stitch references at desktop `1280px` and mobile `390px` after final fonts and media are available.
 
-Future `docs/QA.md` turns repeated manual checks into maintained release cases. Manual side-by-side reference review is allowed and distinct from automated visual screenshot baselines. Playwright, axe, and automated visual screenshot baselines remain deferred; they are not current learning-phase gates.
+Future `docs/QA.md` turns repeated manual checks into maintained release cases. Manual side-by-side reference review is allowed and distinct from automated visual screenshot baselines. Playwright and axe may be used when the owner explicitly requests them; automated visual screenshot baselines remain deferred. None are current learning-phase gates.
 
 ### 20.5 Generated-output tests
 

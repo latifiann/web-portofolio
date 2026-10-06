@@ -43,7 +43,7 @@ This section is quick operational reference. Detailed rules remain in sections b
 
 - Do not overwrite user edit to restore older spec.
 - Do not invent fact, copy, metric, role, outcome, date, technology, or media right.
-- Do not use Playwright, MCP browser tools, browser automation, or automated browser accessibility checks.
+- Do not use Playwright, MCP browser tools, browser automation, or automated browser accessibility checks unless the user explicitly requests it. When the user requests it, that request overrides this restriction for that task.
 - Do not claim UI passed before user reports manual result.
 - Do not replace user first attempt unless requested.
 - Do not expose draft, private URL, credential, local path, or prohibited content.
@@ -97,10 +97,10 @@ Latifian learns React through small, production-relevant units.
 
 ## Manual Testing
 
-Manual browser testing is user-owned during current learning phase.
+Manual browser testing is user-owned during current learning phase, except when the user explicitly requests automated browser checks for a task.
 
-- Do not use Playwright, MCP browser tools, browser automation, or automated browser accessibility checks.
-- Do not claim UI behavior passed without user-reported manual result.
+- Do not use Playwright, MCP browser tools, browser automation, or automated browser accessibility checks unless the user explicitly requests it. When the user requests it, that request overrides this restriction for that task.
+- Do not claim UI behavior passed without user-reported manual result, unless the user explicitly requested automation for that task; then report the automation result and its limits as automation, not as user manual confirmation.
 - After UI or interaction change, give short manual checklist with exact route, widths, mouse actions, and keyboard actions.
 - Ask user to report visual defects, browser-console errors, and screenshots when useful.
 - Record repeatable checks for future `docs/QA.md`; do not create it now.
