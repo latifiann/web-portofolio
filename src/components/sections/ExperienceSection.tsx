@@ -1,4 +1,5 @@
 import Section from "../layout/Section";
+import { useState, useSyncExternalStore } from "react";
 import { BsFillBriefcaseFill } from "react-icons/bs";
 import { FaGraduationCap } from "react-icons/fa6";
 
@@ -67,6 +68,54 @@ function TimelineIcon({ type }: { type: TimelineEntry["type"] }) {
   );
 }
 
+function subscribeToClientReady() {
+  return () => {};
+}
+
+function getClientReady() {
+  return true;
+}
+
+function getServerReady() {
+  return false;
+}
+
+function ExperienceEntryDetails({ entry }: { entry: TimelineEntry }) {
+  const [open, setOpen] = useState(false);
+  const ready = useSyncExternalStore(
+    subscribeToClientReady,
+    getClientReady,
+    getServerReady,
+  );
+  return (
+    <div className={`experience-details ${ready ? "experience-details--ready" : ""} ${open ? "experience-details--open" : ""}`}>
+      <div id={`${entry.id}-details`} className="experience-details-body">
+        <ul className="experience-contributions">
+          {entry.contributions.map((contribution) => (
+            <li key={contribution} className="text-(--color-ink-secondary)">
+              {contribution}
+            </li>
+          ))}
+        </ul>
+        <ul className="experience-details-tech">
+          {entry.technologies.map((technology) => (
+            <li key={technology}>{technology}</li>
+          ))}
+        </ul>
+      </div>
+      <button
+        type="button"
+        className="experience-details-toggle"
+        aria-expanded={open}
+        aria-controls={`${entry.id}-details`}
+        onClick={() => setOpen((value) => !value)}
+      >
+        {open ? "Hide details" : "View details"}
+      </button>
+    </div>
+  );
+}
+
 function ExperienceSection() {
   return (
     <Section
@@ -120,24 +169,7 @@ function ExperienceSection() {
                 {entry.description}
               </p>
 
-              <ul className="experience-contributions">
-                {entry.contributions.map((contribution) => (
-                  <li key={contribution} className="text-(--color-ink-secondary)">
-                    {contribution}
-                  </li>
-                ))}
-              </ul>
-
-              <ul className="mt-(--space-6) flex list-none flex-wrap gap-(--space-2) p-0">
-                {entry.technologies.map((technology) => (
-                  <li
-                    key={technology}
-                    className="rounded-full bg-(--color-chip) px-(--space-2) py-(--space-1) text-xs leading-[1.5] text-(--color-ink-secondary)"
-                  >
-                    {technology}
-                  </li>
-                ))}
-              </ul>
+              <ExperienceEntryDetails entry={entry} />
             </article>
           </li>
         ))}

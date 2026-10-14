@@ -1,6 +1,6 @@
 ---
 name: Latifian Editorial Portfolio
-version: 2.26.14
+version: 2.26.17
 status: canonical
 last_updated: 2026-10-14
 description: Canonical UI/UX and implementation specification for latifian.dev.
@@ -398,9 +398,9 @@ This section introduces Latifian's working philosophy through a centered editori
 
 The approved engineering statement is defined in `CONTENT.md`. This document defines its composition and presentation, not its final wording.
 
-Render up to six approved engineering-statement badges from `CONTENT.md` or validated structured content, from tablet width up. On mobile below `768px` (the same breakpoint that collapses the desktop navigation into its dropdown), do not render the badges: keep only the `Hello!` eyebrow and the statement, and let the Capabilities section carry the capability detail. The badges already duplicate the Capabilities section, and showing them on mobile makes this section unnecessarily long with little added value. Keep the badge markup and its list wrappers in the DOM but not displayed on mobile, so tablet and desktop use the same badge elements with no duplicated content and no viewport JavaScript.
+Render up to six approved engineering-statement badges from `CONTENT.md` or validated structured content, from desktop width up (`>=64rem`). Below that width (mobile and tablet), do not display the badges: keep only the `Hello!` eyebrow and the statement, and let the Capabilities section carry the capability detail. The badges already duplicate the Capabilities section, and showing them on mobile and tablet makes this section unnecessarily long with little added value. Keep the badge markup and its list wrappers in the DOM but not displayed below `64rem`, so desktop uses the same badge elements with no duplicated content and no viewport JavaScript.
 
-At desktop reference width, three badges align on each side of the centered statement. At tablet width, preserve logical reading order and use a readable grid or wrap without crossing or covering the statement. Badges must stay inside the content container bounds: decorative rotation and inward offsets may overlap other badges, but no badge or its label may extend past the container edge. Long labels wrap rather than overflow, and the icon disc never shrinks.
+At desktop reference width, three badges align on each side of the centered statement. Badges must stay inside the content container bounds: decorative rotation and inward offsets may overlap other badges, but no badge or its label may extend past the container edge. Long labels wrap rather than overflow, and the icon disc never shrinks.
 
 Each badge is a full-pill shell showing a distinct solid glyph matched to its label, supplied by the `react-icons` package (imported directly from its provider subpaths so the production bundle keeps only the used icons), rendered in white on a small rounded disc colored with one muted, medium-dark category tone. Badge surface, border, and text stay neutral; only the disc carries color. This badge set is an explicit category-color exception: it uses the exact approved tone list below and is not constrained by the general muted/desaturated disc rule, nor by white-glyph contrast targets, because the glyph is decorative and the visible label carries the meaning. These tones must not be neon-bordered, gradient, or repeated beyond this set, and must not be reused for cards, buttons, links, or section backgrounds. Sizing may be tuned per icon to balance differing optical weight across providers. The badge label, icon, and tone mapping:
 
@@ -446,7 +446,8 @@ The project name and contribution must be understandable without inspecting the 
 
 - Desktop: three-column grid; up to six cards.
 - Tablet: two columns; at most three.
-- Mobile: one column; at most three.
+- Mobile (`<768px`): horizontal CSS scroll-snap rail; at most three projects, with one full-width card aligned inside the content margins at rest. The scroll viewport reaches the screen edges during a swipe; inline padding and scroll padding use the mobile container-padding token so snapped cards retain the `20px` inset. Keep the `16px` inter-card gap and thin scrollbar. Above the rail, show the localized swipe hint with decorative `pi/PiHandSwipeLeftLight` from `react-icons/pi`. The `Explore all N projects` link stays below and outside the rail. No autoplay, duplicated cards, carousel dependency, or viewport JavaScript.
+- The rail is keyboard-focusable with a visible focus indicator and an accessible name from the section heading; project links remain reachable in DOM order. Swiping and links work without JavaScript. Verify focused cards scroll into view without clipping.
 - Card order comes from the validated content manifest, not CSS positioning.
 - Keep metadata attached to its project when reflowing.
 - Cards share the same text hierarchy, padding, radius, and state behavior.
@@ -533,7 +534,7 @@ The experience section uses a vertical editorial timeline across viewport sizes.
 ### Rail and nodes
 
 - A thin vertical spine runs in the left rail and stops at the final node.
-- Every node is vertically centered against the full height of its entry.
+- On tablet and desktop, every node is vertically centered against the full height of its entry. On mobile (`< 768px`) the node aligns to the top of its entry, level with the role title, so its position does not shift when a disclosure expands below it.
 - Nodes are large enough to read as clear markers but remain restrained.
 - Internship nodes use a hollow blue circle with a filled briefcase glyph.
 - The education node uses a graduation-cap glyph so entry type does not depend on color alone.
@@ -575,7 +576,7 @@ The date range displays as a compact neutral full-pill chip rather than a plain 
 
 Education uses the same entry structure and layout as internships and closes the timeline as the final differentiated node.
 
-- the outline glyph differs: education uses a book glyph, internships use a briefcase;
+- the filled glyph differs: education uses `fa6/FaGraduationCap`, internships use `bs/BsFillBriefcaseFill`;
 - program becomes the entry title;
 - institution, period, description, bullets, and tags follow the same arrangement as an internship entry;
 - only facts that are verified render as content; unverified detail may use an explicit local placeholder marked pending owner review;
@@ -584,6 +585,20 @@ Education uses the same entry structure and layout as internships and closes the
 ### Product descriptions
 
 The short product description replaces the previous mono context line. It is written in body type with comfortable line-height and secondary ink so it reads as a sentence, not metadata.
+
+### Mobile disclosure
+
+On mobile (`< 768px`), the contribution bullets and technology tags are collapsed by default behind a single disclosure so the section scans quickly without losing the evidence.
+
+- The disclosure is a text button (`View details` / `Hide details`) rendered below the description in inline text-link style, primary color, weight `600`, with a caret that rotates `180deg` on open.
+- After React activates the controls, the mobile details body is hidden by default (`display: none`) and shown when opened; the button carries `aria-expanded` and `aria-controls` and stays below the body in the DOM. Opening reveals the body before the same focused button; the label changes to `Hide details`.
+- Desktop (`>= 48rem`) always shows the details and hides the toggle, so the expanded contribution evidence reads inline without interaction.
+- Spacing: the wrapper is a vertical flex with `16px` gap; description to the collapsed toggle, and technology tags to the expanded toggle, stay `16px`; contribution bullets to technology tags stay `24px`.
+- Keep the details markup in the DOM on every width; visibility is CSS-driven with no viewport JavaScript. Server-rendered markup has no client-ready class: detail content remains fully visible and the inactive toggle stays hidden. Only the React-ready state enables mobile collapsing and the toggle. If JavaScript never starts, all contribution evidence remains readable; after hydration the mobile disclosure starts closed. This component fallback does not replace the required build-time static generation of the page.
+
+### Mobile type scale
+
+On mobile the Experience column is narrower, so the type is tightened: role title `20px`, organization `16px`, description and bullets `14px` at `1.6` line-height; period and technology chips stay `12px`. The timeline gutter narrows to `44px` (`--experience-node` `32px` + column gap `12px`), the node aligns to entry top, and the gap between entries drops to `32px`. Tablet and desktop keep their full type and detail layout, with the node vertically centered and each entry fully expanded.
 
 ### Font fallback scope
 
@@ -766,10 +781,11 @@ Implement responsive composition in this order: mobile semantic flow, tablet gri
 - 4-column, single-reading-stream layout.
 - Stack hero title, portrait, status, copy, and CTA deliberately.
 - Keep the role legible; do not allow the serif display to clip.
-- Project and skill cards become one column.
+- Selected Work uses the mobile horizontal scroll-snap rail defined in Section 10; skill cards become one column.
 - Timeline metadata stacks without narrowing body copy.
+- Experience contribution details collapse behind a single `View details` disclosure at mobile width; timeline nodes align to the top of their entries.
 - Minimum touch target is `44 × 44px`.
-- Never require horizontal scrolling except the explicitly designed technology strip.
+- Never require page-level horizontal scrolling; local horizontal scrolling is allowed only in the explicitly designed Selected Work rail and technology strip.
 - Preserve major whitespace, but reduce section gaps to `64–80px`.
 
 ### Validation widths

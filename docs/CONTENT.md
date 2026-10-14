@@ -1,7 +1,7 @@
 ---
 product: latifian.dev
 document: content-specification
-version: 1.10.2
+version: 1.10.4
 status: canonical
 last_updated: 2026-10-14
 owner: Latifian Iman
@@ -165,6 +165,9 @@ English is the default locale. Indonesian is a complete equivalent locale, not a
 | Previous project | Proyek sebelumnya |
 | Next project | Proyek berikutnya |
 | Back to projects | Kembali ke proyek |
+| View details | Lihat detail |
+| Hide details | Sembunyikan detail |
+| Swipe to see more projects | Geser untuk melihat proyek lainnya |
 
 Preferred Indonesian technical terms include `tugas`, `pengingat`, `tenggat`, `pengujian manual`, `pemulihan sesi`, and `penyimpanan token yang aman`. Keep BLoC, Dio, REST API, SSE, Google Maps, Flutter, Clean Architecture, and BuildWithAngga unchanged.
 

@@ -1,3 +1,4 @@
+import { PiHandSwipeLeftLight } from "react-icons/pi";
 import ProjectCard from "../../features/projects/ProjectCard";
 import type { ProjectCardProps } from "../../features/projects/ProjectCard";
 import PageContainer from "../layout/PageContainer";
@@ -95,7 +96,17 @@ function SelectedWorkSection() {
           </h2>
         </header>
 
-        <div className="mt-(--space-12) grid grid-cols-1 gap-(--space-8) md:grid-cols-2 lg:grid-cols-3">
+        <p className="mt-(--space-12) flex items-center justify-center gap-(--space-2) text-sm text-(--color-ink-secondary) md:hidden">
+          Swipe to see more projects
+          <PiHandSwipeLeftLight aria-hidden="true" className="size-5 shrink-0" />
+        </p>
+
+        <div
+          role="group"
+          aria-labelledby="selected-work-title"
+          tabIndex={0}
+          className="project-rail mt-(--space-3) md:mt-(--space-12) md:grid md:grid-cols-2 md:gap-(--space-8) lg:grid-cols-3"
+        >
           {landingProjects.map((project, index) => (
             <div
               key={project.href}

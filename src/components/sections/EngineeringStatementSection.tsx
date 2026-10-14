@@ -53,7 +53,7 @@ function EngineeringStatementSection() {
       className="homepage-section-spacing"
     >
       <div className="relative grid gap-(--space-6) lg:grid-cols-12 lg:items-center lg:gap-(--space-8)">
-        <div className="order-2 hidden md:block lg:order-1 lg:col-span-3">
+        <div className="order-2 hidden lg:block lg:order-1 lg:col-span-3">
           <ul className="m-0 grid list-none gap-(--space-3) p-0">
             {capabilityBadges.slice(0, 3).map((badge, index) => (
               <CapabilityBadge
@@ -81,7 +81,7 @@ function EngineeringStatementSection() {
           </h2>
         </header>
 
-        <div className="order-3 hidden md:block lg:col-span-3">
+        <div className="order-3 hidden lg:block lg:col-span-3">
           <ul className="m-0 grid list-none gap-(--space-3) p-0 lg:justify-items-end">
             {capabilityBadges.slice(3).map((badge, index) => (
               <CapabilityBadge

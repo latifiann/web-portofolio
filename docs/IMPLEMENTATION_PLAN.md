@@ -1,7 +1,7 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.10.14
+version: 1.10.17
 status: canonical
 last_updated: 2026-10-14
 owner: Latifian Iman
@@ -226,13 +226,16 @@ Status: in progress
 
 Deliverables:
 
-- three full-pill capability badges on each side of the desktop statement, with responsive logical reading order; the two badge lists are hidden below `768px` so the mobile section keeps only the eyebrow and the statement, while tablet keeps the grid/wrap composition and desktop keeps three badges per side;
+- three full-pill capability badges on each side of the desktop statement; the two badge lists are hidden below `64rem` (`<1024px`) so the mobile and tablet sections keep only the eyebrow and the statement, while desktop (`>=1024px`) keeps three badges per side;
 - media-first selected-work cards retaining exactly FMS-CREATE, ReMi Mobile, and Semina;
+- approved mobile horizontal CSS scroll-snap rail (`<768px`), full-width cards with `20px` snapped insets and an edge-to-edge scroll viewport during gestures, `16px` card gap, thin scrollbar, and a swipe hint above the cards using decorative `PiHandSwipeLeftLight`; `Explore all N projects` stays below the rail. Tablet/desktop keep the two/three-column grids. No carousel dependency, autoplay, duplicated cards, or viewport JavaScript;
 - compact preview overlays: a full-pill `32px` type badge and a `32 × 32px` full-round arrow indicator, with full-pill stack badges and overflow count;
 - card anatomy with general info only (context label, timeline, title, summary, role, stack badges) plus required media captions;
 - whole-card interactive link to each detail route; `Explore all projects` action linking to the approved future `/projects/` index;
 - landing selector targets up to six desktop projects, with CSS-only visibility limiting mobile/tablet to three; current three-item set renders identically at every width;
 - no data invented from the Stitch reference and no dependency added for routing or listing yet.
+
+Acceptance: swipe reaches all three projects in approved order at `320`, `360`, `375`, `390`, and `430px`; snapped cards preserve content insets, only the rail scrolls horizontally, keyboard focus reveals each card, and the project-index action stays outside the rail. These are repeatable checks, not a claim that every width and keyboard interaction has passed automation. Phase 6C remains `in progress`.
 
 ### Phase 6D: Experience and Capabilities Fidelity
 
@@ -246,7 +249,10 @@ Deliverables:
 - self-hosted variable WOFF2 per variable font family with a matching `weight` range and `font-synthesis: none`;
 - period shows as a compact month-year neutral badge; timeline nodes use filled briefcase and graduation-cap glyphs; Experience body may use the scoped system sans fallback when canonical-sans rasterization defects appear in target browsers;
 - two approved internships with evidence density limits preserved;
-- icon-free two-by-three desktop capability grid with aligned supporting badges and restrained blue-tinted elevation; a full-width pale-blue section wash fades into adjacent canvas sections.
+- icon-free two-by-three desktop capability grid with aligned supporting badges and restrained blue-tinted elevation; a full-width pale-blue section wash fades into adjacent canvas sections;
+- mobile Experience presentation (`< 768px`): tightened type scale (role `20px`, organization `16px`, description and bullets `14px` at `1.6` line-height), `44px` timeline gutter, top-aligned nodes, caps anchored at first and last node centers, and a single `View details` / `Hide details` disclosure collapsed by default that stays open on desktop (`>=48rem`) where desktop renders entries fully expanded and hides the toggle. This visual pass is owner-approved; Phase 6D remains `in progress`.
+
+Progressive enhancement: Experience detail content is visible and its inactive toggle hidden in server-rendered markup. React readiness enables mobile collapsing and the toggle without viewport detection; tablet/desktop remain fully expanded. The component no longer requires JavaScript to read server-rendered evidence. The current client-rendered Vite page still requires the planned static-generation pipeline before the entire homepage can work without JavaScript; do not mark that release requirement complete. Unverified education placeholders remain local-only and block publication until replaced or omitted.
 
 ### Phase 6E: Technology, Contact, and Footer Fidelity
 
