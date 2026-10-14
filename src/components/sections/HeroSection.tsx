@@ -10,7 +10,7 @@ export default function HeroSection() {
     >
       <div aria-hidden="true" className="hero-background absolute inset-0" />
       <PageContainer visual className="relative">
-        <div className="relative mx-auto flex min-h-[36rem] max-w-6xl flex-col items-center justify-between text-center md:min-h-[46.25rem]">
+        <div className="hero-composition relative mx-auto flex min-h-[36rem] max-w-6xl flex-col items-center justify-between text-center md:min-h-[46.25rem]">
           <h1
             id="hero-title"
             className="hero-title relative z-(--z-raised) leading-none font-semibold tracking-tight text-(--color-ink) lg:translate-y-4"
@@ -21,7 +21,7 @@ export default function HeroSection() {
             </span>
           </h1>
 
-          <div className="relative z-(--z-raised) -mt-4 flex w-full flex-1 items-end justify-center md:-mt-16 md:-translate-y-4">
+          <div className="hero-portrait-wrapper relative z-(--z-raised) -mt-4 flex w-full flex-1 items-end justify-center md:-mt-16 md:-translate-y-4">
             <img
               src={portraitSrc}
               alt="Portrait of Latifian Iman"
@@ -56,12 +56,6 @@ export default function HeroSection() {
                 reliable software systems that connect people with meaningful
                 value.
               </p>
-              <a
-                href="#contact"
-                className="mt-(--space-4) inline-flex min-h-10 items-center gap-2 rounded-full bg-(--color-primary) px-(--space-4) text-sm font-semibold text-(--color-canvas) no-underline shadow-[0_6px_16px_rgb(37_99_235_/_0.22)] transition-colors hover:bg-(--color-primary-hover) lg:hidden"
-              >
-                Get in touch <span aria-hidden="true">&rarr;</span>
-              </a>
               <a
                 href="/resume/latifian-iman-cv-ats.pdf"
                 target="_blank"

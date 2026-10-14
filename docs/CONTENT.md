@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: content-specification
-version: 1.10.0
+version: 1.10.2
 status: canonical
-last_updated: 2026-09-27
+last_updated: 2026-10-14
 owner: Latifian Iman
 default_locale: en
 supported_locales:
@@ -172,8 +172,10 @@ Preferred Indonesian technical terms include `tugas`, `pengingat`, `tenggat`, `p
 
 | Context | English | Indonesian | Target |
 |---|---|---|---|
-| Homepage hero | Get in touch | Hubungi saya | `#contact` |
+| Header | Get in touch | Hubungi saya | `#contact` |
+| Homepage hero | View resume | Lihat CV | Public resume asset |
 | Homepage contact | Email me | Kirim email | `mailto:` |
+| Homepage contact | View resume | Lihat CV | Public resume asset |
 | Project | View case study | Lihat studi kasus | Project route |
 | Resume | View resume | Lihat CV | Public resume asset |
 | Email | Email me | Kirim email | `mailto:` |
@@ -202,8 +204,7 @@ Supporting statement: Passionate about creating intuitive digital experiences an
 Availability: Open to opportunities
 Hero focus label: Building across
 Hero focus value: Mobile · Frontend · APIs
-Hero CTA: Get in touch
-Hero secondary CTA: View resume
+Hero CTA: View resume
 
 Engineering eyebrow: Hello!
 Engineering statement: My focus is on blending clear strategy, thoughtful engineering, and product empathy to craft experiences that solve real problems.
@@ -227,8 +228,7 @@ Supporting statement: Bersemangat membangun digital experience yang intuitif dan
 Availability: Terbuka untuk peluang
 Hero focus label: Membangun lintas bidang
 Hero focus value: Mobile · Frontend · API
-Hero CTA: Hubungi saya
-Hero secondary CTA: Lihat CV
+Hero CTA: Lihat CV
 
 Engineering eyebrow: Halo!
 Engineering statement: Fokus saya adalah memadukan strategi yang jelas, engineering yang matang, dan empati terhadap produk untuk menciptakan experience yang menyelesaikan masalah nyata.

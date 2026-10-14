@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.10.11
+version: 1.10.14
 status: canonical
-last_updated: 2026-09-29
+last_updated: 2026-10-14
 owner: Latifian Iman
 testing_mode: manual-first
 ---
@@ -204,7 +204,9 @@ Deliverables:
 - seven-item centered navigation (`Home`, `About`, `Projects`, `Experience`, `Capabilities`, `Technology`, `Contact`) shown horizontally from `>= 1024px` and as a mobile dropdown below it;
 - active item follows the in-view section (hero → `Home`, `#about` → `About`, `#projects` → `Projects`, `#experience` → `Experience`, `#skills` → `Capabilities`, `#technology` → `Technology`, `#contact`/footer → `Contact`), renders exactly one outline icon as local inline SVG, and keeps readable inactive-text contrast;
 - accessible theme-preview toast without theme change or persistence;
-- approved desktop hero and controlled mobile hero stack matching approved composition, with an asymmetric left rail (availability badge + `Building across / Mobile · Frontend · APIs` focus line) and right rail (supporting statement + `View resume` secondary action) sharing a symmetric grid anchor around the portrait; the availability badge and `View resume` action are full-pill with shared sizing (`44px` height, `10px 16px` padding, `14px/600` text, `8px` gap) and a light neutral shadow, differing only in border role;
+- approved desktop hero and controlled mobile hero composition, with an asymmetric left rail (availability badge + `Building across / Mobile · Frontend · APIs` focus line) and right rail (supporting statement + `View resume` secondary action) sharing a symmetric grid anchor around the portrait from tablet width up; the availability badge and `View resume` action are full-pill with shared sizing (`44px` height, `10px 16px` padding, `14px/600` text, `8px` gap) and a light neutral shadow, differing only in border role;
+- mobile hero composition (`< 768px`) follows its content height without a desktop minimum height or extra flexible space; the greeting and `Software Developer` each stay on one line with viewport-relative sizing inside the content container, the availability badge floats over the portrait's left shoulder and `View resume` floats over the portrait's lower right, both using a shared compact pill size (`28px` visual height, `11px/600` text, `4px 8px` padding, `4px` gap) while `View resume` keeps an invisible `44px` minimum touch target; the focus line and supporting copy stay in flow below the portrait; the mobile hero renders the same single badge and single resume link element used on desktop and duplicates no content;
+- the hero no longer renders a `Get in touch` action at any width; contact remains reachable through the header and footer navigation;
 - render approved portrait with intrinsic dimensions and responsive geometry;
 - `View resume` opens the PDF asset in a new tab; hero motion is limited to hover, active, and focus states during Phase 6, with entrance and scroll-reveal animations deferred to the final visual pass.
 
@@ -213,7 +215,10 @@ Acceptance criteria:
 - reference structure is close at `1280px` and `390px`;
 - one meaningful `h1` and complete first viewport communicate name, role, specialization context, and next actions;
 - portrait reserves its approved intrinsic geometry and does not obstruct hero content;
-- exactly one navigation item is active at any scroll position, with accessible `aria-current` and visible active icon.
+- exactly one navigation item is active at any scroll position, with accessible `aria-current` and visible active icon;
+- at `320`, `360`, `375`, `390`, and `430px` the greeting and `Software Developer` each render on one line inside the content container with no clipping and no horizontal scroll, the floating availability badge and `View resume` clear the face and the container edges, and the resume link remains keyboard-focusable and opens the PDF;
+- automated checks were run on request for the mobile hero (`320`–`430px`) using Playwright and are recorded as automation results, not as the owner's manual visual confirmation;
+- the tablet hero rail overflow observed at `768px` (side rails clipped, availability wrapping) remains an open blocker for Phase 6B until the tablet composition is revised.
 
 ### Phase 6C: Engineering Statement and Selected Work Fidelity
 
@@ -221,7 +226,7 @@ Status: in progress
 
 Deliverables:
 
-- three full-pill capability badges on each side of the desktop statement, with responsive logical reading order;
+- three full-pill capability badges on each side of the desktop statement, with responsive logical reading order; the two badge lists are hidden below `768px` so the mobile section keeps only the eyebrow and the statement, while tablet keeps the grid/wrap composition and desktop keeps three badges per side;
 - media-first selected-work cards retaining exactly FMS-CREATE, ReMi Mobile, and Semina;
 - compact preview overlays: a full-pill `32px` type badge and a `32 × 32px` full-round arrow indicator, with full-pill stack badges and overflow count;
 - card anatomy with general info only (context label, timeline, title, summary, role, stack badges) plus required media captions;
@@ -250,14 +255,14 @@ Status: in progress
 Deliverables:
 
 - single left-moving grayscale technology marquee of all 18 local SVG icons with sans labels, a `54s` loop, hover/focus pause, missing-icon fallback, and a static wrapping reduced-motion mode; compact boundary below Capabilities and spacious `64px`/`80px` spacing before Contact;
-- centered contact band with a vertical `surface-accent → surface-soft → white` wash, a single `Email me` CTA using an `ink` background and white text, and a contact heading that renders on one line on desktop while wrapping safely on mobile;
+- centered contact band with a vertical `surface-accent → surface-soft → canvas` wash, a paired `Email me` and `View resume` CTA using the same `ink` background, light text, shadow, and hover, a resume action that opens the PDF in a new tab, and a contact heading that renders on one line on desktop while wrapping safely on mobile;
 - white footer that continues seamlessly from the contact wash, with a separate icon-only social row (LinkedIn, GitHub, Instagram from `react-icons/fa`, each `44px × 44px` with an accessible name) above the text navigation (`Home`, `About`, `Projects`, `Contact`);
 - full homepage composition ready for real-media fidelity work.
 
 Acceptance criteria:
 
 - the hero region contains one meaningful `h1`; the complete first viewport communicates name, role, specialization context, and next actions;
-- hero CTA targets contact;
+- hero CTA is `View resume`; contact remains reachable through the header and footer navigation;
 - content remains meaningful when image fails;
 - phase cannot claim final pixel-level completion while approved portrait, project media, and canonical fonts are absent.
 - homepage is local-only and non-releaseable.

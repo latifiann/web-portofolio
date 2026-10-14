@@ -59,6 +59,15 @@ function App() {
                 >
                   Email me
                 </a>
+                <a
+                  href="/resume/latifian-iman-cv-ats.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View resume (PDF, opens in a new tab)"
+                  className="view-resume-link inline-flex min-h-11 items-center gap-2 rounded-full bg-(--color-ink) px-(--space-6) font-semibold text-white no-underline shadow-[0_6px_16px_rgb(15_23_42_/_0.22)] transition-colors duration-(--motion-fast) hover:bg-(--color-ink-secondary)"
+                >
+                  View resume
+                </a>
               </div>
             </div>
           </PageContainer>
