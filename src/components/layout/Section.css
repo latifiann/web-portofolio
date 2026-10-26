@@ -1,0 +1,9 @@
+.homepage-section-spacing {
+  padding-block: var(--section-padding-mobile);
+}
+
+@media (min-width: 48rem) {
+  .homepage-section-spacing {
+    padding-block: var(--section-padding-desktop);
+  }
+}

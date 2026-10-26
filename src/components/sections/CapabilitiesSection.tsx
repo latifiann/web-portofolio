@@ -50,7 +50,7 @@ function CapabilitiesSection() {
     <section
       id="skills"
       aria-labelledby="skills-title"
-      className="capabilities-section homepage-section-spacing scroll-mt-(--anchor-offset)"
+      className="capabilities-section scroll-mt-(--anchor-offset)"
     >
       <PageContainer visual>
         <header className="mx-auto max-w-3xl text-center">

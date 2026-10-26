@@ -1,0 +1,83 @@
+@media (max-width: 47.9375rem) {
+  .project-rail {
+    display: flex;
+    gap: var(--space-4);
+    margin-inline: calc(-1 * var(--container-padding-mobile));
+    padding-inline: var(--container-padding-mobile);
+    scroll-padding-inline: var(--container-padding-mobile);
+    padding-bottom: var(--space-2);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+  }
+
+  .project-rail > * {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+  }
+
+  .project-rail::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .project-rail::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .project-rail::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: var(--radius-full);
+  }
+}
+
+.selected-work-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--color-canvas);
+}
+
+.selected-work-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse 56% 68% at 4% 28%,
+      rgb(219 234 254 / 0.9),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 54% 64% at 96% 72%,
+      rgb(191 219 254 / 0.72),
+      transparent 72%
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-canvas) 0%,
+      rgb(239 246 255 / 0.82) 18%,
+      rgb(219 234 254 / 0.58) 52%,
+      rgb(239 246 255 / 0.72) 82%,
+      var(--color-canvas) 100%
+    );
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 18%,
+    black 82%,
+    transparent 100%
+  );
+
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 18%,
+    black 82%,
+    transparent 100%
+  );
+}

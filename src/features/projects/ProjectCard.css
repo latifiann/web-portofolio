@@ -1,0 +1,18 @@
+/* Visible by default at every width; the desktop rule below hides it, and this
+   selector outranks that rule, so keyboard focus keeps the indicator on. */
+.project-card-link:focus-visible .project-card-indicator {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 64rem) {
+  .project-card-indicator {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  .project-card-link:hover .project-card-indicator {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: technical-architecture
-version: 1.6.3
+version: 1.6.7
 status: canonical
-last_updated: 2026-10-07
+last_updated: 2026-10-26
 owner: Latifian Iman
 application_type: statically generated portfolio
 package_manager: npm
@@ -363,6 +363,9 @@ porto-latifiann/
 │   ├── styles/
 │   │   ├── tokens.css
 │   │   ├── fonts.css
+│   │   ├── base.css
+│   │   ├── accessibility.css
+│   │   ├── accessibility-overrides.css
 │   │   └── globals.css
 │   ├── lib/
 │   ├── types/
@@ -684,9 +687,16 @@ Tailwind theme aliases point to these variables. A component may use `bg-canvas`
 
 ### 12.2 Styling rules
 
-- Prefer Tailwind utilities for layout, spacing, typography, and common states.
-- Use CSS modules or colocated component CSS only for compositions that are clearer in named CSS, such as hero overlaps or rich Markdown flow.
-- Keep global CSS limited to reset, tokens, font faces, base element behavior, accessibility helpers, and shared prose rules.
+- Prefer Tailwind utilities for simple composition: layout, spacing, typography, and common states.
+- Use colocated component CSS for compositions that are clearer as named CSS, such as hero overlaps, timelines, marquees, and section backdrops. Do not introduce CSS Modules without a recorded decision.
+- `src/styles/globals.css` is the single integration entry. `src/main.tsx` imports it once; component stylesheets are imported from that entry, never from TSX, so cascade order does not depend on component import traversal.
+- Import order is explicit: tokens, fonts, base, UI primitives, accessibility helpers, shared layout, homepage sections, then `accessibility-overrides.css` last. That overrides file must stay last because it disables animation and masks for reduced motion and forced colors.
+- Keep global CSS limited to reset, tokens, font faces, base element behavior, accessibility helpers, and the ordered import list. Component rules live beside their component.
+- Tokens stay in `src/styles/tokens.css`; component CSS consumes custom properties instead of introducing new hex values.
+- Tailwind preflight already owns `a { color: inherit }` and `img { height: auto }` inside `@layer base`. Never repeat either declaration in unlayered global or component CSS: the unlayered copy wins over every `text-*` and `h-full` utility. Keep overridable defaults in preflight; moving a default into a named layer is a separate, evidence-backed change.
+- `src/styles/base.css` holds only document and element defaults that utilities do not need to override. When a utility must be able to beat a global default, the default belongs to a layer, not to `base.css`.
+- The build pipeline (Lightning CSS through Tailwind v4 in this repository) applies vendor prefixes. For the mask properties verified here — `mask-image`, `mask-repeat`, `mask-size` — write the standard declaration only; the emitted CSS contains both the prefixed and the standard property. Do not generalize this to every vendor prefix: verify a new property in the generated asset before relying on it.
+- Avoid `var()` inside a `mask-image` value. With the current Lightning CSS, the minifier cannot collapse such a gradient and emits the prefixed declaration several times, producing a larger bundle than the literal form it replaced. This is a measured property of this pipeline, not a general CSS rule.
 - Avoid arbitrary Tailwind values unless representing a documented one-off media ratio or measured positioning requirement.
 - Repeated arbitrary values must become tokens or component variants.
 - Do not compute essential layout solely from JavaScript viewport measurements.

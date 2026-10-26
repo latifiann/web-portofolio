@@ -1,8 +1,8 @@
 ---
 name: Latifian Editorial Portfolio
-version: 2.26.17
+version: 2.26.34
 status: canonical
-last_updated: 2026-10-14
+last_updated: 2026-10-26
 description: Canonical UI/UX and implementation specification for latifian.dev.
 fonts:
   sans: Geist
@@ -270,7 +270,7 @@ Internal structural dividers remain allowed where they organize content inside a
 
 Multiple homepage sections share one semantic vertical padding so the page reads as a continuous, flowing composition rather than separate framed blocks. These values live in `tokens.css`, are tuned from one file, and are applied through the `homepage-section-spacing` class:
 
-- About, Selected Work, Experience, Capabilities: `64px` mobile, `80px` desktop. Capabilities keeps this top padding but reduces its bottom padding to `8px` mobile / `24px` desktop so it sits compactly above Technology.
+- About, Selected Work, Experience, Capabilities: `64px` mobile, `80px` desktop. Capabilities keeps this top padding but reduces its bottom padding to `8px` mobile / `24px` desktop so it sits compactly above Technology. Capabilities declares those tokens inside its own component CSS rather than adding the shared class, so its block spacing never depends on stylesheet order while the values stay identical.
 - Hero uses dedicated tokens for its portrait composition (`pt` mobile `12px`/`24px` desktop, `pb` `32px`/`80px`).
 - Technology uses `24px` block padding with contextual boundaries: `32px`/`48px` below Capabilities and `64px`/`80px` before Contact.
 - Contact closing band uses `64px`/`96px`.
@@ -317,6 +317,7 @@ Rules:
 - minimum interactive target: `44 × 44px` where possible;
 - display the centered floating navigation as a horizontal row only from `>= 1024px` (`lg`, canonical desktop breakpoint); below that width it collapses to the mobile dropdown panel. The theme button and `Get in touch` expose on the same `lg` breakpoint, and the menu trigger appears below it;
 - desktop controls are enlarged together so the three zones stay visually balanced: language selector, centered navigation, and right actions all reach `56px` tall at `>= 1024px`, with navigation text at `11px` and side-control text at `12px`;
+- at tablet width (`768–1023px`) the header controls match the tablet action targets for visual consistency with the rest of the page: the language selector has a `44px` minimum height, the theme button and menu trigger are `44 × 44px`, and each dropdown item is at least `44px` tall; mobile keeps the compact `40px` controls and `40px` dropdown items;
 - the right zone is two separate floating surfaces, not a shared container: the theme icon button is a `56px` `canvas` secondary surface, and `Get in touch` is a `56px` `ink` surface with `canvas` text (same base treatment as the inactive navigation container), using `ink-secondary` on hover and `ink` on active — no saturated-blue fill;
 - the language selector, center navigation, and header `Get in touch` CTA all use the sans `Geist` family (not mono). The CTA desktop color states are authored as a named rule (`.header-contact-link`) inside the `>= 64rem` media query so the `canvas` text is not overridden by lower-specificity responsive utilities;
 - the centered floating navigation container uses `8px` padding and `4px` spacing between items; each navigation item uses `8px` vertical padding with `24px` line height, keeping the background visually tight to the label instead of a tall full-height pill;
@@ -388,7 +389,7 @@ The initial verified status is `Open to opportunities`. It is a maintained profe
 - On mobile, the hero follows its content height; it does not reserve a desktop minimum height or distribute extra flexible space around the portrait. The greeting and role use viewport-relative type that keeps each on one line inside the content container, with the role remaining larger than the greeting.
 - The mobile hero keeps only one `View resume` link and one availability badge in the DOM; the overlay using `position: absolute` on mobile is the same element that sits in the desktop/tablet rail, so no content is duplicated.
 
-At desktop reference width, the greeting and serif role overlap the portrait region without crossing the face; the portrait remains a centered visual anchor over a pale-blue radial wash; availability and the engineering-focus line balance on the left; supporting copy and the resume action balance on the right. The two side rails form an intentional asymmetric grid: they share one vertical center anchor and sit in symmetric columns around a reserved portrait-safe center, so neither rail chases the portrait or uses independent offsets on desktop. Every gap and offset uses a canonical spacing token. The overlay grid sits above the portrait (`--z-raised`) so `View resume` remains clickable, uses `pointer-events: none` on the grid with `pointer-events: auto` on the two rails so the center spacer does not block the portrait, and drops `24px` below the vertical center. The availability chip may carry one restrained blue accent shadow (neutral base shadow plus a `rgb(37 99 235 / 0.10)` halo) without gradient, glow border, neon, or heavy blur; it must not become a nested card. The right rail stays flat. `View resume` uses a functional `→` accent (primary blue, subtle glow) that translates `4px` on hover instead of a document icon. On desktop the availability badge renders at `14px` text with wider padding, the focus value at `24px`, and the supporting paragraph at `16px` with a `38ch` measure for readability. The title group is nudged `16px` lower and the supporting paragraph wrapper `16px` lower relative to its tablet position so the portrait floats slightly over `Software Developer` and the supporting text floats over the portrait while staying legible. The portrait wrapper is raised `16px` from tablet up to compensate for the wider role text gap, keeping the overlap consistent. At mobile reference width, resolve this into the legible vertical composition described above, with the availability badge and `View resume` floating over the portrait, before adding any further decorative overlap.
+At desktop reference width, the greeting and serif role overlap the portrait region without crossing the face; the portrait remains a centered visual anchor over a pale-blue radial wash; availability and the engineering-focus line balance on the left; supporting copy and the resume action balance on the right. The two side rails form an intentional asymmetric grid: they share one vertical center anchor and sit in symmetric columns around a reserved portrait-safe center, so neither rail chases the portrait or uses independent offsets on desktop. Every gap and offset uses a canonical spacing token. The overlay grid sits above the portrait (`--z-raised`) so `View resume` remains clickable, uses `pointer-events: none` on the grid with `pointer-events: auto` on the two rails so the center spacer does not block the portrait, and drops `24px` below the vertical center. The availability chip may carry one restrained blue accent shadow (neutral base shadow plus a `rgb(37 99 235 / 0.10)` halo) without gradient, glow border, neon, or heavy blur; it must not become a nested card. The right rail stays flat. `View resume` uses a functional `→` accent (primary blue, subtle glow) that translates `4px` on hover instead of a document icon. On desktop the availability badge renders at `14px` text with wider padding, the focus value at `24px`, and the supporting paragraph at `16px` with a `38ch` measure for readability. The title group is nudged `16px` lower and the supporting paragraph wrapper `16px` lower relative to the desktop base so the portrait floats slightly over `Software Developer` and the supporting text floats over the portrait while staying legible. The portrait wrapper is raised `16px` on desktop to compensate for the wider role-text gap, keeping the overlap consistent. These are desktop-only offsets; tablet uses its own floating-rail composition and does not share them. At mobile reference width, resolve this into the legible vertical composition described above, with the availability badge and `View resume` floating over the portrait, before adding any further decorative overlap.
 
 Supporting copy is defined in `CONTENT.md`. Do not use an example phrase here as competing production copy.
 
@@ -421,7 +422,7 @@ Selected Work is the primary evidence section. It must present projects as conci
 
 ### Project selection
 
-- The landing preview shows at most six projects: exactly three on mobile and tablet, up to six on desktop.
+- The landing preview shows at most six projects: at most three on mobile, at most four on tablet, and up to six on desktop.
 - Current verified set contains exactly three, in this order: FMS-CREATE, ReMi Mobile, and Semina.
 - Every card links to a complete bilingual case study; card-only projects are not shown.
 - Item visibility across an unset project count is CSS-driven (`hidden lg:block`), never `window.innerWidth`. Current three-item set renders identically at every width.
@@ -445,7 +446,7 @@ The project name and contribution must be understandable without inspecting the 
 ### Card layout
 
 - Desktop: three-column grid; up to six cards.
-- Tablet: two columns; at most three.
+- Tablet: two columns; at most four.
 - Mobile (`<768px`): horizontal CSS scroll-snap rail; at most three projects, with one full-width card aligned inside the content margins at rest. The scroll viewport reaches the screen edges during a swipe; inline padding and scroll padding use the mobile container-padding token so snapped cards retain the `20px` inset. Keep the `16px` inter-card gap and thin scrollbar. Above the rail, show the localized swipe hint with decorative `pi/PiHandSwipeLeftLight` from `react-icons/pi`. The `Explore all N projects` link stays below and outside the rail. No autoplay, duplicated cards, carousel dependency, or viewport JavaScript.
 - The rail is keyboard-focusable with a visible focus indicator and an accessible name from the section heading; project links remain reachable in DOM order. Swiping and links work without JavaScript. Verify focused cards scroll into view without clipping.
 - Card order comes from the validated content manifest, not CSS positioning.
@@ -493,8 +494,9 @@ The project name and contribution must be understandable without inspecting the 
 
 ### Explore CTA
 
-- The `Explore all N projects` action gives its arrow icon a reserved layout column (inline SVG) so translating on hover never pushes the glyph outside the border; the label may wrap without squeezing the icon, and the control keeps a `44px` minimum target.
-- Main content CTAs use `24px` horizontal padding and `12px` vertical padding (`px-(--space-6)` / `py-(--space-3)`). Only reference spacing tokens that exist; never use an undefined token such as `--space-5`. Compact header/hero/footer actions keep their own contextual padding.
+- The `Explore all N projects` action gives its arrow icon a reserved layout column (inline SVG) so translating on hover never pushes the glyph outside the border; the label may wrap without squeezing the icon. Its visible height is `40px` on mobile (`<768px`) and `44px` on tablet/desktop (`>=768px`), with a minimum `44px` touch target through an invisible `::before` hit area. These heights are minimums when text wraps or is enlarged; never clip the label to enforce the nominal height.
+- The outline appearance uses `ink` text on `canvas` with a `border-strong` border at rest, and switches both text and border to `primary` on hover. Solid appearances keep `canvas` text on `ink` at rest and on the `ink-secondary` hover surface.
+- Contact and Explore CTAs reuse `ActionLink`, with only the currently needed `solid` and `outline` appearances and an optional decorative trailing icon. Use `24px` horizontal padding and no vertical padding; center content within the responsive minimum height. Preserve native anchor attributes and the shared visible focus ring. Hero resume and Experience disclosure remain separate because their geometry and semantics differ. Only reference spacing tokens that exist; never use an undefined token such as `--space-5`.
 
 ### Card interaction
 
@@ -548,7 +550,7 @@ The date range displays as a compact neutral full-pill chip rather than a plain 
 - borderless `chip` fill, `12px` regular sans text, `4px 8px` padding;
 - technology tags in the same entry reuse this exact chip style for consistency;
 - never styled as a status, category, or interactive control;
-- aligns right beside the role on desktop and stacks below the role on tablet and mobile.
+- aligns right beside the role on desktop and tablet, and stacks below the role only on mobile (`<768px`).
 
 ### Item anatomy
 
@@ -567,8 +569,8 @@ The date range displays as a compact neutral full-pill chip rather than a plain 
 
 ### Reading flow
 
-- On desktop, role and date share one row across the full content width: role left, date right.
-- On tablet and mobile, date stacks below the role.
+- On desktop and tablet, role and date share one row across the full content width: role left, date right.
+- On mobile (`<768px`), date stacks below the role.
 - Organization, employment type, and location wrap naturally and never form a separate narrow column.
 - Contribution and product-description text stays inside the main reading flow.
 
@@ -650,13 +652,13 @@ The `Core Technologies & Ecosystem` strip is secondary evidence. It renders as a
 
 The contact section uses a vertical top-to-bottom wash that starts from `surface-accent`, blends through `surface-soft`, and fades to `canvas` at the bottom edge.
 
-At reference widths, center the contact heading, body, and primary action within the wash. The heading renders on one line on desktop (`>=64rem`) and may wrap on mobile and tablet without overflowing the viewport. Body copy is narrower than the heading so line lengths stay comfortable.
+At reference widths, center the contact heading, body, and primary action within the wash. The heading renders on one line on desktop (`>=64rem`) and may wrap on mobile and tablet without overflowing the viewport. No single-line constraint (`white-space: nowrap`) applies below `64rem`; the heading wraps at its natural break points inside the content container instead of being clipped by the section's `overflow-hidden`. Body copy is narrower than the heading so line lengths stay comfortable.
 
 The approved contact heading is defined in `CONTENT.md`.
 
-Include a short collaboration statement and two clear actions: `Email me` and `View resume`. Both CTAs share the same full-pill geometry — the `Email me` action uses the `ink` background with light text, and the `View resume` action matches it exactly in fill, text color, shadow, and hover so the pair reads as two equal-weight actions rather than primary and secondary. `View resume` opens the resume PDF asset in a new tab. LinkedIn and GitHub are not rendered as Contact buttons.
+Include a short collaboration statement and two clear actions: `Email me` and `View resume`. Both CTAs share the same full-pill geometry — the `Email me` action uses the `ink` background with light text, and the `View resume` action matches it exactly in fill, text color, shadow, and hover so the pair reads as two equal-weight actions rather than primary and secondary. Both reuse the solid `ActionLink` appearance and responsive sizing defined in Section 10: `40px` on mobile and `44px` on tablet/desktop, with a minimum `44px` touch target. `View resume` opens the resume PDF asset in a new tab. LinkedIn and GitHub are not rendered as Contact buttons.
 
-The footer uses the `canvas` background that continues seamlessly from the contact wash. It contains only essential navigation, a row of icon-only social links (LinkedIn, GitHub, Instagram), name, copyright year, and an optional implementation note. Do not create a multi-column corporate footer. The social icons form a separate row above the text navigation; the text navigation lists `Home`, `About`, `Projects`, and `Contact`.
+The footer uses the `canvas` background that continues seamlessly from the contact wash. It contains only essential navigation, a row of icon-only social links (LinkedIn, GitHub, Instagram), name, copyright year, and an optional implementation note. Do not create a multi-column corporate footer. The social icons form a separate row above the text navigation; the text navigation lists `Home`, `About`, `Projects`, and `Contact`. Text navigation links and social icons rest in `ink-secondary` and switch to `primary` on hover.
 
 ## 15. Components
 
@@ -772,9 +774,10 @@ Implement responsive composition in this order: mobile semantic flow, tablet gri
 ### Tablet (`768–1023px`)
 
 - 8-column layout.
-- Reduce hero overlap and keep supporting copy wider than `28ch`.
+- The hero side rails float over the portrait (see the tablet hero rule below), so the supporting copy sits in a constrained right rail and may wrap to a narrow measure; do not force a wide `28ch` measure on tablet.
 - Project and skill grids use two columns.
 - Avoid edge-positioned badges that collide with central copy.
+- On tablet (`48–63.9375rem`) the hero repositions its side rails as floating overlays over the portrait, aligning them to the lower torso area so the face stays clear: the availability/focus rail floats on the left and the supporting/resume rail on the right, both inside the content container with visible pointer targets. The availability badge renders on one line, and the left rail allows `14rem` (`224px`) so the `Mobile · Frontend · APIs` focus line stays on one line instead of leaving an orphaned word; at `768px` that rail overlaps the portrait's lower torso, which is the intended overlay. The portrait is sized by height with no width cap in this range, so it reads larger and sits close to the role. The tablet composition is raised `12px` (`translateY(-0.75rem)`) with the title fixed, keeping `20px` of clearance between the fixed header bottom and the greeting at `768–1023px`; the portrait is pulled up with a negative top margin (`margin-top: calc(var(--space-6) - 4rem)`) so its head sits just below the `Software Developer` role text, which reduces (but does not fully remove) the reserved space below the portrait, and the floating rails are raised (`translateY(-2.5rem)`) so they stay over the torso below the face. Using a negative margin reduces reserved flow space rather than adding a portrait-only transform. The tablet hero also sets `padding-bottom: 2.75rem` (`44px`). The 2026-10-26 refactor baseline measured a `152px` gap from the transformed portrait image bounding-box bottom to the `#about > div` content-box top at `768`, `820`, `900`, and `1023px` (Chromium, default zoom, DPR 1, fonts loaded). This corrects the earlier `160px` measurement; no spacing value changed. Moving the composition down `8px` moves its descendant bounding boxes down `8px` while normal flow stays unchanged. The faded visible edge is not a separate fixed-distance reference. The tablet composition uses the same rail markup as desktop with no duplicated content; desktop keeps its flanking grid.
 
 ### Mobile (`< 768px`)
 

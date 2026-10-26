@@ -1,0 +1,16 @@
+.action-link--solid,
+.action-link--solid:hover {
+  color: var(--color-canvas);
+}
+
+/* Keep a 44px target independently of the responsive visual height. */
+.action-link::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  min-height: 2.75rem;
+  height: 100%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+}

@@ -7,6 +7,7 @@ import ExperienceSection from "./components/sections/ExperienceSection";
 import CapabilitiesSection from "./components/sections/CapabilitiesSection";
 import TechnologyStrip from "./components/sections/TechnologyStrip";
 import HeroSection from "./components/sections/HeroSection";
+import ActionLink from "./components/ui/ActionLink";
 
 function App() {
   return (
@@ -43,7 +44,7 @@ function App() {
             <div className="relative mx-auto text-center">
               <h2
                 id="contact-title"
-                className="text-5xl leading-tight font-normal tracking-tight text-(--color-ink) md:text-7xl md:whitespace-nowrap"
+                className="text-5xl leading-tight font-normal tracking-tight text-(--color-ink) md:text-7xl lg:whitespace-nowrap"
               >
                 Let&apos;s build something useful.
               </h2>
@@ -53,21 +54,21 @@ function App() {
                 start a conversation.
               </p>
               <div className="mt-(--space-8) flex flex-wrap justify-center gap-(--space-3)">
-                <a
+                <ActionLink
                   href="mailto:latifian.iman44@gmail.com"
-                  className="contact-email-link inline-flex min-h-11 items-center gap-2 rounded-full bg-(--color-ink) px-(--space-6) font-semibold text-white no-underline shadow-[0_6px_16px_rgb(15_23_42_/_0.22)] transition-colors duration-(--motion-fast) hover:bg-(--color-ink-secondary)"
+                  appearance="solid"
                 >
                   Email me
-                </a>
-                <a
+                </ActionLink>
+                <ActionLink
                   href="/resume/latifian-iman-cv-ats.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="View resume (PDF, opens in a new tab)"
-                  className="view-resume-link inline-flex min-h-11 items-center gap-2 rounded-full bg-(--color-ink) px-(--space-6) font-semibold text-white no-underline shadow-[0_6px_16px_rgb(15_23_42_/_0.22)] transition-colors duration-(--motion-fast) hover:bg-(--color-ink-secondary)"
+                  appearance="solid"
                 >
                   View resume
-                </a>
+                </ActionLink>
               </div>
             </div>
           </PageContainer>

@@ -1,0 +1,87 @@
+.capabilities-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--color-canvas);
+
+  /* Owns its block spacing: shared section top padding plus a compact bottom so
+     the section sits tightly above the Technology strip. Declared here instead
+     of relying on a later import overriding the shared class. */
+  padding-block: var(--section-padding-mobile);
+  padding-bottom: var(--space-2);
+}
+
+@media (min-width: 48rem) {
+  .capabilities-section {
+    padding-block: var(--section-padding-desktop);
+    padding-bottom: var(--space-6);
+  }
+}
+
+.capabilities-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    var(--color-canvas) 0%,
+    var(--color-surface-soft) 20%,
+    var(--color-surface-accent) 50%,
+    var(--color-surface-soft) 80%,
+    var(--color-canvas) 100%
+  );
+}
+
+.capabilities-grid {
+  display: grid;
+  margin-top: var(--space-12);
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 48rem) {
+  .capabilities-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .capabilities-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+}
+
+.capability-card {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-canvas);
+  padding: var(--space-6);
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.04),
+    0 8px 24px rgb(37 99 235 / 0.08);
+}
+
+.capability-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-6);
+  padding-left: 0;
+  list-style: none;
+}
+
+.capability-label {
+  border-radius: var(--radius-full);
+  background: var(--color-chip);
+  padding: var(--space-1) var(--space-2);
+  color: var(--color-ink-secondary);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}

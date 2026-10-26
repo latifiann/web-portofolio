@@ -2,6 +2,7 @@ import { PiHandSwipeLeftLight } from "react-icons/pi";
 import ProjectCard from "../../features/projects/ProjectCard";
 import type { ProjectCardProps } from "../../features/projects/ProjectCard";
 import PageContainer from "../layout/PageContainer";
+import ActionLink from "../ui/ActionLink";
 import fmsCreatePreview from "../../../content/projects/fms-create/media/fms-create.webp";
 import remiMobilePreview from "../../../content/projects/remi-mobile/media/remi-mobile.webp";
 import seminaPreview from "../../../content/projects/semina/media/semina.webp";
@@ -75,6 +76,18 @@ const projects = [
 const landingProjects = projects.slice(0, 6);
 const projectCount = projects.length;
 
+function cardVisibilityClass(index: number): string {
+  if (index === 3) {
+    return "hidden md:block";
+  }
+
+  if (index >= 4) {
+    return "hidden lg:block";
+  }
+
+  return "";
+}
+
 function SelectedWorkSection() {
   return (
     <section
@@ -110,7 +123,7 @@ function SelectedWorkSection() {
           {landingProjects.map((project, index) => (
             <div
               key={project.href}
-              className={index >= 3 ? "hidden lg:block" : ""}
+              className={cardVisibilityClass(index)}
             >
               <ProjectCard {...project} />
             </div>
@@ -118,17 +131,10 @@ function SelectedWorkSection() {
         </div>
 
         <div className="mt-(--space-8) flex justify-center">
-          <a
+          <ActionLink
             href="/projects/"
-            className="group inline-grid min-h-11 max-w-full grid-cols-[minmax(0,1fr)_1.25rem] items-center gap-(--space-3) rounded-md border border-(--color-border-strong) bg-(--color-canvas) px-(--space-6) py-(--space-3) font-semibold text-(--color-ink) no-underline transition-colors duration-(--motion-fast) hover:border-(--color-primary) hover:text-(--color-primary)"
-          >
-            <span className="min-w-0 text-center">
-              Explore all {projectCount} projects
-            </span>
-            <span
-              aria-hidden="true"
-              className="flex size-5 shrink-0 items-center justify-center text-current transition-transform duration-(--motion-fast) group-hover:translate-x-0.5"
-            >
+            appearance="outline"
+            trailingIcon={
               <svg
                 viewBox="0 0 16 16"
                 className="h-4 w-4"
@@ -141,8 +147,10 @@ function SelectedWorkSection() {
                 <path d="M3 8h10" />
                 <path d="m9 4 4 4-4 4" />
               </svg>
-            </span>
-          </a>
+            }
+          >
+            Explore all {projectCount} projects
+          </ActionLink>
         </div>
       </PageContainer>
     </section>

@@ -1,0 +1,91 @@
+.technology-section {
+  padding-top: var(--technology-padding-block);
+  padding-bottom: var(--section-padding-mobile);
+  background: var(--color-canvas);
+}
+
+@media (min-width: 48rem) {
+  .technology-section {
+    padding-bottom: var(--section-padding-desktop);
+  }
+}
+
+.technology-marquee {
+  margin-top: var(--space-6);
+  overflow: hidden;
+
+  /* Lightning CSS emits the -webkit- prefix during the build, so this file
+     declares the standard property only; a hand-written prefix would ship as a
+     duplicate declaration. */
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 1.25rem,
+    black calc(100% - 1.25rem),
+    transparent
+  );
+}
+
+.technology-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: technology-marquee-scroll 54s linear infinite;
+  will-change: transform;
+}
+
+.technology-marquee-group {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-8);
+  padding-right: var(--space-8);
+  margin: 0;
+  list-style: none;
+}
+
+.technology-marquee-item {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-ink-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.technology-marquee-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  object-fit: contain;
+}
+
+.technology-marquee:hover .technology-marquee-track,
+.technology-marquee:focus-visible .technology-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes technology-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (min-width: 48rem) {
+  .technology-marquee {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 3rem,
+      black calc(100% - 3rem),
+      transparent
+    );
+  }
+}

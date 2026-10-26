@@ -6,7 +6,7 @@ export default function HeroSection() {
     <section
       id="home"
       aria-labelledby="hero-title"
-      className="relative scroll-mt-(--anchor-offset) overflow-hidden bg-(--color-canvas) pt-(--hero-padding-top-mobile) pb-(--hero-padding-bottom-mobile) md:pt-(--hero-padding-top-desktop) md:pb-(--hero-padding-bottom-desktop)"
+      className="hero-section relative scroll-mt-(--anchor-offset) overflow-hidden bg-(--color-canvas) pt-(--hero-padding-top-mobile) pb-(--hero-padding-bottom-mobile) md:pt-(--hero-padding-top-desktop) md:pb-(--hero-padding-bottom-desktop)"
     >
       <div aria-hidden="true" className="hero-background absolute inset-0" />
       <PageContainer visual className="relative">

@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: product-specification
-version: 1.2.0
+version: 1.2.1
 status: canonical
-last_updated: 2026-09-23
+last_updated: 2026-10-15
 owner: Latifian Iman
 primary_positioning: Software Developer
 primary_goal: Balanced opportunities
@@ -204,7 +204,7 @@ The site must not split into separate recruiter and client experiences in the fi
 
 The homepage Selected Work section is a curated preview, not a screenshot gallery. It presents concise, general project information and links each card to its full case study.
 
-The landing preview shows at most six selected projects on desktop and at most three on mobile and tablet. Current verified set contains exactly three, in this homepage order:
+The landing preview shows at most six selected projects on desktop, at most four on tablet, and at most three on mobile. Current verified set contains exactly three, in this homepage order:
 
 1. FMS-CREATE;
 2. ReMi Mobile;

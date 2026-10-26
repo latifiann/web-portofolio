@@ -1,0 +1,60 @@
+:root {
+  font-family: var(--font-sans);
+}
+
+#root {
+  min-height: 100svh;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-width: 20rem;
+  min-height: 100svh;
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink-secondary);
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img,
+picture,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+/* Link color and image height stay owned by Tailwind preflight (`@layer base`)
+   so utilities such as `text-*` and `h-full` can override them. Do not repeat
+   them here: an unlayered copy would win over every utility. */
+
+button,
+[type="button"],
+[type="submit"],
+[type="reset"] {
+  cursor: pointer;
+}
