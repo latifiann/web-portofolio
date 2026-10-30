@@ -1,4 +1,5 @@
 import PageContainer from "../layout/PageContainer";
+import SectionHeader from "../layout/SectionHeader";
 
 type Capability = {
   title: string;
@@ -53,17 +54,11 @@ function CapabilitiesSection() {
       className="capabilities-section scroll-mt-(--anchor-offset)"
     >
       <PageContainer visual>
-        <header className="mx-auto max-w-3xl text-center">
-          <p className="font-serif text-xl italic text-(--color-ink-muted)">
-            / Technical Expertise
-          </p>
-          <h2
-            id="skills-title"
-            className="mt-(--space-3) text-4xl leading-tight font-semibold tracking-tight text-(--color-ink) md:text-5xl"
-          >
-            Capabilities
-          </h2>
-        </header>
+        <SectionHeader
+          titleId="skills-title"
+          eyebrow="/ Technical Expertise"
+          title="Capabilities"
+        />
 
         <div className="capabilities-grid">
           {capabilities.map((capability) => (

@@ -1,0 +1,47 @@
+schemaVersion: 1
+slug: fms-create
+publication: draft
+homepageOrder: 1
+cardTitle: FMS-CREATE
+caseStudyTitle: FMS-CREATE
+category: Mobile App
+timeline:
+  start: "December 2025"
+  end: "July 2026"
+  ongoing: false
+  display: Dec 2025-Jul 2026
+status: completed
+maintenance: null
+roles:
+  - Mobile Developer
+teamContext: Final academic project
+stack:
+  - Dart
+  - Flutter
+  - Riverpod
+  - GoRouter
+  - Dio
+  - REST API
+  - Server-Sent Events
+  - Google Maps
+  - Flutter Secure Storage
+  - Modular monolith
+cardStack:
+  - Flutter
+  - Modular architecture
+  - REST API
+  - SSE
+  - Google Maps
+repository:
+  visibility: private
+  url: null
+demoUrl: null
+primaryLink: null
+links: []
+media:
+  hero:
+    source: ./media/fms-create.webp
+    width: 1280
+    height: 800
+    aspectRatio: 1.6
+    focalPosition: center

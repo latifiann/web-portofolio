@@ -19,7 +19,12 @@ const socialLinks = [
   },
 ];
 
-function SiteFooter() {
+type SiteFooterProps = {
+  /** Prefix used for homepage anchors when the footer renders on another page. */
+  homePath?: string;
+};
+
+function SiteFooter({ homePath = "" }: SiteFooterProps) {
   return (
     <footer className="bg-(--color-canvas) pb-(--footer-padding-bottom)">
       <PageContainer className="pt-(--footer-padding-top)">
@@ -53,7 +58,7 @@ function SiteFooter() {
 
             <li>
               <a
-                href="#about"
+                href={`${homePath}#about`}
                 className="inline-flex min-h-9 items-center rounded-sm px-(--space-2) text-xs font-medium text-(--color-ink-secondary) no-underline hover:text-(--color-primary)"
               >
                 About
@@ -62,7 +67,7 @@ function SiteFooter() {
 
             <li>
               <a
-                href="#projects"
+                href={`${homePath}#projects`}
                 className="inline-flex min-h-9 items-center rounded-sm px-(--space-2) text-xs font-medium text-(--color-ink-secondary) no-underline hover:text-(--color-primary)"
               >
                 Projects
@@ -71,7 +76,7 @@ function SiteFooter() {
 
             <li>
               <a
-                href="#contact"
+                href={`${homePath}#contact`}
                 className="inline-flex min-h-9 items-center rounded-sm px-(--space-2) text-xs font-medium text-(--color-ink-secondary) no-underline hover:text-(--color-primary)"
               >
                 Contact

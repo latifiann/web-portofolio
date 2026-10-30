@@ -12,4 +12,5 @@
 @import "../components/sections/TechnologyStrip.css";
 @import "../components/sections/ExperienceSection.css";
 @import "../components/sections/HeroSection.css";
+@import "../pages/ProjectPage.css";
 @import "./accessibility-overrides.css";

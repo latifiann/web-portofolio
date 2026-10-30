@@ -103,7 +103,13 @@ const sectionIds = [
 ];
 const footerActiveHref = "#contact";
 
-function SiteHeader() {
+type SiteHeaderProps = {
+  /** Prefix used for homepage anchors when the header renders on another page. */
+  homePath?: string;
+  activeNavigationHref?: string;
+};
+
+function SiteHeader({ homePath = "", activeNavigationHref }: SiteHeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isThemeToastVisible, setIsThemeToastVisible] = useState(false);
   const [activeHref, setActiveHref] = useState<string>(navigationItems[0].href);
@@ -149,6 +155,8 @@ function SiteHeader() {
   }, [isThemeToastVisible]);
 
   useEffect(() => {
+    if (activeNavigationHref) return;
+
     const scrollPadding = 160;
     const hero = document.getElementById("home");
 
@@ -201,7 +209,9 @@ function SiteHeader() {
       window.removeEventListener("scroll", updateActiveSection);
       window.removeEventListener("resize", updateActiveSection);
     };
-  }, []);
+  }, [activeNavigationHref]);
+
+  const resolvedActiveHref = activeNavigationHref ?? activeHref;
 
   function handleNavigation() {
     setIsMenuOpen(false);
@@ -242,11 +252,12 @@ function SiteHeader() {
           >
             <ul className="m-0 flex list-none flex-col gap-1 p-0 lg:flex-row lg:gap-1">
               {navigationItems.map((item) => {
-                const isActive = item.href === activeHref;
+                const isActive = item.href === resolvedActiveHref;
+                const href = `${homePath}${item.href}`;
                 return (
                   <li key={item.href}>
                     <a
-                      href={item.href}
+                      href={href}
                       aria-current={isActive ? "location" : undefined}
                       className="primary-navigation-link flex min-h-10 items-center rounded-md px-(--space-3) text-sm font-medium no-underline md:min-h-11 lg:min-h-0 lg:rounded-full lg:px-3 lg:py-2 lg:leading-6 lg:text-[0.6875rem] lg:font-semibold"
                       onClick={handleNavigation}
@@ -285,7 +296,7 @@ function SiteHeader() {
               </svg>
             </button>
             <a
-              href="#contact"
+              href={`${homePath}#contact`}
               className="header-contact-link hidden min-h-9 items-center rounded-full border border-(--color-border) bg-(--color-canvas)/95 px-(--space-3) font-sans text-[0.625rem] font-medium text-(--color-ink) no-underline shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm transition-colors lg:inline-flex lg:min-h-14 lg:px-5 lg:text-xs lg:font-semibold lg:shadow-[0_1px_2px_rgb(15_23_42_/_0.04),0_8px_24px_rgb(15_23_42_/_0.06)] lg:backdrop-blur-none"
             >
               Get in touch

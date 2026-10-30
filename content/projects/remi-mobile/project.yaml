@@ -1,0 +1,45 @@
+schemaVersion: 1
+slug: remi-mobile
+publication: draft
+homepageOrder: 2
+cardTitle: ReMi Mobile
+caseStudyTitle: ReMi - Remind Me
+category: Mobile App
+timeline:
+  start: "2024"
+  end: null
+  ongoing: false
+  display: "2024"
+status: completed
+maintenance: unmaintained
+roles:
+  - Mobile Developer
+teamContext: Agile Teknik
+stack:
+  - Dart
+  - Flutter
+  - BLoC
+  - Dio
+  - REST API
+  - Clean Architecture
+  - Lottie
+cardStack:
+  - Flutter
+  - BLoC
+  - REST API
+repository:
+  visibility: private
+  url: null
+demoUrl: null
+primaryLink: https://play.google.com/store/apps/details?id=com.agileteknik.remi
+links:
+  - label: Google Play
+    url: https://play.google.com/store/apps/details?id=com.agileteknik.remi
+    kind: external
+media:
+  hero:
+    source: ./media/remi-mobile.webp
+    width: 1280
+    height: 800
+    aspectRatio: 1.6
+    focalPosition: center

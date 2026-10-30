@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: technical-architecture
-version: 1.6.7
+version: 1.6.18
 status: canonical
-last_updated: 2026-10-26
+last_updated: 2026-10-30
 owner: Latifian Iman
 application_type: statically generated portfolio
 package_manager: npm
@@ -48,7 +48,7 @@ Public v1 is one complete bilingual release. The English-first vertical slice is
 
 Public v1 contains exactly three case studies, ordered on the homepage as FMS-CREATE, ReMi Mobile, and Semina. No card-only or fourth project enters the v1 production artifact.
 
-The homepage Selected Work section is a curated preview with future capacity: it targets up to six landing slots but currently renders the three verified projects at every width. Item visibility beyond the current set uses stable CSS (`hidden lg:block`), never `window.innerWidth`, to keep markup identical for hydration and static generation. A curated project index (`/projects/`) is approved future scope; it must not ship before its detail routes are complete.
+The homepage Selected Work section is a curated preview with future capacity: it targets up to six landing slots but currently renders the three verified projects at every width. Slot visibility beyond the current set stays CSS-only, never `window.innerWidth`, so markup is identical for hydration and static generation: the fourth slot appears from the tablet breakpoint (`hidden md:block`) because tablet capacity is four, and slots five and six appear only on desktop (`hidden lg:block`). A curated project index (`/projects/`) is approved future scope; it must not ship before its detail routes are complete.
 
 ## 2. Constraints and Non-goals
 
@@ -105,7 +105,6 @@ Use the smallest package set that implements these decisions. Pin resolved versi
 - `react-icons` for the icon glyphs (imported directly from provider subpaths so only used icons enter the production bundle);
 - `react-router-dom`;
 - `react-helmet-async` for route-level head collection in server and browser rendering;
-- `react-markdown` with `remark-gfm` for approved project prose.
 
 **Build and content**
 
@@ -113,7 +112,8 @@ Use the smallest package set that implements these decisions. Pin resolved versi
 - `typescript` in strict mode;
 - `tailwindcss` integrated through the supported Vite/PostCSS path for the installed version;
 - `zod` for public-content schemas;
-- `yaml` and `gray-matter` for content parsing;
+- `yaml` for project records and localized front matter;
+- no Markdown rendering package: front matter splitting and the restricted body parser are local code, and the browser receives parsed blocks rather than Markdown;
 - `sharp` for build-time image generation;
 - `tsx` for typed build scripts.
 
@@ -228,7 +228,11 @@ Before completing route, metadata, locale, or content-loading work, an agent mus
 
 Trailing-slash directory URLs are canonical because they map directly to static `index.html` files.
 
-Public v1 currently has exactly eight indexable routes: two homepages and six localized case studies. `404.html` is generated but is not indexable and never enters the sitemap. Adding the list-oriented project index later adds two indexable routes and requires the route-count validator to be updated in the same change.
+The v1 target is exactly eight indexable routes: two homepages and six localized case studies. The current build is different: it ships only the English homepage, has no router installed, and every other row in the table above, including `/projects/`, is planned rather than reachable in a production build. Existing homepage links to those paths are reserved targets, not evidence that the routes exist. `404.html` is planned but not generated yet; once generated it is not indexable and never enters the sitemap. Adding the list-oriented project index later adds two indexable routes and requires the route-count validator to be updated in the same change.
+
+#### Development-only preview route
+
+`npm run dev` additionally resolves `/projects/<slug>/` for records present in the development manifest, including drafts, so project composition can be reviewed before routing exists. The resolver gates on `import.meta.env.DEV`, so the same source produces homepage-only output for `vite preview`, `npm run build`, and any deployed artifact. This preview is not a public route and must not be described as one; when the routing phase lands it is replaced by real static generation, and the gate is then removed rather than extended.
 
 ### 6.2 Locale behavior
 
@@ -410,47 +414,71 @@ Before feature implementation starts, `docs/PRODUCTS.md`, `docs/DESIGN.md`, `doc
 
 ### 8.2 Project record
 
-`project.yaml` contains locale-independent facts and media metadata. Example shape:
+`project.yaml` contains locale-independent facts and media metadata. The implemented shape, exercised by the ReMi draft, is:
 
 ```yaml
 schemaVersion: 1
 slug: remi-mobile
 publication: draft
 homepageOrder: 2
-status: ongoing
+cardTitle: ReMi Mobile
+caseStudyTitle: ReMi - Remind Me
+category: Mobile App
+timeline:
+  start: "2024"
+  end: null
+  ongoing: false
+  display: "2024"
+status: completed
 maintenance: unmaintained
-year: 2026
-category: Mobile productivity
 roles:
-  - Mobile Engineer
+  - Mobile Developer
+teamContext: Agile Teknik
 stack:
   - Flutter
 repository:
   visibility: private
   url: null
 demoUrl: null
+primaryLink: https://play.google.com/store/apps/details?id=com.agileteknik.remi
+links:
+  - label: Google Play
+    url: https://play.google.com/store/apps/details?id=com.agileteknik.remi
+    kind: external
 media:
   hero:
-    source: ./media/hero.png
+    source: ./media/remi-mobile.webp
+    width: 1280
+    height: 800
     aspectRatio: 1.6
     focalPosition: center
 ```
+
+`cardTitle` is the landing-card label and `caseStudyTitle` is the record heading; they are separate keys because the approved copy differs. `timeline.display` is the only timeline value rendered in the interface, so a display range never drifts from its structured dates. Link labels are locale-independent brand names; localized prose stays in the localized files. `primaryLink` is optional and holds a URL that must also appear in `links`; the generator resolves it to that link so the aside CTA reuses the approved label instead of guessing from array order. `media.hero.width` and `height` carry the intrinsic dimensions used for the image hint, and `source` is resolved at build time so no file-system path reaches the browser.
 
 Localized Markdown begins with validated front matter:
 
 ```yaml
 ---
 locale: en
-title: ReMi Mobile
+title: ReMi - Remind Me
 summary: A concise verified project summary.
-roleSummary: Mobile and frontend engineering contribution.
+roleSummary: Mobile Developer · Agile Teknik
 seoDescription: A page-specific description within the documented limit.
 mediaAlt:
-  hero: Fleet management interface showing vehicle operations.
+  hero: Visible content described in one sentence.
+mediaCaption:
+  hero: Qualification wording for the media.
+outcomeSummary: One verified summary of the team outcome.
+highlights:
+  - label: Role
+    value: Mobile Developer
+    note: One supporting sentence.
 ---
 ```
 
-The example values illustrate shape only and are not approved production facts. The Markdown body uses a supported section vocabulary such as Context, Problem, Responsibilities, Approach, Technical Decisions, Challenges, Outcome, and Reflection. A project does not need empty sections merely to match the template.
+Front matter owns localized prose, alternative text, the media caption, the outcome summary, and up to three highlight cards. Only `## ` headings, paragraphs, and `- ` lists are accepted in the body; raw HTML, other heading levels, block quotes, code fences, and tables are rejected so content cannot outgrow the renderer. A project does not need empty sections merely to match the template.
+
 
 `publication` has two values:
 
@@ -472,85 +500,125 @@ The example values illustrate shape only and are not approved production facts. 
 
 ### 8.4 Schema validation
 
-Zod schemas validate content in two modes.
+`scripts/build-content.ts` validates with Zod and writes the manifest in one pass, so validation and generation cannot observe different content states. It runs in three modes selected by flag:
 
-**Development validation** permits incomplete locale coverage only for `draft` projects while still validating every available field, URL, media reference, and Markdown structure.
+| Mode | Flag | Manifest contents | Homepage order rule |
+|---|---|---|---|
+| `development` | none | every valid record, drafts included | uniqueness only; gaps allowed |
+| `production` | `--production` | `published` records only | `1..n` without gaps across published records |
+| `release` | `--release` | `published` records only | exactly `fms-create`, `remi-mobile`, `semina` at `1..3` |
 
-**Production validation** excludes drafts and requires complete English and Indonesian content for every `published` project. Public v1 must contain exactly the three approved slugs and homepage order.
+`--check` validates without writing, and `npm run content:validate` / `npm run content:validate:release` wrap it. `release` is stricter than `production`: it additionally enforces the exact public-v1 slug set, the order those slugs must occupy, `publication: published` on every included record, and a non-null Indonesian narrative for each. `production` therefore stays usable while the public set is still incomplete.
 
-Validation includes:
+Directory scanning skips entries without `project.yaml` in `development` and `production`, so a media-only folder is not a validation error. `release` mode does not skip: it reports every missing required slug, so an absent FMS-CREATE or Semina record cannot pass as an empty set. A directory that has a record but a broken reference fails in every mode.
 
-- required fields and allowed enum values;
-- unique project slugs;
-- unique experience IDs;
-- locale completeness according to publication state and validation mode;
-- valid public URLs;
-- date and year formats;
-- allowed project statuses;
-- referenced media existence;
-- nonempty alternative text for meaningful images;
-- no public URL when repository visibility is private;
-- homepage ordering without duplicates or gaps;
-- the exact public-v1 slug set: `fms-create`, `remi-mobile`, and `semina`;
-- canonical origin equality with `https://latifian.dev`;
-- no unsupported Markdown heading structure.
+Validation currently enforces:
+
+- required fields, `schemaVersion: 1`, and allowed enum values;
+- directory name equal to `slug`, and lowercase kebab-case slugs;
+- unique `homepageOrder` values, plus the per-mode gap rule above;
+- `repository.visibility` consistency: a `private` repository must have `url: null`, a `public` one must have its URL;
+- `demoUrl` must also appear in `links` so its label can be localized;
+- `primaryLink`, when present, must reference one of the `links` URLs so the CTA cannot point at an unlabelled destination;
+- an `ongoing` timeline must not declare `end`;
+- hero media source existence on disk;
+- nonempty alternative text for the hero, and a nonempty `mediaCaption.hero` and `outcomeSummary`;
+- `seoDescription` at or under 160 characters;
+- one to three highlights, each with `label`, `value`, and `note`;
+- front matter `locale` matching the file it lives in;
+- English narrative present for every record, and Indonesian narrative present for every `published` record;
+- body vocabulary restricted to `## ` headings, paragraphs, and `- ` lists, with every section nonempty.
+
+Not yet automated even though the release contract requires them: unique experience IDs, canonical origin equality with `https://latifian.dev`, the eight-route count, `404.html`, and a check that every published page’s links resolve. Those belong to the static-generation phase and must land before release.
 
 Builds fail with file path, content key, and actionable error text. Validation must not replace missing facts with defaults that could misrepresent the project.
 
 ### 8.5 Generated content manifest
 
-`scripts/build-content.ts` converts validated sources into one deterministic, typed manifest consumed by both server and browser entries. Production generation includes only `published` content.
+`scripts/build-content.ts` writes `src/generated/content-manifest.ts`, a typed module consumed by both server and browser entries. The file is gitignored and regenerated on every validation and build, so it is never edited by hand.
 
-The generated manifest contains only public information. It must not include draft notes, evidence comments, private URLs, credentials, unpublished contact data, or file-system paths.
+Shape:
+
+- one static `import` per included hero image, emitted as a Vite asset import, so hashed filenames and bundle placement stay under the bundler instead of the manifest. The import specifier is computed with `path.relative` from the manifest directory, never by slicing the repository root or hard-coding a `../` depth, because a wrong prefix resolves outside the repository and only fails at bundler time;
+- `projects`, typed as `ProjectDetail[]`, holding the locale-independent record plus both localized payloads;
+- `findProject(slug)`, the only lookup the app uses.
+
+Consequences that must survive refactoring:
+
+- production generation includes only `published` content, so a draft record cannot reach a production route, metadata record, or browser bundle;
+- `npm run build` runs the `production` pass as its first step, before `tsc -b` and `vite build`, so even a developer machine with local drafts ships a clean artifact;
+- a production manifest may legitimately be empty; the generator emits `[]` rather than an invalid array literal;
+- records sort by `homepageOrder`, then slug, so the manifest is deterministic;
+- the manifest contains only public information: no draft notes, evidence comments, private URLs, credentials, unpublished contact data, or file-system paths.
+
+`npm run predev` regenerates in `development` mode so drafts resolve locally, and `resolveLocalRoute` in `src/lib/routes.ts` returns a project route only when `import.meta.env.DEV` is true. Production and `vite preview` therefore always render the homepage; that is intended, not a routing bug. The local preview is a review convenience for the person writing content, not a shipped route, and it disappears the moment routing and static generation replace it.
 
 ## 9. Type and Domain Model
 
 Domain types live under `src/types/` and reflect validated content rather than component props.
 
-Core concepts include:
+Core concepts are the implemented types in `src/types/content.ts`, not a planned superset:
 
 ```ts
-type Locale = 'en' | 'id'
+type Locale = "en" | "id"
 
-type ProjectStatus = 'ongoing' | 'completed' | 'prototype' | 'archived'
+type ProjectStatus = "ongoing" | "completed" | "prototype" | "archived"
 
-type PublicationState = 'draft' | 'published'
+type PublicationState = "draft" | "published"
 
-type MaintenanceState = 'maintained' | 'unmaintained' | null
+type MaintenanceState = "maintained" | "unmaintained" | null
 
-interface LocalizedPage<T> {
-  locale: Locale
-  value: T
+type ProjectBlock =
+  | { type: "paragraph"; text: string }
+  | { type: "list"; items: string[] }
+
+interface ProjectSection {
+  heading: string
+  blocks: ProjectBlock[]
 }
 
-interface ProjectSummary {
-  slug: string
+interface ProjectHighlight {
+  label: string
+  value: string
+  note: string
+}
+
+interface ProjectLocalizedContent {
+  locale: Locale
   title: string
   summary: string
+  roleSummary: string
+  seoDescription: string
+  heroCaption: string
+  outcomeSummary: string
+  highlights: ProjectHighlight[]
+  sections: ProjectSection[]
+}
+
+interface ProjectDetail {
+  slug: string
+  cardTitle: string
+  caseStudyTitle: string
+  category: string
   timeline: ProjectTimeline
   status: ProjectStatus
   maintenance: MaintenanceState
+  roles: string[]
+  teamContext: string
+  stack: string[]
   publication: PublicationState
   homepageOrder: 1 | 2 | 3 | null
-  roles: string[]
-  stack: string[]
+  links: ProjectLink[]
+  primaryLink: ProjectLink | null
   hero: ProjectMedia
-}
-
-interface ProjectTimeline {
-  start: string
-  end: string | null
-  ongoing: boolean
-  display: string
-}
-
-interface ProjectDetail extends ProjectSummary {
-  roleSummary: string
-  body: ProjectSection[]
-  links: ProjectLinks
-  media: Record<string, ProjectMedia>
+  content: {
+    en: ProjectLocalizedContent
+    id: ProjectLocalizedContent | null
+  }
 }
 ```
+
+`ProjectBlock` is the safety boundary: the renderer switches on a closed union instead of injecting HTML, so a content author cannot introduce markup. `ProjectLocalizedContent` is keyed by locale inside `ProjectDetail` rather than wrapped in a generic `LocalizedPage<T>`, because every page needs both locales at once for the switch and neither may silently fall back. `content.id` is nullable only while a record is a draft; `release` mode rejects null.
 
 Rules:
 
@@ -616,6 +684,11 @@ Allowed dependency rules:
 - TechnologyStrip
 - ContactSection
 
+**Pages**
+
+- `HomePage`: the composition that previously lived in `App`.
+- `ProjectPage`: the case-study composition, one component with local `ProjectHighlights` and `ProjectBlockContent` helpers until a second consumer justifies extraction.
+
 **Project feature**
 
 - ProjectCard
@@ -623,6 +696,12 @@ Allowed dependency rules:
 - ProjectHero
 - ProjectSectionRenderer
 - ProjectNavigation
+
+Project records carry two card-specific fields beside the detail fields: `cardStack` in `project.yaml`, and `cardSummary` in each localized narrative. `cardStack` is a non-empty list without repeated technologies, and `cardSummary` is required per locale. They exist so the landing preview never borrows the longer detail `summary` or the full detail `stack`. `toProjectCardProps` maps a record plus a caller-resolved `href` and locale into `ProjectCardProps`, returning `null` when the requested locale content is missing rather than falling back to English. The mapper also sets `metadata.totalStackCount` from `project.stack.length`, so the card overflow count reflects the full stack while the visible badges stay a curated highlight list. The count is never stored in content, so it cannot drift from the record. `ProjectCard` requires that count and passes it to `ProjectMetadata`, which renders `+N` as `totalStackCount` minus the visible badges and never renders `+0`. `selectProjectCards` returns `homepageOrder` records in order, and `selectRelatedProjectCards` returns up to two other records; both skip a record when `projectDetailPath` yields no destination.
+
+The project record carries `primaryLink`, resolved from `links`, plus an optional `ctaLabel` that overrides the default `View on <link label>` aside text. `ctaLabel` is validated as a non-empty string or `null`, defaults to `null`, and never replaces the destination itself, so a label cannot point somewhere the record does not list. `ProjectPage` receives a fully typed `ProjectDetail`, a `homePath`, and a typed `relatedProjects` array of `ProjectCardProps`. It renders the narrative from the manifest blocks rather than parsing Markdown, so no content parsing reaches the browser. `HomePage` and `ProjectPage` are sibling pages: neither imports the other, and `App` owns the route switch.
+
+`App` derives the related-project cards from the validated manifest with `selectRelatedProjectCards`: exclude the current slug, keep manifest order, convert through the same `ProjectCard` contract, and cap the list at two. A record becomes a card only when `projectDetailPath` returns a resolvable `/projects/<slug>/` destination, so the development-only resolver gate also gates these links. That means the section stays hidden in production until static route generation exists, and hidden in development while the manifest holds a single record. Card copy comes from `cardSummary` and `cardStack`, not from the detail `summary` and `stack`. The card still clamps the summary to three lines, so a card summary that outgrows the clamp is shortened at its source instead of widening the card. `SelectedWorkSection` no longer owns a project array or media imports; it receives typed `ProjectCardProps` from `App` through `HomePage`, so the homepage and related projects share one mapper.
 
 Create a new abstraction only when at least two real consumers share behavior or structure. Do not build a speculative component system before the first complete page exists.
 
@@ -822,7 +901,7 @@ Structured data:
 - Case studies may use `CreativeWork` or `SoftwareApplication` only when the schema truthfully fits the project.
 - Do not publish rating, organization, employment, or product claims solely to fill a schema field.
 
-`sitemap.xml` and `robots.txt` are generated from the same public route manifest. Draft projects never enter the route manifest, sitemap, or client bundle. A published case study may describe a project with a private repository, but no private repository URL enters public output.
+The target build generates `sitemap.xml` and `robots.txt` from the same public route manifest. Draft projects never enter the route manifest, sitemap, or client bundle. A published case study may describe a project with a private repository, but no private repository URL enters public output.
 
 ## 16. Accessibility Architecture
 
@@ -1010,6 +1089,34 @@ The finalized repository must expose these stable npm scripts, even if their int
 
 The exact generator may require minor command changes during implementation. Preserve the public script names by public v1 so agents and CI have a stable contract. Early learning commits need only expose scripts they actively use. Command changes must not replace custom build-time static generation with SPA-only rendering or provider-specific prerendering.
 
+Currently implemented subset, which is what the repository actually runs:
+
+```json
+{
+  "scripts": {
+    "predev": "npm run content:build",
+    "dev": "vite",
+    "build": "npm run content:build:production && npm run fonts:generate && tsc -b && vite build",
+    "fonts:generate": "tsx scripts/generate-fonts.ts",
+    "content:build": "tsx scripts/build-content.ts",
+    "content:build:production": "tsx scripts/build-content.ts --production",
+    "content:validate": "tsx scripts/build-content.ts --check",
+    "content:validate:release": "tsx scripts/build-content.ts --check --release",
+    "typecheck": "tsc -b",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  }
+}
+```
+
+The production content pass sits inside `build` rather than in a `prebuild` hook, so a direct `npm run build --ignore-scripts` cannot skip draft exclusion.
+
+Differences from the target contract, all intentional until their phase lands:
+
+- no `images:build`, `build:client`, `build:ssr`, `build:static`, `build:validate`, or `test` yet, because static generation, responsive image generation, and tests do not exist;
+- `typecheck` uses `tsc -b` because the repository is a project-references build with `tsconfig.app.json` and `tsconfig.node.json`; `tsc --noEmit` alone would miss the Node scripts;
+- font generation runs inside `build` under its own name rather than as a lifecycle hook.
+
 Recommended CI order:
 
 ```text
@@ -1167,7 +1274,7 @@ The existing portfolio remains publicly available until the complete bilingual v
 
 At cutover, replace the working tree of the existing `porto-latifiann` repository through normal commits on its existing history. Do not reinitialize `.git`, create an orphan branch, force-push, or replace repository history. Record the final old-site commit or deployment as a rollback point, inventory existing public URLs, and assign each one a retain, redirect, or explicit removal decision. Pre-replacement commits must remain reachable after cutover.
 
-The current local `personal-portofolio/` directory is not a Git repository. The current live repository is `vcard-personal-portfolio/`, uses branch `main`, and tracks `https://github.com/latifiann/porto-latifiann.git`. Existing `.DS_Store` modifications in the live repository are unrelated and must not be changed without a separate decision.
+The local `personal-portofolio/` directory is its own Git repository on branch `main` and currently has no configured remote; it is the development repository for this site. The live repository remains `vcard-personal-portfolio/`, uses branch `main`, and tracks `https://github.com/latifiann/porto-latifiann.git`. Existing `.DS_Store` modifications in the live repository are unrelated and must not be changed without a separate decision. Verify the live branch, remote, and worktree state before cutover instead of assuming they are unchanged.
 
 ## 26. AI Coding Agent Contract
 

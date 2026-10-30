@@ -1,4 +1,5 @@
 import Section from "../layout/Section";
+import SectionHeader from "../layout/SectionHeader";
 import { useState, useSyncExternalStore } from "react";
 import { BsFillBriefcaseFill } from "react-icons/bs";
 import { FaGraduationCap } from "react-icons/fa6";
@@ -123,17 +124,11 @@ function ExperienceSection() {
       labelledBy="experience-title"
       className="homepage-section-spacing"
     >
-      <header className="mx-auto max-w-3xl text-center">
-        <p className="font-serif text-xl italic text-(--color-ink-muted)">
-          / Career Journey
-        </p>
-        <h2
-          id="experience-title"
-          className="mt-(--space-3) text-4xl leading-tight font-semibold tracking-tight text-(--color-ink) md:text-5xl"
-        >
-          Experience
-        </h2>
-      </header>
+      <SectionHeader
+        titleId="experience-title"
+        eyebrow="/ Career Journey"
+        title="Experience"
+      />
 
       <ol className="experience-timeline">
         {timeline.map((entry) => (

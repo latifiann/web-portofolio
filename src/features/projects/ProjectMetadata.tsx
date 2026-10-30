@@ -1,14 +1,17 @@
 type ProjectMetadataProps = {
+  /** Highlighted badges for the card, not the full project stack. */
   stack: string[];
+  /** Length of the full project stack, used for the overflow count. */
+  totalStackCount: number;
 };
 
-function ProjectMetadata({ stack }: ProjectMetadataProps) {
+function ProjectMetadata({ stack, totalStackCount }: ProjectMetadataProps) {
   if (stack.length === 0) {
     return null;
   }
 
   const visibleStack = stack.slice(0, 3);
-  const remainingCount = stack.length - visibleStack.length;
+  const remainingCount = totalStackCount - visibleStack.length;
 
   return (
     <ul

@@ -1,0 +1,55 @@
+schemaVersion: 1
+slug: semina
+publication: draft
+homepageOrder: 3
+cardTitle: Semina
+caseStudyTitle: Semina
+category: Web App
+timeline:
+  start: "August 2026"
+  end: "October 2026"
+  ongoing: false
+  display: Aug-Oct 2026
+status: prototype
+maintenance: null
+roles:
+  - Full-Stack Developer
+teamContext: Personal project
+stack:
+  - JavaScript
+  - React
+  - React Bootstrap
+  - Redux
+  - Redux Thunk
+  - Node.js
+  - Express.js
+  - MongoDB
+  - Mongoose
+  - JWT
+  - bcrypt
+  - Nodemailer
+  - Mustache
+  - Multer
+cardStack:
+  - React
+  - Redux
+  - Node.js
+  - Express
+  - MongoDB
+repository:
+  visibility: public
+  url: https://github.com/latifiann/backend-semina
+demoUrl: null
+primaryLink: https://github.com/latifiann/backend-semina
+ctaLabel: View Repository
+links:
+  - label: GitHub (backend repository)
+    url: https://github.com/latifiann/backend-semina
+    kind: repository
+media:
+  hero:
+    source: ./media/semina.webp
+    width: 1280
+    height: 800
+    aspectRatio: 1.6
+    focalPosition: center

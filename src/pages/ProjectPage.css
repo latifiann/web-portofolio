@@ -1,0 +1,66 @@
+/* Project detail page: scoped background accents and panel elevation. */
+
+.project-page {
+  position: relative;
+  isolation: isolate;
+}
+
+.project-page::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: 60rem;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse 42% 26% at 100% 4%,
+      rgb(191 219 254 / 0.5),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 38% 22% at 0% 14%,
+      rgb(219 234 254 / 0.46),
+      transparent 74%
+    );
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 46%,
+    transparent 72%
+  );
+
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 46%,
+    transparent 72%
+  );
+}
+
+.project-highlights-band {
+  position: relative;
+  isolation: isolate;
+}
+
+.project-highlights-band::before {
+  content: "";
+  position: absolute;
+  inset: -2rem 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background: radial-gradient(
+    ellipse 52% 130% at 50% 50%,
+    rgb(219 234 254 / 0.42),
+    transparent 74%
+  );
+}
+
+.project-panel {
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.04),
+    0 8px 24px rgb(15 23 42 / 0.06);
+}

@@ -1,8 +1,8 @@
 ---
 name: Latifian Editorial Portfolio
-version: 2.26.34
+version: 2.26.44
 status: canonical
-last_updated: 2026-10-26
+last_updated: 2026-10-30
 description: Canonical UI/UX and implementation specification for latifian.dev.
 fonts:
   sans: Geist
@@ -304,7 +304,7 @@ box-shadow:
   0 8px 24px rgb(15 23 42 / 0.06);
 ```
 
-Do not stack large diffuse shadows. Cards must not resemble floating SaaS dashboard widgets.
+Do not stack large diffuse shadows. Cards must not resemble floating SaaS dashboard widgets. The project-intro chip exception is a single `1px` contact shadow, not an elevation layer. Project highlight cards and detail aside panels are the only large surfaces allowed the two-layer shadow above, because they separate short scannable metadata from long prose; homepage cards keep their existing treatment.
 
 ## 7. Navigation
 
@@ -425,7 +425,7 @@ Selected Work is the primary evidence section. It must present projects as conci
 - The landing preview shows at most six projects: at most three on mobile, at most four on tablet, and up to six on desktop.
 - Current verified set contains exactly three, in this order: FMS-CREATE, ReMi Mobile, and Semina.
 - Every card links to a complete bilingual case study; card-only projects are not shown.
-- Item visibility across an unset project count is CSS-driven (`hidden lg:block`), never `window.innerWidth`. Current three-item set renders identically at every width.
+- Item visibility across an unset project count is CSS-driven, never `window.innerWidth`. The fourth slot appears from the tablet breakpoint (`hidden md:block`) because tablet capacity is four, and slots five and six appear only on desktop (`hidden lg:block`). Current three-item set renders identically at every width.
 - Prioritize relevance, engineering depth, clear ownership, and credible outcomes.
 - Do not fill space with weaker projects.
 
@@ -437,7 +437,7 @@ Every landing card contains:
 2. project name and approved timeline on one row;
 3. role and project context (company/type) on one compact line;
 4. one-sentence product or problem description, visually limited to three lines;
-5. compact technology badges, at most three visible plus an overflow count.
+5. compact technology badges: at most three curated badges plus an overflow count derived from the full project stack.
 
 Landing cards do not render a media qualification note; visible card copy and alternative text preserve the contribution boundary, and full media qualification belongs to the detail case study. Card detail is intentionally general: full problem statement, responsibilities, architecture, decisions, challenges, and outcomes live on the detail page, not the landing card.
 
@@ -449,7 +449,8 @@ The project name and contribution must be understandable without inspecting the 
 - Tablet: two columns; at most four.
 - Mobile (`<768px`): horizontal CSS scroll-snap rail; at most three projects, with one full-width card aligned inside the content margins at rest. The scroll viewport reaches the screen edges during a swipe; inline padding and scroll padding use the mobile container-padding token so snapped cards retain the `20px` inset. Keep the `16px` inter-card gap and thin scrollbar. Above the rail, show the localized swipe hint with decorative `pi/PiHandSwipeLeftLight` from `react-icons/pi`. The `Explore all N projects` link stays below and outside the rail. No autoplay, duplicated cards, carousel dependency, or viewport JavaScript.
 - The rail is keyboard-focusable with a visible focus indicator and an accessible name from the section heading; project links remain reachable in DOM order. Swiping and links work without JavaScript. Verify focused cards scroll into view without clipping.
-- Card order comes from the validated content manifest, not CSS positioning.
+- Card order comes from the validated content manifest, not CSS positioning. Card copy, badges, and preview metadata come from that record as well, so a project shows the same card content in Selected Work and in related projects.
+- When the manifest yields no card, the whole Selected Work section is absent, including its heading, swipe hint, and card count. The `Explore all N projects` action renders only when the curated project index route exists; a reserved but unreachable path never becomes a visible action.
 - Keep metadata attached to its project when reflowing.
 - Cards share the same text hierarchy, padding, radius, and state behavior.
 
@@ -476,6 +477,7 @@ The project name and contribution must be understandable without inspecting the 
 
 - Compact layout: title and timeline on one row (vertically centered against each other); role and context on one line; summary clamped to three lines; stack badges at the foot.
 - The card stack badges and their overflow count (`+N`) are full-pill borderless chips on a `chip` fill with slate text in `12px` regular sans; the overflow count (`+N`) uses `ink-secondary` text, matching the technology badges.
+- The visible badges are a curated highlight list, while `+N` counts the full project stack minus those visible badges. The count therefore reflects the whole stack, not the leftover highlight entries, and a badge label may be a card-friendly alias of a stack entry (`Modular architecture` for `Modular monolith`, `SSE` for `Server-Sent Events`) without adding an extra count. `+0` never renders.
 - Card uses a flat surface: `canvas` background, `border`, `16px` radius, no permanent blue glow or gradient; structure comes from spacing and dividers, not nested panels.
 - The card shell carries uniform `16px` padding; the preview image sits inside that padding so its inset matches the text body, and the image container uses `rounded-lg`.
 - Body spacing stays tight but readable; do not stretch metadata vertically to fill the card.
@@ -509,7 +511,7 @@ The project name and contribution must be understandable without inspecting the 
 
 ## 11. Project Case Study Pages
 
-Project detail pages use the same global system and should communicate engineering reasoning.
+Project detail pages use the same global system as the homepage and should communicate engineering reasoning. The approved composition baseline is the reference capture in `docs/references/` (`code.html` plus its screenshot); it governs block order, hierarchy, and the narrative-plus-aside split only. Its separate palette, fonts, icon library, remote CDN assets, and inline preview script are reference artifacts, not product requirements.
 
 Recommended order:
 
@@ -525,7 +527,53 @@ Recommended order:
 10. Outcome or evidence
 11. Reflection and next steps
 
-Do not invent outcomes, metrics, responsibilities, clients, or technologies. Mark unavailable evidence honestly or omit it.
+Do not invent outcomes, metrics, responsibilities, clients, or technologies. Mark unavailable evidence honestly or omit it. An omitted section is correct when its facts are unverified; an empty template block is not.
+
+### Page composition
+
+- One constrained content container per page, narrower than the homepage visual canvas so prose keeps a readable measure.
+- A back link returns to Selected Work (`/#projects`) while `/projects/` does not exist; it never points at a reserved but unreachable route.
+- Introduction: category and timeline chips, one `h1`, the role line in `primary`, then the summary paragraph. No eyebrow above the chips. Status and maintenance remain in the content record and in the highlight copy, but they are not rendered as intro chips.
+- The intro chips carry a `0 1px 2px rgb(15 23 42 / 0.08)` shadow because their fill matches the page canvas at this scale; this is the one scoped shadow exception for badges, and it must not spread to homepage chips. The back link and the chip row use one `--space-4` gap, tighter than the homepage section rhythm, because they read as one navigation unit.
+- Aside panel headings use sans `Geist`, not mono, and carry no leading slash, so the detail page does not turn every label into technical decoration.
+- Then the hero figure, up to three highlight cards, and the narrative column with a supporting aside.
+- Highlight cards and aside panels carry the standard two-layer surface shadow so they read as distinct surfaces against the page. The hero frame and narrative sections stay flat; the shadow must never turn the page into stacked floating widgets.
+- Blue accent glow is scoped to the intro/hero region and the highlight band. It comes from pseudo-elements behind the content, fades before long-form prose, and never sits behind body paragraphs or individual links.
+- Related projects close the page after the narrative and aside: a top border, the `Explore Related Projects` heading, a `Back to selected work` link returning to `/#projects`, then the cards. Reuse `ProjectCard` unchanged and show at most two in manifest order, excluding the current project. One column below `768px`, two columns from `768px`. One resolvable destination renders one card with no empty slot; zero destinations hides the whole section, including its heading. No placeholder card, no disabled control, no dummy route.
+
+### Hero media
+
+- Exactly one hero image per project; it is required for every published case study.
+- No gallery or thumbnail switcher until a project has at least two approved media assets. Once a gallery exists, each control is a focusable button with a visible selected state, the main caption and alternative text follow the active media, and controls stay inside the content container at every width.
+- No autoplay, no hover-only switching, and no state conveyed by color alone.
+- The caption renders as visible text below the figure, not only as an overlay label, because it carries the media qualification from `CONTENT.md`. Alternative text describes visible content and does not duplicate the caption. The visible caption is the only place that qualification is repeated; the aside does not duplicate it as a scope note.
+- A failed image must not hide the caption, summary, or narrative.
+
+### Highlight cards
+
+- Two or three cards, each with a short label, a short value, and one supporting sentence.
+- Values come from the project record or localized approved content. Reference-style metric cards are not a template requirement; never add a number to fill a slot.
+- Cards share one height on desktop and stack on mobile.
+
+### Narrative and aside
+
+- Narrative sections are semantic `section` elements with `h2` headings, ordinary paragraphs, and lists; the source vocabulary follows the project record rather than a fixed set of empty headings.
+- Aside panels cover the technical stack and an approved outcome summary. Their headings are sans `Geist` uppercase labels; mono is reserved for the remaining compact metadata elsewhere.
+- The aside CTA is a solid `ActionLink` with `color-ink` background and `color-canvas` text. It renders only when the project record supplies an approved `primaryLink`. Its label is `View on <link label>` by default, and a record may supply an approved `ctaLabel` instead when the destination is a repository, so `View Repository` does not read as a store or demo action. No placeholder, disabled state, or invented "live demo" claim.
+- Secondary public links, when they exist, stay as plain text links below the CTA. Private repositories are never linked. The aside is a supporting surface, never the only place for essential evidence.
+- The aside becomes sticky only at desktop width. It falls into normal flow on tablet and mobile so nothing is trapped behind a fixed column.
+- External links open with safe attributes and announce the new tab. Private repositories are never linked.
+
+### Responsive composition
+
+Composition order stays mobile semantic flow, then tablet, then desktop, as defined in Section 17. Desktop review priority is a review gate, not a reason to skip the mobile composition.
+
+### Case-study boundaries
+
+- A page presents the personal contribution and states team outcomes as team outcomes.
+- Media qualification wording from `CONTENT.md` travels with the visual it qualifies.
+- No fabricated technical rationale: when a decision's reason is unrecorded, the page omits that explanation instead of inventing it.
+- Pending sections stay absent until their evidence exists.
 
 The representative hero visual is required for every published case study. Galleries, videos, architecture diagrams, and additional media are optional. Missing optional media must not hide project text or leave empty controls. Prefer a normal external video link when an embed does not add essential understanding.
 

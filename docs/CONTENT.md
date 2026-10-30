@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: content-specification
-version: 1.10.4
+version: 1.10.19
 status: canonical
-last_updated: 2026-10-14
+last_updated: 2026-10-30
 owner: Latifian Iman
 default_locale: en
 supported_locales:
@@ -63,6 +63,7 @@ No component, generator, or writer may convert `pending`, `internal-only`, or `p
 - Explain product context, contribution, decision, and result before listing tools.
 - Preserve professional titles in English in both locales.
 - Avoid buzzwords, inflated seniority, and unsupported metrics.
+- Do not use semicolons to join independent clauses. Split the sentence or use a comma, because semicolon-heavy prose reads as generated copy rather than natural writing.
 
 ### Attribution
 
@@ -168,6 +169,8 @@ English is the default locale. Indonesian is a complete equivalent locale, not a
 | View details | Lihat detail |
 | Hide details | Sembunyikan detail |
 | Swipe to see more projects | Geser untuk melihat proyek lainnya |
+| Explore Related Projects | Jelajahi Proyek Terkait |
+| Back to selected work | Kembali ke karya pilihan |
 
 Preferred Indonesian technical terms include `tugas`, `pengingat`, `tenggat`, `pengujian manual`, `pemulihan sesi`, and `penyimpanan token yang aman`. Keep BLoC, Dio, REST API, SSE, Google Maps, Flutter, Clean Architecture, and BuildWithAngga unchanged.
 
@@ -361,9 +364,9 @@ The resume source may contain contact details that are not permitted elsewhere o
 
 | Slug | Card label | Case-study heading | Category | Timeline | Lifecycle | Role | Repository |
 |---|---|---|---|---|---|---|---|
-| `fms-create` | FMS-CREATE | FMS-CREATE | Fleet management | Dec 2025-Jul 2026 | Completed / Selesai | Mobile Developer | Private |
-| `remi-mobile` | ReMi Mobile | ReMi - Remind Me | Academic mobile productivity | 2024 | Completed, unmaintained / Selesai, tidak dipelihara | Mobile Developer | Private team repository |
-| `semina` | Semina | Semina | Event-management backend API | Aug-Sep 2026 | Ongoing learning project / Proyek pembelajaran aktif | Backend Developer | Public |
+| `fms-create` | FMS-CREATE | FMS-CREATE | Mobile App | Dec 2025-Jul 2026 | Completed / Selesai | Mobile Developer | Private |
+| `remi-mobile` | ReMi Mobile | ReMi - Remind Me | Mobile App | 2024 | Completed, unmaintained / Selesai, tidak dipelihara | Mobile Developer | Private team repository |
+| `semina` | Semina | Semina | Web App | Aug-Oct 2026 | Prototype learning project / Prototipe proyek pembelajaran | Full-Stack Developer | Public backend |
 
 All three need complete English and Indonesian project content before `publication: published`.
 
@@ -379,6 +382,8 @@ Landing cards show a short context label identifying the project's company or ty
 
 In-progress or project-status wording (for example `ongoing`) is internal card metadata, not public card copy. It may be stored in the content model but must not render on landing cards.
 
+Category values are the visible project-type label on detail intro chips and on related-project cards, so they match the preview type label for that project.
+
 ### Project preview type labels
 
 Preview images carry a short neutral badge identifying the project type as shown on the card. Approved values:
@@ -387,7 +392,7 @@ Preview images carry a short neutral badge identifying the project type as shown
 |---|---|
 | FMS-CREATE | Mobile App |
 | ReMi Mobile | Mobile App |
-| Semina | Backend API |
+| Semina | Web App |
 
 ### Landing card technology badges
 
@@ -395,9 +400,9 @@ Preview images carry a short neutral badge identifying the project type as shown
 |---|---|
 | FMS-CREATE | Flutter, Modular architecture, REST API, SSE, Google Maps |
 | ReMi Mobile | Flutter, BLoC, REST API |
-| Semina | MongoDB, Express, React, Node.js |
+| Semina | React, Redux, Node.js, Express, MongoDB |
 
-Landing cards show at most three technology badges plus an overflow count (for example `Flutter`, `Modular architecture`, `REST API`, `+2`). The full stack remains in the project record and appears on the detail page. Landing cards do not render a media qualification note; contribution and media boundaries stay preserved through visible card copy, role, title, and alternative text, and full qualification belongs to the detail case study.
+Landing cards show at most three curated technology badges plus an overflow count, and the count is derived from the full stack rather than from the badge list. FMS-CREATE shows `Flutter`, `Modular architecture`, `REST API`, and `+7`, because its record lists ten stack entries and three badges are visible. ReMi Mobile shows `Flutter`, `BLoC`, `REST API`, and `+4`. Semina shows `React`, `Redux`, `Node.js`, and `+11`. The visible card summary lives in the localized `cardSummary` field and the visible badges live in the record's `cardStack`. Both are separate from the detail `summary` and `stack`, so the preview stays short while the case study keeps its full evidence, and the homepage and related-project cards cannot drift apart. A badge may use a card-friendly alias for a stack entry, such as `Modular architecture` for `Modular monolith`, `SSE` for `Server-Sent Events`, or `Express` for `Express.js`. An alias never adds to the count. The full stack remains in the project record and appears on the detail page. Landing cards do not render a media qualification note; contribution and media boundaries stay preserved through visible card copy, role, title, and alternative text, and full qualification belongs to the detail case study.
 
 ### Approved project card copy
 
@@ -405,18 +410,25 @@ Landing cards show at most three technology badges plus an overflow count (for e
 |---|---|---|
 | FMS-CREATE | A passenger-side Flutter application for electric-vehicle fleet operations, built with modular architecture, REST APIs, SSE, and Google Maps. | Aplikasi Flutter sisi penumpang untuk operasional armada kendaraan listrik, dibangun dengan arsitektur modular, REST API, SSE, dan Google Maps. |
 | ReMi Mobile | An academic task and reminder application for students, delivered as a mobile project and published by the team on Google Play. | Aplikasi pengelolaan tugas dan pengingat untuk mahasiswa, dikembangkan sebagai proyek akademik mobile dan dipublikasikan oleh tim di Google Play. |
-| Semina | A backend learning project for event management and ticket checkout, extended from BuildWithAngga material. | Proyek pembelajaran backend untuk manajemen acara dan checkout tiket, berangkat dari materi BuildWithAngga. |
+| Semina | A learning project combining a React event-management CMS with a backend ticket checkout API, extended from BuildWithAngga MERN course material. | Proyek pembelajaran yang menggabungkan CMS manajemen event berbasis React dengan API checkout tiket, dikembangkan dari materi kelas MERN BuildWithAngga. |
 
 ## 15. FMS-CREATE Content Boundary
 
 ### Approved facts
 
 - It is a completed final project.
-- Public role: Mobile Developer.
+- Public role: Mobile Developer. The detail-page role line pairs it with the project context: `Mobile Developer · Final academic project`.
 - I developed the passenger-side application individually within a collaborative FMS ecosystem.
 - The mobile application uses Flutter, modular architecture, REST APIs, SSE, Google Maps, session restoration, and secure storage.
 - Manual and automated testing informed implementation.
 - The Android build is internal; the repository is private and no public demo is available.
+- Detail-page stack: `Dart`, `Flutter`, `Riverpod`, `GoRouter`, `Dio`, `REST API`, `Server-Sent Events`, `Google Maps`, `Flutter Secure Storage`, `Modular monolith`. This is the confirmed application stack, not a claim about every dependency in the private repository.
+- Confirmed architecture shape: one runner module, five feature modules, and four core modules, composed through module registration at build time and at initialization.
+- Confirmed contribution scope: the passenger mobile application and the whole operator variant prototype. Shared implementation covers OTP authentication, session recovery, mobile dashboard, vehicle tracking with Google Maps, REST API integration for initial loading, SSE for live location updates, stream lifecycle handling, exponential backoff, secure storage, network-aware connection recovery, shared infrastructure, and reusable UI components.
+- Architecture purpose, owner-confirmed: the modular monolith allows several application variants to be assembled from module combinations. Selection happens before the APK build and at initialization, never as runtime module installation.
+- `Nusantara EV Connect` is the orchestration application: a teammate's tool that offers the module picker and automates the APK build. It is team work and not part of my contribution.
+- The operator variant is a prototype. Neither variant has an app-store release.
+- Maintenance state is unconfirmed, so the record leaves it unspecified instead of reusing the ReMi `unmaintained` label.
 
 ### Approved-with-qualification
 
@@ -428,8 +440,10 @@ Existing hero media may be used with attribution. Any dashboard shown in the vis
 - Public app-store release.
 - Production-ready fleet system.
 - Proven ETA accuracy, long-duration SSE reliability, or complete offline resilience.
-- Dynamic plugin architecture.
+- Dynamic plugin architecture or runtime module installation.
+- Ownership of the `Nusantara EV Connect` orchestration tool.
 - Ownership of the web dashboard.
+- A production-ready operator variant.
 
 ### Pending narrative inputs
 
@@ -439,6 +453,18 @@ Existing hero media may be used with attribution. Any dashboard shown in the vis
 - one public limitation;
 - reflection and next step;
 - final EN/ID hero caption and alternative text.
+
+### Detail draft status (local)
+
+A local English detail draft exists at `content/projects/fms-create/` as `project.yaml` plus `en.md` with `publication: draft`. It is derived only from the owner CV entry, the approved facts above, and the project's architecture documentation.
+
+- Rendered sections: two only, `Overview` and `My responsibilities`.
+- Highlights cover the two mobile variants, the modular monolith architecture with module selection before the APK build, and the internal build status. No metric card is added.
+- Approved detail aside outcome summary: `The passenger app and the operator prototype were completed as the final academic project, with manual and automated checks for app behaviour and architecture rules. Both Android builds stay internal.`
+- Approved visible hero caption: `The visual presents the broader FMS-CREATE ecosystem. The dashboard interface belongs to the team's fleet operations context. This case study focuses on the mobile variants I built.`
+- The orchestration tool `Nusantara EV Connect` appears only as team context, because a teammate built it.
+- The record has no public CTA, demo, or repository link, so the aside renders stack and outcome panels only.
+- The draft is local: it must not enter a production manifest, route, metadata record, or browser bundle before the bilingual contract is satisfied.
 
 ## 16. ReMi - Remind Me Content Boundary
 
@@ -451,19 +477,26 @@ Existing hero media may be used with attribution. Any dashboard shown in the vis
 - The mobile repository is private and team-owned.
 - The team published the mobile application on Google Play.
 - My approved contribution scope includes task flow, BLoC-related work, Flutter UI screens, REST API integration, and the coin-and-theme gamification flow.
-- The following are team awards, not individual awards: `Top 1 Best Mobile`, `Top 3 Best UX`, and `Juara 3 Best Team`.
+- Confirmed gamification mechanics: users earn coins by completing tasks and spend them on in-app assets such as themes.
+- Confirmed personal gamification contribution: UI, BLoC state management, API integration, and theme assets with colors matched to each theme. Backend reward logic is not claimed.
+- Confirmed review feedback is qualitative: some users said the coin rewards made the app more interesting and encouraged task completion. This is not evidence of measured engagement, retention, or productivity gains.
+- Detail-page stack: `Dart`, `Flutter`, `BLoC`, `Dio`, `REST API`, `Clean Architecture`, `Lottie`. This is the confirmed application stack, not a claim about every dependency in the private repository.
+- The following are team awards, not individual awards: `Top 1 Best Mobile`, `Top 3 Best UX`, and `Third place Best Team`.
+- Approved detail aside outcome summary: `The team published ReMi on Google Play and received Top 1 Best Mobile, Top 3 Best UX, and Third place Best Team at AT Fest End Year 2024.`
+- Approved public CTA label: `View on Google Play`, pointing at the approved Play listing URL. It is a navigation link, not a claim that every app flow still works.
+- On `2026-10-27` the owner confirmed that the team's backend was still online. This is a single point-in-time confirmation: it does not prove that every flow works end to end, that the app is maintained, or that the Play listing still describes current behaviour.
 
 ### Media qualification
 
 The existing ReMi image is used to distinguish the separate web deliverable. Landing cards render the media without a visible qualification note; card copy (`mobile project`), role, title, and alternative text preserve that the work covers ReMi Mobile, and full qualification lives on the detail page:
 
-> The visual presents the broader ReMi product context. The laptop interface belongs to the separate ReMi Web deliverable; this case study focuses on my ReMi Mobile contribution.
+> The visual presents the broader ReMi product context. The laptop interface belongs to the separate ReMi Web deliverable. This case study focuses on my ReMi Mobile contribution.
 
 ### Prohibited claims
 
 - Sole ownership of ReMi.
 - iOS availability inferred from device mockups.
-- Gamification improved user consistency or productivity.
+- Gamification produced measured engagement, retention, productivity, or completion gains.
 - Awards were independently verified by the PENS event article.
 - Active maintenance inferred from the Google Play listing.
 - Automated testing without direct evidence.
@@ -476,20 +509,35 @@ The existing ReMi image is used to distinguish the separate web deliverable. Lan
 - problem-discovery evidence;
 - rationale for BLoC and architecture choices;
 - concrete challenge, trade-off, and manual-test scope;
-- current backend functionality;
 - final bilingual media caption and alternative text.
+
+`current backend functionality` is no longer open as a status question; the `2026-10-27` owner confirmation replaces it and is bounded as described above.
+
+### Detail draft status (local)
+
+A local English detail draft exists at `content/projects/remi-mobile/` as `project.yaml` plus `en.md` with `publication: draft`. It is derived only from the owner CV entry for ReMi Mobile and the approved facts above.
+
+- Rendered sections: two only, `Overview` and `My responsibilities`. Publication and awards live in the aside Outcome panel and in the intro summary. Scope boundaries are folded into the two sections.
+- Deferred: technical decisions and rationale, quantified testing scope and device matrix, month-level timeline, team role breakdown, review participant count and method, Indonesian narrative.
+- The hero reuses `remi-mobile.webp` with the approved cross-deliverable caption and a non-duplicating alternative text.
+- Google Play publication and the three awards remain team outcomes.
+- The draft is local: it must not enter a production manifest, route, metadata record, or browser bundle before the bilingual contract is satisfied.
 
 ## 17. Semina Content Boundary
 
 ### Approved facts
 
-- Public scope is backend API only.
-- Lifecycle: ongoing learning project.
-- Public role: Backend Developer.
-- Public repository: `https://github.com/latifiann/backend-semina`.
-- There is no public deployment and the project is not production-ready.
-- Scope includes participant authentication, CMS-facing APIs, transactional checkout, email workflows, uploads, and centralized error handling.
-- The project is derived from BuildWithAngga learning material.
+- Public scope: a React event-management CMS plus a backend API for participant authentication, orders, and ticket checkout. Accepted on `2026-10-30`.
+- Case-study role line: `Full-Stack Developer · Personal project`.
+- Timeline: `Aug-Oct 2026`, taken from Git history. The end month is the last recorded work, not a confirmed completion or active-development state.
+- Record status is `prototype`, with maintenance unspecified, because completion and maintenance are both unconfirmed.
+- Public repository destination: `https://github.com/latifiann/backend-semina`. The frontend repository has no configured remote, so no frontend link is published.
+- Approved aside CTA label: `View Repository`, pointing at that backend repository. It is a navigation link, not a claim that the frontend source is public.
+- There is no verified public deployment and the project is not production-ready.
+- CMS scope includes category, speaker, payment-method, and event CRUD, search with debounce plus category and speaker filters, image upload, dynamic event forms, ticket pricing, stock, active status, and Draft or Published state, session persistence, role-based route guards, and the order list with pagination and date-range filtering.
+- Backend scope includes separate CMS and participant tokens, bcrypt hashing, role-based authorization for owner, organizer, and admin, organizer-scoped data access, MongoDB transactional checkout with server-side pricing, OTP and checkout email, uploads, and centralized error handling.
+- The participant-facing interface remains a static HTML template. Registration and checkout through a participant web interface are not integrated.
+- The project is derived from BuildWithAngga course material, `Full Stack Developer — MERN Website Event`. The class URL stays unverified.
 
 ### Mandatory attribution
 
@@ -502,13 +550,13 @@ The class title and URL remain pending and must be added when found.
 
 ### Media rule
 
-`semina.webp` is owner-approved for publication with qualification. It represents event-platform context from authorized learning material; it is not evidence of personal frontend authorship. The Semina case study remains limited to backend API work. Landing cards render the media without a visible qualification note; card copy (`backend learning project ... BuildWithAngga material`), role (`Backend Developer`), and alternative text preserve the boundary, and full qualification lives on the detail page.
+`semina.webp` is owner-approved for publication with qualification. It represents event-platform context from authorized learning material, not the CMS interface built for this project. The case study covers the React CMS and backend API, and the image must never imply authorship of the landing page shown. Landing cards render the media without a visible qualification note; card copy, role (`Full-Stack Developer`), and alternative text preserve the boundary, and full qualification lives on the detail page.
 
 Detail-page caption:
 
-> EN: The visual represents the event-platform context from authorized learning material; this case study focuses on my backend API work, not frontend authorship.
+> EN: The visual represents the event-platform context from authorized learning material. It is not a screenshot of the CMS I built. This case study focuses on my React CMS and backend API work.
 >
-> ID: Visual ini merepresentasikan konteks platform acara dari materi pembelajaran yang penggunaannya telah diizinkan; studi kasus ini berfokus pada pekerjaan backend API saya, bukan karya frontend saya.
+> ID: Visual ini merepresentasikan konteks platform acara dari materi pembelajaran yang penggunaannya telah diizinkan. Ini bukan tangkapan layar CMS yang saya bangun. Studi kasus ini berfokus pada pekerjaan CMS React dan backend API saya.
 
 Approved alternative text:
 
@@ -519,23 +567,33 @@ Approved alternative text:
 ### Prohibited claims
 
 - Full event-platform ownership.
-- Complete CMS product.
-- Participant event search.
+- Complete CMS product, including a Participants page, dashboard analytics, or every route from the course scope.
+- Participant event search, or participant registration and checkout through a web interface.
 - Production-ready API or public deployment.
-- Automated test suite.
+- Automated test suite, or verified frontend build, browser, endpoint, SMTP, transaction, rollback, and concurrency results.
 - Payment gateway or online payment processing.
 - Proven overselling prevention.
-- Secure OTP controls or complete organizer isolation.
-- All CMS endpoints authenticated.
+- Secure OTP controls or organizer isolation proven across accounts. The organizer scope fix is a code change, not a passed cross-account test.
+- All CMS endpoints authenticated, or frontend route guards treated as a security boundary.
 - Frontend-template authorship.
+- A verified public frontend repository link.
 
 ### Pending narrative inputs
 
-- BuildWithAngga class title and URL;
-- starter-code boundary;
-- source commit represented by the case study;
-- publication-safe media;
-- concrete challenge, trade-off, verified outcome, reflection, and next step.
+- BuildWithAngga class URL;
+- starter-code boundary, beyond the course-scope attribution;
+- concrete challenge, trade-off, verified outcome, reflection, and next step;
+- completion and maintenance confirmation.
+
+### Detail draft status (local)
+
+A local English detail draft exists at `content/projects/semina/` as `project.yaml` plus `en.md` with `publication: draft`.
+
+- Rendered sections: two only, `Overview` and `My responsibilities`.
+- Highlights cover the CMS and checkout API contribution, the implemented workflows, and the learning-project context. No metric card is added.
+- The intro and aside reuse the approved role line, timeline, and outcome summary. The backend repository CTA uses the approved override label `View Repository`, because a GitHub destination should not read as a store or demo action.
+- The visible hero caption states that the image is not a screenshot of the built CMS.
+- The draft is local: it must not enter a production manifest, route, metadata record, or browser bundle before the bilingual contract is satisfied.
 
 ## 18. Media and Attribution Policy
 

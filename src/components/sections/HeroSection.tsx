@@ -25,8 +25,8 @@ export default function HeroSection() {
             <img
               src={portraitSrc}
               alt="Portrait of Latifian Iman"
-              width={864}
-              height={1080}
+              width={1084}
+              height={1451}
               fetchPriority="high"
               className="hero-portrait w-auto object-contain"
             />

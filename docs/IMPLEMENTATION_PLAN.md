@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.10.43
+version: 1.10.62
 status: canonical
-last_updated: 2026-10-26
+last_updated: 2026-10-30
 owner: Latifian Iman
 testing_mode: manual-first
 ---
@@ -285,11 +285,11 @@ Manual check:
 
 ## Phase 7: Structured Content and Validation
 
-Status: pending
+Status: in progress (2026-10-27). Project records, localized front matter, schema validation, and the deterministic manifest exist for the ReMi draft. Site, locale-string, experience, and capability sources are still inline in components, and no tests exist yet.
 
 Deliverables:
 
-- add `yaml`, `gray-matter`, `zod`, and `tsx` only when scripts consume them;
+- add `yaml`, `zod`, and `tsx` only when scripts consume them; skip `gray-matter` and a Markdown renderer because the restricted body parser is local and the browser renders typed blocks;
 - create schemas and source files for site, locale strings, experience, capabilities, and projects;
 - add deterministic content-manifest generator;
 - distinguish `draft` from `published`, facts from localized prose;
@@ -306,7 +306,7 @@ Checks: `npm run content:validate`, `npm run test`, `npm run lint`, `npm run typ
 
 ## Phase 8: ReMi Case-study Vertical Slice
 
-Status: pending
+Status: in progress (2026-10-27). Composition, content, and a development-only preview route exist, and static checks pass. Owner desktop review is the open gate.
 
 Deliverables:
 
@@ -758,6 +758,202 @@ Open items, unchanged by this checkpoint:
 - Unit 5 still owns the routing, tablet four-slot, and repository-fact drift, and should also reconcile the portrait `width`/`height` hint;
 - sub-pixel breakpoint bands stay unmeasured.
 
+### Unit 4 — Contact and shared heading (composition extraction)
+
+Status: complete (2026-10-26). Checkpoints A–C recorded. No visual, DOM, copy, ID, or semantic change.
+
+Files:
+
+- `src/components/sections/ContactSection.tsx` (new) — Contact moved out of `src/App.tsx`;
+- `src/components/layout/SectionHeader.tsx` (new) — shared eyebrow and `h2` for Selected Work, Experience, and Capabilities;
+- `src/App.tsx` — renders `<ContactSection />`; the `ActionLink` import that only Contact used was removed, while `PageContainer` stays for About and Experience;
+- `src/components/sections/SelectedWorkSection.tsx`, `ExperienceSection.tsx`, `CapabilitiesSection.tsx` — consume `SectionHeader`; project, timeline, and capability arrays untouched.
+
+Naming: `SectionHeader` was chosen because `ARCHITECTURE.md` Section 10.2 already lists it under layout components and lists `ContactSection` under homepage sections. No owner document change was needed.
+
+Checkpoint A — Contact extraction:
+
+- the section element, `PageContainer`, inner wrapper, `h2`, paragraph, CTA row, and both `ActionLink` calls were moved without edits; classes, order, `id="contact"`, `aria-labelledby="contact-title"`, mailto, resume URL, `target`, `rel`, and `aria-label` are unchanged;
+- probe over `320`, `390`, `768`, `820`, `900`, `1023`, `1024`, and `1280` captured the rendered element signature, text, ARIA wiring, boxes, and `24` computed properties for `22` selectors: `0` differences before versus after, including page height and Hero/About gaps.
+
+Checkpoint B — shared heading:
+
+- one `SectionHeader` renders `header > p + h2` with the existing class strings; `titleId`, `eyebrow`, and `title` are required props, and the eyebrow carries its own `/` so copy stays explicit;
+- consumers keep `selected-work-title`, `experience-title`, and `skills-title`, so every `aria-labelledby` reference including the project rail group still resolves;
+- no `className` passthrough, heading-level option, or variant was added; Contact, Hero, About, and Technology headings stay bespoke;
+- same probe after B: `0` differences across all eight viewports, including each `header` signature (class list, child count, eyebrow text, `h2` id and classes).
+
+Checkpoint C — regression:
+
+- `8/8` targeted Unit 4 checks pass: Contact DOM shape and copy; email and resume link contract; solid CTA rest/hover/active colors at `rgb(15, 23, 42)` / `rgb(51, 65, 85)` plus the `2px` primary focus ring; three headings sharing one structure with correct IDs; single `h1`, six `h2`, no skipped level, no duplicate `id`, every `aria-labelledby` resolving; header anchors landing on extracted sections with `80px` scroll margin; responsive heading `48px`/`72px`, nowrap only from `1024`, both CTAs on one row down to `320` with no horizontal overflow; reduced motion and forced colors;
+- `25/25` interaction checks pass;
+- the Checkpoint B–F suites still pass on the final build: `14` + `11` + `10` + `9` + `8` = `52` checks;
+- local dev baseline versus `vite preview` of the production build: `0` differences at all eight viewports, so the extraction survives the build;
+- no page errors, failed requests, or HTTP errors.
+
+Build:
+
+- two consecutive builds from the same input produced identical asset names, sizes, and SHA-256; the CSS asset is unchanged from Unit 3 — `index-BHB3i7BT.css`, `51,289` bytes, `2061aea4…` — which confirms no style or cascade change;
+- JS changed as expected for new components: `index-DTK03Ofn.js`, `266,361` bytes, `e0590366…`, `403` bytes smaller than Unit 3's `266,764`. Bundle identity is not a gate for this unit;
+- `npm run lint`, `npm run build`, and `git diff --check` pass.
+
+Assertion corrections, test-only:
+
+- solid `ActionLink` text computes to `rgb(245, 247, 251)` (canvas token), not pure white;
+- the focus-ring probe must run on a fresh page: after a pointer click the element no longer matches `:focus-visible`, so the earlier reading of `none` was pointer modality, not a missing ring;
+- `#contact` is the last section in the document, so its anchor scroll clamps at maximum scroll (`top` `261.8` at `1280`) while `#skills`, `#experience`, and `#projects` land at `79.8`–`80.28`; the check now accepts a clamped last section;
+- the CTA row keeps `flex-wrap`, but both buttons fit side by side even at `320px` (right edge `297.8`), so stacking was never expected; the first version of the check read the wrong inner `div` and saw `nowrap`.
+
+Docs synchronized: `IMPLEMENTATION_PLAN.md` only. `DESIGN.md` and `CONTENT.md` are untouched because appearance and copy did not change; `ARCHITECTURE.md` is untouched because both components already exist in its canonical category list and dependency direction.
+
+Open items, unchanged: static generation without JavaScript, Education placeholders, the unfilled fourth Selected Work slot, Unit 5 drift work (routing, tablet four-slot visibility, repository facts, portrait intrinsic-size hint), and the unmeasured sub-pixel breakpoint bands.
+
+### Unit 5 — final regression and documentation audit
+
+Status: complete (2026-10-26/27). Refactor Units 1–5 are closed. Release gates stay open.
+
+Checkpoint A — audit:
+
+- repository facts verified read-only: `personal-portofolio/` is its own Git repository on `main` with no remote, last commit `94acd1c` (`refactor: extract component CSS and consolidate cascade`); the live repository remains `vcard-personal-portfolio/` on `main` tracking `porto-latifiann.git`;
+- the current build is still homepage-only: no router is installed, only `/` is served, and homepage links to `/projects/…` are reserved targets;
+- Selected Work source already implements tablet capacity: `cardVisibilityClass` gives the fourth slot `hidden md:block` and slots five and six `hidden lg:block`, with `projects.slice(0, 6)`;
+- probe sizes re-audited from the scripts: the shared compare captures `35` selectors × `24` properties over seven viewports; the Unit 4 probe captures `22` selectors × `24` properties over eight.
+
+Checkpoint B — documentation sync:
+
+- `ARCHITECTURE.md` v1.6.8: routing paragraph now separates the eight-route v1 target from the current homepage-only build and says `404.html` is planned rather than generated; Selected Work visibility prose now matches the tiered CSS rule; the repository paragraph now describes the development repository correctly and asks for live-state verification before cutover; the sitemap paragraph is bounded to the target build;
+- `DESIGN.md` v2.26.35: slot visibility rule now states the fourth slot from tablet and slots five and six from desktop;
+- `PRODUCTS.md` and `CONTENT.md` unchanged: the four-slot tablet capacity was already canonical there, and no project, copy, or attribution changed;
+- the Unit 4 evidence line was corrected to the actual `24` captured properties.
+
+Checkpoint C — portrait intrinsic size:
+
+- `HeroSection.tsx` now declares `width={1084} height={1451}`, matching the imported WebP, instead of `864 × 1080`;
+- loaded-state geometry at `320`, `390`, `640`, `767`, `768`, `1023`, `1024`, and `1280`: `0` differences in image box, wrapper, composition height, About gap (`260.641`/`152`/`176`), header clearance (`24`/`20`/`36`), page height, and overflow;
+- blocked-image state is the intended change: before the fix the placeholder box used the `0.8` hint and was `16.079`–`32.828px` wider than the loaded image, which produced a visible reflow; after the fix the blocked box equals the loaded box at every width, so no width shift remains.
+
+Checkpoint D — regression:
+
+- `Unit 4 → Unit 5` probe: `0` differences across all eight viewports, including Contact and the three shared headings;
+- `pre-Unit-3 → Unit 5` shared compare: exactly the same `7` approved Explore link-color changes, one per viewport, with every box and page height unchanged;
+- `85/85` browser checks pass on the final dev build: `25` interaction, `52` targeted Unit 3, `8` targeted Unit 4;
+- production `vite preview` of the built asset versus the dev baseline: `0` differences at all eight viewports;
+- no page errors, failed requests, or HTTP errors in any run;
+- two consecutive builds produced identical names, sizes, and digests: CSS `index-BHB3i7BT.css` `51,289` bytes unchanged from Unit 3, JS `index-CgkciM9R.js` `266,362` bytes (`5dfea94d…`, `+1` byte for the corrected attribute); `lint`, `build`, and `git diff --check` pass;
+- generated `dist/index.html` still contains an empty `#root`; the page stays blank when JavaScript is unavailable. This is the known static-generation blocker, not a Unit 5 regression.
+
+Checkpoint E — close:
+
+- refactor close means implementation and automated regression are done; it does not approve release or replace owner manual checks;
+- historical accuracy bounds kept: the two identical builds only prove equality for the inputs tested, the `51.23` versus `51.28 kB` drift still has no confirmed cause, CSS-asset identity proves CSS identity rather than DOM identity, and Chromium automation is not an accessibility certification.
+
+Open items, unchanged: static generation without JavaScript, bilingual content and publication readiness, Education placeholders, the unfilled fourth Selected Work slot, unimplemented routing and metadata, unmeasured sub-pixel breakpoint bands, and hosting/deploy/cutover approval.
+
+## ReMi Case-study Detail Slice Checkpoints
+
+Status: implementation complete for desktop review; uncommitted.
+
+### Checkpoint A — content sources and schema
+
+- `content/projects/remi-mobile/project.yaml` holds locale-independent facts with `publication: draft` and `homepageOrder: 2`, so the record cannot enter a production manifest.
+- `content/projects/remi-mobile/en.md` holds localized front matter plus the narrative body, limited to Context, My responsibilities, Process and testing, Outcome, and Scope boundaries.
+- Every fact traces to the owner CV entry and the `CONTENT.md` ReMi section. Technical-decision rationale, quantified testing scope, month-level timeline, and team role breakdown remain absent rather than invented. Gamification now appears through owner-confirmed mechanics, contribution, and qualitative review feedback.
+- Rejected on purpose: `gray-matter`, a Markdown renderer, and `remark`. Front matter splitting and body parsing are about forty lines, and the restricted vocabulary is easier to enforce without a general parser.
+
+### Checkpoint B — validation and manifest
+
+- `scripts/build-content.ts` owns schema, parsing, validation, and manifest writing in one pass, with `development`, `production`, and `release` modes plus `--check`.
+- `src/generated/content-manifest.ts` is gitignored and regenerated by `predev`, `build`, and the validation scripts.
+- Draft exclusion is enforced at generation, not at render, so a draft cannot reach a route, sitemap, metadata record, or browser bundle even by accident.
+
+Verified this unit:
+
+- `npm run content:build` → 1 development record, with hero imports resolved from the manifest directory; a temporary Vite dev server returned the transformed manifest and the media asset with `200`;
+- `npm run content:build:production` → 0 records and a valid `[]` manifest;
+- `npm run content:validate` passes; `npm run content:validate:release` fails with the expected missing-record and draft errors;
+- `npm run build` passes and the production bundle contains neither `Remind Me` nor `unmaintained`.
+
+### Checkpoint C — page composition and preview route
+
+- `src/pages/HomePage.tsx` holds the previous `App` composition unchanged; `src/pages/ProjectPage.tsx` is the new case-study page; `src/App.tsx` owns the route switch.
+- `SiteHeader` gained `homePath` and `activeNavigationHref`, `SiteFooter` gained `homePath`, so anchors and the active section survive on a non-home page without duplicating navigation.
+- Related projects now have a renderer that stays hidden until a second resolvable case-study destination exists; `ProjectCard` is not modified.
+- Owner revision: the `/ Case study` eyebrow is removed from the project intro, the category chip for ReMi reads `Mobile App`, and the `completed` and `unmaintained` intro chips are removed. Status and maintenance stay in `project.yaml` and in the highlight copy; only their intro rendering is gone.
+- Owner revision: the back link and chip row sit `--space-4` apart, intro chips carry a `1px` contact shadow, and aside headings use Geist instead of mono.
+- Role line now reads `Mobile Developer · Agile Teknik`; semicolon joins in the ReMi narrative were rewritten as separate sentences.
+- Owner revision: highlight cards and aside panels use the standard two-layer surface shadow, aside headings drop their leading slash, and blue accent glow is scoped to the intro/hero and highlight band through `src/pages/ProjectPage.css`.
+- Owner revision: the aside now shows Technical stack, Outcome, and a `View on Google Play` CTA. The Project links and Scope note panels are gone, the hero caption keeps the media qualification, `outcomeSummary` and `primaryLink` are validated fields, and `Juara 3 Best Team` reads `Third place Best Team`.
+- Owner revision: the ReMi stack adds Dart, and the narrative is reduced to `Overview` and `My responsibilities`. Design participation, manual testing, and promo-video work moved into the responsibilities list. The old Outcome and Scope boundaries sections were folded away.
+- Owner revision: gamification is now documented from confirmed mechanics rather than left out. Overview explains earning coins from completed tasks and spending them on themes, responsibilities list the UI, BLoC, API, and theme-asset work, and highlight cards replace the redundant Role card with Contribution, Product differentiator, and Project status. Review feedback stays qualitative.
+- `src/lib/routes.ts` resolves `/projects/<slug>/` only under `import.meta.env.DEV`. `vite preview` and production builds render the homepage by design.
+- Owner accepted the ReMi desktop composition on `2026-10-27` as good enough for now, with further changes deferred. Tablet and mobile review, focus review, and the homepage regression check remain open and are not treated as passed.
+- Owner revision: the detail page gains an `Explore Related Projects` section below the narrative and aside. `src/lib/related-projects.ts` builds up to two `ProjectCardProps` from the validated manifest, excludes the current project, keeps manifest order, and returns nothing for a record without a resolvable destination. `src/lib/routes.ts` exposes `canResolveProjectDetail()` and `projectDetailPath()` so the existing development-only gate also gates these links. `App` passes the typed array to `ProjectPage`, and the section hides entirely when the array is empty. With one development record the section renders nothing yet, so its visual behavior is unverified.
+
+Checks run: `npm run lint`, `npm run typecheck`, `npm run build`. Homepage visual equivalence after the page split was not verified by automation and is part of the owner review below.
+
+### Checkpoint E — FMS-CREATE content record
+
+- `content/projects/fms-create/project.yaml` adds the second development record: `draft`, `homepageOrder: 1`, category `Mobile App`, timeline `Dec 2025-Jul 2026`, `completed`, unspecified maintenance, private repository without a URL, no demo, no CTA, and no links.
+- `content/projects/fms-create/en.md` holds the English draft narrative with `Overview` and `My responsibilities` only, three highlights, an outcome summary, and a visible hero qualification.
+- Owner revision: the narrative now explains why the modular monolith exists, namely assembling application variants from module combinations before the APK build, and it covers both the passenger app and the whole operator prototype. `Nusantara EV Connect` is named as the teammate-built orchestration app that provides the module picker and automates the APK build, explicitly outside my contribution. The architecture highlight keeps `Modular monolith` as its value, with variant assembly kept in the supporting note. Runtime module installation, an app-store release, and a production-ready operator variant stay unclaimed.
+- Detail stack: `Dart`, `Flutter`, `Riverpod`, `GoRouter`, `Dio`, `REST API`, `Server-Sent Events`, `Google Maps`, `Flutter Secure Storage`, `Modular monolith`.
+- Attribution boundary: the passenger-side mobile app is individual work inside a cross-platform team ecosystem. The dashboard in the hero belongs to team or ecosystem context, the operator fleet telemetry is described as a prototype, and the Android build is internal with no app-store release.
+- `docs/CONTENT.md` corrected the FMS role line from `Mobile Developer · Agile Teknik` to `Mobile Developer · Final academic project`, per owner confirmation. It also records the owner-confirmed category `Mobile App`, so the detail chip and related-project card match the approved preview type label instead of the older domain label.
+- Development manifest now holds two records, so related projects render on both detail pages: FMS-CREATE shows ReMi Mobile and ReMi Mobile shows FMS-CREATE, each excluding itself.
+- Production manifest still excludes both drafts, and no FMS detail copy enters the production bundle.
+
+### Checkpoint F — Semina content record
+
+- `content/projects/semina/project.yaml` adds the third development record: `draft`, `homepageOrder: 3`, category `Web App`, timeline `Aug-Oct 2026`, status `prototype`, unspecified maintenance, public backend repository, primary link on that repository, and no demo.
+- Scope is owner-confirmed on `2026-10-30` as a React event-management CMS plus the backend API, with the role line `Full-Stack Developer · Personal project`. The participant-facing interface stays a static template and is not claimed as integrated.
+- `content/projects/semina/en.md` holds the English draft narrative with `Overview` and `My responsibilities` only, three highlights, an outcome summary, and the qualified hero caption.
+- Detail stack: `JavaScript`, `React`, `React Bootstrap`, `Redux`, `Redux Thunk`, `Node.js`, `Express.js`, `MongoDB`, `Mongoose`, `JWT`, `bcrypt`, `Nodemailer`, `Mustache`, `Multer`.
+- Owner revision: `ctaLabel` was added as a validated nullable record field so a repository destination can override the default `View on <link label>` aside text without changing the link resolution or the `ActionLink` component. Semina sets `View Repository`.
+- Verification boundaries stay explicit: source review only, no verified frontend build, browser, endpoint, SMTP, transaction, rollback, or concurrency results, no automated test suite, and no public deployment.
+- Development manifest now holds three records in the approved order, so related projects show two other projects per page.
+- The Semina landing card still renders the earlier backend-only sentence from `SelectedWorkSection.tsx`. The replacement copy and badges are prepared in `docs/CONTENT.md` and land with the planned card-source migration, not with this draft.
+
+### Checkpoint G — single-source project cards
+
+- `project.yaml` gained `cardStack`, validated as a non-empty list without repeated technologies. Each localized narrative gained `cardSummary`. Both are separate from the detail `stack` and `summary`.
+- `src/features/projects/toProjectCardProps.ts` is the shared mapper. It takes the record, a caller-resolved `href`, and a locale, and returns `null` instead of falling back to English when that locale content is missing.
+- `src/lib/project-cards.ts` replaces `src/lib/related-projects.ts` and owns both selections: `selectProjectCards` follows `homepageOrder`, `selectRelatedProjectCards` excludes the current record and caps the list at two. Both skip records without a resolvable destination.
+- `src/App.tsx` derives homepage and related cards from the manifest and passes typed props through `HomePage` to `SelectedWorkSection`. The hard-coded project array and direct media imports are gone from `SelectedWorkSection.tsx`.
+- `src/lib/routes.ts` adds `projectIndexPath`, which returns `null` while the curated index has no route. The `Explore all N projects` action therefore hides instead of pointing at `/projects/`.
+- With three drafts, development renders three homepage cards and two related cards per case study. A production manifest with zero published records hides Selected Work entirely, which also leaves the header `Projects` anchor without a target until publishing lands.
+- Card design was not changed: shell, radius, shadow, preview treatment, mobile rail, and interaction stay as they were.
+
+### Checkpoint H — curated badges with full-stack count
+
+- Owner revision on `2026-10-30`: the card keeps a curated badge list, but the overflow count now reports the full stack. `toProjectCardProps` sets `metadata.totalStackCount` from `project.stack.length`, `ProjectCard` requires it, and `ProjectMetadata` computes `totalStackCount - visibleStack.length`.
+- No total is stored in content or the manifest, so the count cannot drift from the record. An alias badge such as `Modular architecture`, `SSE`, or `Express` names one stack entry and never adds to the count.
+- Expected cards: FMS-CREATE `Flutter`, `Modular architecture`, `REST API`, `+7`; ReMi Mobile `Flutter`, `BLoC`, `REST API`, `+4`; Semina `React`, `Redux`, `Node.js`, `+11`.
+- Static checks passed after the change. Visual review of the homepage and related cards is still owner-owned.
+
+### Checkpoint D — desktop review gate, owner-owned
+
+Manual check:
+
+1. Run `npm run dev`.
+2. Open `http://localhost:5173/`.
+3. Confirm the homepage still matches the approved layout and that section highlighting still follows scrolling.
+4. Open `http://localhost:5173/projects/remi-mobile/`.
+5. At `1280px`, check introduction order, chip wrapping, hero width and caption, highlight card alignment, narrative measure, aside position and stickiness, and absence of horizontal scroll.
+6. Tab from the skip link through back link, links, and footer; confirm focus is visible and the external link announces a new tab.
+7. Confirm no browser-console errors.
+8. Report visual defects, wrong attribution, console errors, and screenshots if broken.
+
+Tablet and mobile widths follow only after desktop approval, because desktop is the owner's review priority; the composition itself was written mobile-first.
+
+### Deferred behind this gate
+
+- Indonesian narrative, which is required before `publication` may become `published`;
+- Indonesian narratives for every record, including the FMS-CREATE and Semina drafts;
+- publishing, which is required before Selected Work can render in a production manifest and before the header `Projects` anchor has a target;
+- related-project tablet and mobile review, which now has two development destinations but has not been checked at those widths;
+- routing, locale switching, static generation, metadata, and `404.html`, which belong to Phase 9;
+- manifest isolation: development and production currently share `src/generated/content-manifest.ts`, so running a production build while a dev server is live leaves that server with zero records and it falls back to the homepage until restarted. Split the generated files and select by Vite mode before routing work.
+
 ## Current Next Unit
 
-Unit 3 is complete: Checkpoints A–G are recorded, the only visual delta in the whole unit is the approved Explore link color, and `52` targeted checks plus `25` interaction checks pass on the final build. Unit 4 is next: extract Contact and the shared heading without changing DOM, IDs, semantics, or appearance. Phase 6 and release gates remain open. Existing architecture prose also predates approved tablet four-slot visibility and the now-existing development Git repository; reconcile those facts when updating that contract, without changing public-v1 project scope or cutover safeguards.
+Units 1–5 are closed. Three detail records now exist in the development manifest: FMS-CREATE, ReMi Mobile, and Semina. All three are drafts built from owner-confirmed sources. Next: owner review of `/projects/semina/` at `1280px`, then the still-open tablet and mobile review for all three pages and the homepage regression check. The single-source card migration is complete, so homepage and related cards now share one mapper and cannot drift. Next is owner review of the homepage cards against the three detail pages, then the still-open tablet and mobile review. Do not add routing, locale switching, or static generation before those reviews, because the layout may still change. Release remains blocked by static generation, missing Indonesian narratives, the card-source migration, and the unfilled fourth Selected Work slot.

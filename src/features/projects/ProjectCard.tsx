@@ -17,6 +17,7 @@ export type ProjectCardProps = {
     timeline: string;
     role: string;
     stack: string[];
+    totalStackCount: number;
   };
 };
 
@@ -86,7 +87,10 @@ function ProjectCard({
           </p>
 
           <div className="mt-auto pt-(--space-4)">
-            <ProjectMetadata stack={metadata.stack} />
+            <ProjectMetadata
+              stack={metadata.stack}
+              totalStackCount={metadata.totalStackCount}
+            />
           </div>
         </div>
       </a>
