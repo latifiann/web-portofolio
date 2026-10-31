@@ -5,6 +5,7 @@ import { FaServer } from "react-icons/fa";
 import { FaFileCode, FaUsersGear } from "react-icons/fa6";
 import { IoPhonePortrait, IoTimer } from "react-icons/io5";
 import { MdFactCheck } from "react-icons/md";
+import type { SiteStrings } from "../../types/site";
 
 type CapabilityBadgeData = {
   label: string;
@@ -12,40 +13,46 @@ type CapabilityBadgeData = {
   icon: IconType;
 };
 
-const capabilityBadges: CapabilityBadgeData[] = [
-  {
-    label: "Mobile Development",
-    accent: "#FF5F06",
-    icon: IoPhonePortrait,
-  },
-  {
-    label: "Frontend Development",
-    accent: "#07AAFD",
-    icon: FaFileCode,
-  },
-  {
-    label: "Backend & REST API",
-    accent: "#474747",
-    icon: FaServer,
-  },
-  {
-    label: "Real-time Integration",
-    accent: "#dbbc02",
-    icon: IoTimer,
-  },
-  {
-    label: "Software Quality Assurance",
-    accent: "#d6589e",
-    icon: MdFactCheck,
-  },
-  {
-    label: "Team Collaboration",
-    accent: "#43cc55",
-    icon: FaUsersGear,
-  },
-];
+function getCapabilityBadges(
+  strings: SiteStrings,
+): CapabilityBadgeData[] {
+  return [
+    {
+      label: strings.mobileDevelopment,
+      accent: "#FF5F06",
+      icon: IoPhonePortrait,
+    },
+    {
+      label: strings.frontendDevelopment,
+      accent: "#07AAFD",
+      icon: FaFileCode,
+    },
+    {
+      label: strings.backendApi,
+      accent: "#474747",
+      icon: FaServer,
+    },
+    {
+      label: strings.realtimeIntegration,
+      accent: "#dbbc02",
+      icon: IoTimer,
+    },
+    {
+      label: strings.qualityAssurance,
+      accent: "#d6589e",
+      icon: MdFactCheck,
+    },
+    {
+      label: strings.teamCollaboration,
+      accent: "#43cc55",
+      icon: FaUsersGear,
+    },
+  ];
+}
 
-function EngineeringStatementSection() {
+function EngineeringStatementSection({ strings }: { strings: SiteStrings }) {
+  const capabilityBadges = getCapabilityBadges(strings);
+
   return (
     <Section
       id="about"
@@ -67,16 +74,15 @@ function EngineeringStatementSection() {
 
         <header className="order-1 mx-auto max-w-[50rem] text-center lg:order-2 lg:col-span-6">
           <p className="font-serif text-[clamp(2rem,2.4vw,2.5rem)] italic text-(--color-ink)">
-            Hello!
+            {strings.engineeringGreeting}
           </p>
           <h2
             id="about-title"
             className="mt-(--space-6) text-[clamp(2rem,3.2vw,3.5rem)] leading-[1.08] font-normal tracking-tight text-(--color-ink)"
           >
-            My focus is on blending clear strategy, thoughtful engineering, and
-            product empathy to craft{" "}
+            {strings.engineeringStatement}{" "}
             <span className="about-title-accent">
-              experiences that solve real problems.
+              {strings.engineeringAccent}
             </span>
           </h2>
         </header>

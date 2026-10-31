@@ -1,5 +1,6 @@
 import PageContainer from "../layout/PageContainer";
 import SectionHeader from "../layout/SectionHeader";
+import type { SiteStrings } from "../../types/site";
 
 type Capability = {
   title: string;
@@ -7,46 +8,50 @@ type Capability = {
   labels: string[];
 };
 
-const capabilities: Capability[] = [
-  {
-    title: "Frontend Engineering",
-    description:
-      "Build structured interfaces with React, JavaScript, and Tailwind CSS.",
-    labels: ["React", "JavaScript", "Tailwind CSS"],
-  },
-  {
-    title: "Backend & REST API",
-    description:
-      "Integrate and develop REST API boundaries with validation and clear error handling.",
-    labels: ["Node.js", "Express", "REST API", "JWT"],
-  },
-  {
-    title: "Mobile Development",
-    description:
-      "Build Flutter applications with state management, navigation, and platform integrations.",
-    labels: ["Flutter", "Dart", "Riverpod", "BLoC"],
-  },
-  {
-    title: "Databases",
-    description:
-      "Work with relational and document data models used by project backends.",
-    labels: ["SQL", "PostgreSQL", "MongoDB", "Mongoose"],
-  },
-  {
-    title: "Software Quality Assurance",
-    description:
-      "Use manual and automated testing to check product behavior and architecture rules.",
-    labels: ["Manual testing", "Automated testing", "Selenium", "Katalon"],
-  },
-  {
-    title: "Project & Collaboration",
-    description:
-      "Work through shared Git workflows, Figma handoff, and Agile delivery.",
-    labels: ["Git", "GitHub", "Figma", "Agile"],
-  },
-];
+function getCapabilities(strings: SiteStrings): Capability[] {
+  return [
+    {
+      title: strings.frontendEngineering,
+      description:
+        strings.frontendDescription,
+      labels: ["React", "JavaScript", "Tailwind CSS"],
+    },
+    {
+      title: strings.backendApi,
+      description:
+        strings.backendDescription,
+      labels: ["Node.js", "Express", "REST API", "JWT"],
+    },
+    {
+      title: strings.mobileDevelopment,
+      description:
+        strings.mobileDescription,
+      labels: ["Flutter", "Dart", "Riverpod", "BLoC"],
+    },
+    {
+      title: strings.databases,
+      description:
+        strings.databaseDescription,
+      labels: ["SQL", "PostgreSQL", "MongoDB", "Mongoose"],
+    },
+    {
+      title: strings.qualityAssurance,
+      description:
+        strings.qualityDescription,
+      labels: [strings.manualTesting, strings.automatedTesting, "Selenium", "Katalon"],
+    },
+    {
+      title: strings.projectCollaboration,
+      description:
+        strings.collaborationDescription,
+      labels: ["Git", "GitHub", "Figma", "Agile"],
+    },
+  ];
+}
 
-function CapabilitiesSection() {
+function CapabilitiesSection({ strings }: { strings: SiteStrings }) {
+  const capabilities = getCapabilities(strings);
+
   return (
     <section
       id="skills"
@@ -56,8 +61,8 @@ function CapabilitiesSection() {
       <PageContainer visual>
         <SectionHeader
           titleId="skills-title"
-          eyebrow="/ Technical Expertise"
-          title="Capabilities"
+          eyebrow={strings.capabilitiesEyebrow}
+          title={strings.capabilities}
         />
 
         <div className="capabilities-grid">

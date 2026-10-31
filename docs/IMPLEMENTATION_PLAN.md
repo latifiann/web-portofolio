@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.10.81
+version: 1.11.15
 status: canonical
-last_updated: 2026-10-31
+last_updated: 2026-11-01
 owner: Latifian Iman
 testing_mode: manual-first
 ---
@@ -285,7 +285,7 @@ Manual check:
 
 ## Phase 7: Structured Content and Validation
 
-Status: in progress (2026-10-31). Project records, localized front matter, schema validation, the deterministic manifest, and `content/experience.yaml` exist, and the schema accepts six homepage slots. All six approved project records exist as English drafts with media. Publication boundary, homepage order, and locale completeness have local regression tests; site, locale-string, and capability sources are still inline in components, and no Indonesian narrative exists yet.
+Status: in progress (2026-10-31). All six project narratives and three experience entries have owner-approved bilingual copy; projects remain drafts. UI locale YAML, strict validation, manifest exports, active-locale propagation, and the equivalent-page language switch exist. Shared site facts and capability structures still need canonical sources; capability arrays remain inline. Local tests remain intentionally excluded from git.
 
 Deliverables:
 
@@ -1103,7 +1103,253 @@ The owner asked for a `playwright-cli` pass, which overrides the manual-first ru
 - `DESIGN.md` 2.26.48 replaces the fixed two-card contract with two cards per page, the control row, boundary focus behavior, and the reset rule. `ARCHITECTURE.md` 1.6.27 records the selector change, the paging ownership, and the readiness snapshot.
 - `typecheck`, `lint`, and `build` pass after the store change. The local harness has no related-card test to update, so no expectation changed.
 
+### Checkpoint X — FMS-CREATE Indonesian narrative
+
+- Owner editorial direction: Indonesian copy must read naturally, and a technical term stays English when the localized substitute would be less precise or read awkwardly. Technology names never change.
+- The rule is now canonical in `CONTENT.md` 1.10.25: natural Indonesian, consistent terminology across fields, `Gambaran umum` and `Tanggung jawab saya` as the localized section headings, and a recorded list of terms kept in English so a later draft cannot translate the same concept differently.
+- Created `content/projects/fms-create/id.md` as a full localized draft. Card summary reuses the approved Indonesian card copy; the role line pairs `Mobile Developer` with the approved context label `Tugas akhir perkuliahan`.
+- Fact parity kept with `en.md`: the passenger app and the whole operator prototype were built individually; `Nusantara EV Connect` stays a teammate's orchestration tool that I did not build; module selection happens at build time, never at runtime; both Android builds stay internal with no store listing or public demo; the operator variant stays a prototype; testing stays qualitative.
+- Media boundary kept: the dashboard in the hero is ecosystem context, and the caption says the case study covers the mobile variants I built.
+- `content:validate` passes with both locales present. The record stays `publication: draft`, so production still excludes it and the release gate is unchanged.
+- Not done yet: Indonesian narratives for the other five records and the three experience entries. The locale switcher still selects `en`, so this draft is not visible in the running app.
+- Owner manual revision on `2026-10-31`: the Indonesian draft reworded the architecture phrase to `dengan arsitektur modular monolith` and added the study program and institution, `program studi Teknik Informatika di Politeknik Elektronika Negeri Surabaya (PENS)`. Both edits were kept. The program name was capitalized to `Teknik Informatika`, and the English narrative gained the same program-and-institution context so the two locales no longer differ in that fact. Neither narrative states an official degree title.
+- `CONTENT.md` 1.10.26 records the education context and the degree-title boundary. The record stays `draft`, both locales validate, and the development manifest was regenerated so the revision is the one the checks read.
+
+### Checkpoint Y — ReMi Mobile Indonesian narrative
+
+- Created `content/projects/remi-mobile/id.md` from the approved English narrative and ReMi content boundary. The two localized sections are `Gambaran umum` and `Tanggung jawab saya`; the card summary reuses the approved Indonesian card copy.
+- Personal scope remains task-flow contribution, Flutter screens, REST API integration, gamification UI/state/assets, design participation, manual testing, and contribution to the team's promo video. No backend reward ownership or automated test suite is claimed.
+- Google Play publication and all three awards remain team outcomes. Qualitative reward feedback is not turned into a measured engagement claim. The backend note retains the dated check on 27 October 2026, not a statement of current availability or maintenance.
+- Hero alt describes the image; the caption explicitly identifies the separate ReMi Web deliverable and limits this case study to the mobile contribution.
+- `CONTENT.md` 1.10.27 records the bilingual draft status, retained English terminology, and pending owner review. FMS-CREATE edits and review status remain untouched; all project records stay drafts.
+- Checks passed: `content:validate`, `content:build`, local content tests (46/46), `typecheck`, `lint`, `build`, and `git diff --check`. Development includes the Indonesian narrative; production still contains zero project records. No browser check was run because locale switching remains outside this unit.
+- Owner review of Indonesian wording and media copy remains pending. Next narrative after review: `content/projects/semina/id.md`.
+- Owner clarification (2026-10-31): reminders use phone notifications and alarms. Added this product-level explanation to the opening Overview paragraph in both `en.md` and `id.md`, without changing personal responsibilities or asserting browser notifications for ReMi Web. `CONTENT.md` 1.10.28 records the confirmed fact and its claim boundary; broader wording/media approval remains pending.
+
+### Checkpoint Z — Semina Indonesian narrative
+
+- Recorded the owner's `2026-10-31` approval of the FMS-CREATE and ReMi Mobile bilingual copy in `CONTENT.md` sections 15 and 16. Approval covers copy only; both records stay `publication: draft`, and the release gate is unchanged.
+- Created `content/projects/semina/id.md` from the approved English narrative and the Semina content boundary. The two localized sections are `Gambaran umum` and `Tanggung jawab saya`; the card summary reuses the approved Indonesian card copy and the role line reuses `Proyek pribadi`.
+- Scope conflict resolved from the canonical record: the public scope is the React event-management CMS plus the backend API, not a backend-only project. The narrative keeps the CMS work and does not claim a full event platform, a Participants page, or analytics.
+- Attribution preserved: the Indonesian narrative states that the project extends backend material from BuildWithAngga's `Full Stack Developer — MERN Website Event` class. The class URL stays unpublished because it is still unverified, and no frontend repository link is added.
+- Prohibited claims avoided: no automated test suite, no verified frontend build, browser, endpoint, SMTP, transaction, rollback, or concurrency result, no payment gateway, no production deployment, and no proof of overselling prevention or cross-account organizer isolation. The outcome summary keeps those items explicitly unverified.
+- Hero caption and alternative text reuse the approved localized strings instead of a fresh translation, so the image never implies authorship of the landing page shown.
+- `CONTENT.md` 1.10.29 records the bilingual status, approvals, and retained English terminology. Checks passed: `content:validate`, `content:build`, `test:content`, `typecheck`, `lint`, `build`, and `git diff --check`. Development includes the Indonesian Semina narrative; production still contains zero project records. No browser check was run because locale switching remains outside this unit.
+- Owner review of the Semina Indonesian wording and media copy remains pending. Next narrative after review: `content/projects/mooda-app/id.md`.
+- Owner revision (`2026-10-31`): frame Semina as a website project for purchasing event tickets in both locale summaries, card summaries, SEO descriptions, and opening paragraphs. CMS/backend contribution details, course attribution, qualified media, and the unintegrated participant registration/checkout boundary remain. `CONTENT.md` 1.10.30 synchronizes the framing and approved card copy; this revision does not approve publication or close the pending wording review.
+
+### Checkpoint AA — Mooda App Indonesian narrative
+
+- Owner approved the latest Semina copy on `2026-10-31`, including the event-ticket website framing. Recorded in `CONTENT.md` 1.10.31; copy approval does not authorize publication.
+- Created `content/projects/mooda-app/id.md` from the approved English narrative and company-content boundary. Includes full localized front matter, approved card copy, and `Gambaran umum` / `Tanggung jawab saya` sections.
+- Personal scope remains the passenger app as the only mobile developer in a four-person team. Backend and web frontend remain teammates' work. The prototype outcome is attributed to the team, and manual driver-flow testing does not claim driver-app authorship.
+- Preserved demo-data qualification, company code ownership, no repository link or snippets, no app-store release, and manual Android testing without claiming an automated test suite. English, YAML, UI, schemas, and publication states remain unchanged.
+- Owner wording/media review remains pending. Next narrative after review: `content/projects/nkri/id.md`. Locale switching remains English-only; no browser automation was requested or run.
+- Checks passed: `content:validate`, `content:build`, local `test:content` (46/46), `typecheck`, `lint`, `build`, and `git diff --check`. The first validation rejected an overlong SEO description; it was shortened to meet the unchanged 160-character limit. Development includes Indonesian Mooda content; production still contains zero project records. Generated files were updated only through scripts.
+- Owner manual revision and locale alignment on `2026-10-31`: the owner changed the Indonesian summary and opening paragraph from `prototipe` to `aplikasi mobile`. The English summary and opening were aligned to `ride-hailing app`, keeping the same fact set. The prototype status remains in `cardSummary`, the SEO text, the Outcome panel, the Project status highlight, and `status: prototype` in the record. `CONTENT.md` 1.10.32 records the framing and its claim boundary. Owner wording review of Mooda App stays pending; this alignment is not an approval of the whole draft.
+
+### Checkpoint AB — NKRI Indonesian narrative
+
+- Owner approved the Mooda App copy on `2026-10-31`, including the `aplikasi mobile` framing. Recorded in `CONTENT.md` 1.10.33; copy approval does not authorize publication.
+- Created `content/projects/nkri/id.md` from the approved English narrative and company-content boundary. Includes full localized front matter, approved card copy, `Produk magang` as the role context, and `Gambaran umum` / `Tanggung jawab saya` sections.
+- Personal scope stays the real-time communication module as one of two mobile developers in a six-person cross-role team: message dispatching, Socket.IO to WebSocket migration, reconnection, activity status, message search and filtering, chat-room pagination, attachment flows, and the WebRTC calling prototype.
+- Company boundary preserved: the company maintains the product, owns the backend services, and keeps the source code private, so no code, snippet, or repository link appears. The contribution timeline stays inside the internship, and no current maintenance, uptime, user count, or production-quality claim is added.
+- Calling remains an experimental WebRTC signaling prototype, not a shipped platform. Screenshots stay qualified as demo data.
+- Owner wording review of the NKRI draft remains pending. Next narrative after review: `content/projects/remi-web/id.md`. Locale switching remains English-only; no browser automation was requested or run.
+- Checks passed: `content:validate`, `content:build`, local `test:content` (46/46), `typecheck`, `lint`, `build`, and `git diff --check`. The first validation rejected an overlong SEO description, which was shortened to the unchanged 160-character limit. Development now carries five Indonesian narratives; production still contains zero project records, and generated files were updated only through scripts.
+
+### Checkpoint AC — ReMi Web Indonesian narrative
+
+- Owner approved NKRI copy on `2026-10-31`. Recorded the manual removal of the redundant calling-platform sentence and the matching English edit; the prototype boundary remains unchanged.
+- Created `content/projects/remi-web/id.md` from the approved English narrative, with complete localized front matter, approved card copy, and `Gambaran umum` / `Tanggung jawab saya` sections.
+- Personal scope remains Front-End Developer participation, not ownership of all team features. The overview preserves planned features as plans. Deployment and end-to-end browser notifications remain unverified; Google Play publication belongs only to the separate mobile deliverable.
+- Hero caption preserves the landing-page/mobile-promotion context rather than presenting a task workspace. No private source link is added. English, YAML, UI, and publication states remain unchanged.
+- `CONTENT.md` 1.10.34 records NKRI approval, bilingual completeness, retained terminology, and pending ReMi Web review. All six project records remain drafts; copy approval is not publication approval.
+- Next unit: owner review of ReMi Web Indonesian copy, then Indonesian content for the three experience entries. Locale switching remains English-only; no browser automation was requested or run.
+- Checks passed: `content:validate`, `content:build`, local `test:content` (46/46), `typecheck`, `lint`, `build`, and `git diff --check`. Development now includes all six Indonesian project narratives and the latest English NKRI revision. Production still contains zero project records. Generated files were updated only through scripts.
+
+### Checkpoint AD — Indonesian experience and education content
+
+- Owner approved ReMi Web copy on `2026-10-31`; all six project narratives now have owner-approved bilingual copy. No publication state changed.
+- Filled the three `content.id` objects in `content/experience.yaml`, preserving English, shared facts, entry order, technology labels, and contribution counts of 5/4/4. Education keeps `organizationNote: null`.
+- Owner confirmed `Sarjana Terapan Teknik Informatika` as the Indonesian education display title, not a claim of official diploma wording. Indonesian work-location notes use `Jarak jauh` / `Di kantor`; date display keeps existing hyphens and localizes `Dec` to `Des`.
+- Personal/team boundaries remain: Piramida is sole mobile developer work with manual customer/driver testing; Mitra is one of two mobile developers and calling remains a prototype. Education topics remain learning scope, and the two copyright registrations identify one of the creators with PENS as copyright holder.
+- `CONTENT.md` 1.10.35 records project approval and the bilingual experience status. Indonesian experience wording awaits owner review. Experience has no publication state, so both locales enter production as well as development manifests; draft projects remain excluded.
+- No UI, locale routing, schema, or publication changes. Browser testing was not requested; the app still selects English.
+- Checks passed: `content:validate`, `content:build`, local `test:content` (46/46), `typecheck`, `lint`, `build`, and `git diff --check`. Structural comparison against HEAD confirms English and shared facts unchanged, with matching 5/4/4 contribution counts across locales. Production generation reports zero project records and three bilingual experience entries. Generated files were updated only through scripts.
+
+### Checkpoint AE — locale foundation and client routes (units 1–3)
+
+- Owner approved all three Indonesian experience entries; content review is closed without changing project publication states.
+- Audited UI strings across layout, homepage, project panels, cards, and accessible controls. Added strict bilingual YAML, shared key types, loader diagnostics, placeholder validation, and typed manifest exports. English consumers use YAML; units 4–5 own locale propagation and the switch.
+- Added React Router 7.18.5 (Node >=20, compatible with React 19). BrowserRouter wraps the browser entry; App uses useLocation, not window location during rendering. A future StaticRouter can supply server location. Typed helpers cover locale homepages, detail paths, and equivalent locale routes; invalid routes render English client not-found recovery. Project index remains unavailable.
+- Detail resolution requires matching locale content in the active manifest and published status outside development. Production contains no draft routes. Client `/id/` remains English pending unit 4; static HTML, hydration, metadata, HTTP 404 handling, and generated `404.html` remain later work.
+- Synced ARCHITECTURE.md 1.6.29 and CONTENT.md 1.10.36. No storage preference or automatic locale redirect added. Existing user content edits preserved.
+- npm audit reports 20 findings (18 moderate, 2 high), none attributed to react-router. Broad dependency upgrades/audit fixes are outside this request and remain a release concern.
+- Verification passed: content validation/generation, 47/47 local tests (including missing/unknown site keys, wrong locale, and placeholder failures), typecheck, lint, production build, and diff whitespace check. Vite SSR module checks passed for EN/ID home/detail parsing, equivalent-locale paths, unknown slugs, unsupported prefixes, and unavailable index routes. Production manifest has zero projects; sampled draft prose is absent from built JS. Inspected `dist/index.html`: still an empty root shell with English lang/default title, confirming static generation and metadata remain blocked rather than passed. Manual regression is pending; no browser automation run.
+
+### Checkpoint AF — localized UI and language switch (units 4–5)
+
+- App selects strings, project content, cards, related projects, and experience from the resolved route locale. No component falls back to English when Indonesian content is unavailable; such a route is treated as not-found instead.
+- All UI copy consumers now receive typed strings explicitly, including header/footer navigation, hero, engineering statement, selected work, experience disclosure, capabilities, technology rail, contact, project panels, pagination, card metadata, preview fallback, and accessible names.
+- Internal project and related-card links derive from the active locale, including `/id/projects/<slug>/`. Back links use the locale homepage with `#projects`.
+- The header `EN / ID` control is a real two-link switch built from `equivalentLocalePath`; the active locale is marked with `aria-current`, and the control is hidden when no equivalent route exists. Clicking a locale closes the mobile menu.
+- Client route changes focus `main` predictably, reset scroll for path-only navigation, and honor a hash target. Related pagination remounts on locale or slug change. `<html lang>` follows the route locale through an effect; static output must set it during the static-generation phase.
+- `DESIGN.md` 2.26.51 records the active switch contract; `ARCHITECTURE.md` 1.6.30 records locale wiring and the `react-router` package name. `CONTENT.md` 1.10.37 records string ownership and switch labels.
+- Verification pending for this checkpoint: full check suite plus manual bilingual review; see the final checkpoint entry.
+
+### Checkpoint AG — language control target and active color
+
+- Replaced the two small locale links with one pill button. The icon, padding, separator, and both labels are part of the single click target; activating it navigates to the equivalent page for the other locale, preserves a valid homepage anchor, and closes the mobile menu.
+- The active locale renders bold in `--color-primary`; the inactive locale stays `--color-ink-muted`. Hover, border, shadow, focus, and mobile/tablet/desktop heights follow the existing header controls.
+- Removed the unused `languageSwitch` string key from both locale files and the shared type so executable copy has no dead entry.
+- `DESIGN.md` 2.26.53 and `ARCHITECTURE.md` 1.6.31 record the single-button contract; `CONTENT.md` 1.10.38 records the active-color and switch behavior. Locale labels stay `12px` at every width for consistency with the other side controls.
+- Verification passed for static checks. Manual pointer and keyboard review remains owner-owned.
+
+### Checkpoint AH — header font cascade correction
+
+- Owner reported computed language text at 16px despite `text-xs`. The unlayered form-control `font: inherit` reset overrode Tailwind utilities; moved that reset into `@layer base` so explicit size and weight utilities take precedence without `!important`.
+- Language labels retain `text-xs` at every breakpoint. Primary navigation now uses `lg:text-xs` (12px desktop), preserving `text-sm` (14px) on mobile/tablet per owner decision. DESIGN.md 2.26.54 owns this sizing update.
+- Manual regression must cover language-control computed size/weight, navigation breakpoints, theme button, and experience disclosure because the reset applies to all form controls. No browser automation authorized.
+- Verification passed: typecheck, lint, production build, and diff whitespace check. Inspected built CSS for size/weight utilities and source layer scope; desktop 11px override removed. Computed browser styles and visible behavior still await owner manual confirmation. Production manifest remains at zero projects.
+
+### Checkpoint AI — Playwright locale and header verification
+
+- Owner authorized automated browser verification for the locale and header unit. Ran `playwright-cli` against the local development server (`npm run dev -- --port 5199`), Chromium, viewport widths `360`, `390`, `768`, `1024`, `1280`, and `1440px`. Development manifest, so all six projects resolved; production gating untouched.
+- Computed styles passed at every width: language labels `12px` in both locales, active locale `font-weight: 700` in `rgb(37, 99, 235)` (`--color-primary`), inactive locale `rgb(100, 116, 139)` (`--color-ink-muted`), primary navigation `14px` below `1024px` and `12px` from `1024px`, switch pill height `40px` mobile, `44px` tablet, `56px` desktop. No horizontal overflow at any width.
+- Nine click positions across the switch pill all toggled exactly once to `/id/` and back, with localized hero copy, `<html lang>`, and label swap.
+- Localized content, links, and labels passed for both homepages and all six details in both locales: headings, nav labels (`Capabilities` EN / `Keahlian` ID), back links, aside labels, related-card locale prefixes, and accessible switch labels. Related pagination rendered `2/2/1` cards across `1 / 3`, `2 / 3`, `3 / 3`, listed all five other projects, and reset to `1 / 3` on locale change; mobile rendered one card.
+- Keyboard and stateful controls passed: Tab reach, Enter and Space activation, Back/Forward, mobile menu Escape with focus return, experience disclosure expand/collapse, and the Indonesian theme toast. No page errors, console errors, or failed requests.
+- One real defect found and fixed: deep links such as `/#projects`, `/id/#projects`, and `/#contact` arrived with the fragment in the URL but did not scroll, because the section mounts after the browser resolves the fragment and the route effect skipped its first run. The effect now scrolls on first render when a hash is present, while keeping focus restoration limited to actual path changes. Deep links settle on the target with the shared `scroll-margin-top` offset (`80px`), and detail back links reach `#projects` in both locales. `ARCHITECTURE.md` 1.6.32 records the deep-link scroll requirement.
+- Earlier failures in the first run were test-expectation errors, not app defects: the Indonesian experience heading is `Pengalaman`, related cards are paginated two per page rather than five at once, and anchor positions were sampled before smooth scrolling finished.
+- Static checks after the fix: `typecheck`, `lint`, production build, and `git diff --check` pass. Automation evidence does not replace owner visual confirmation; no commit, push, or deploy performed. Production manifest remains at zero projects.
+
+### Checkpoint AJ — in-app navigation through the router
+
+- Owner reported that selecting header navigation from a case study reloaded the whole document. Header navigation and the `Get in touch` call to action rendered plain anchors, so the browser re-fetched the homepage. Not-found recovery and footer navigation had the same gap; project cards and detail navigation already used router links.
+- Converted header navigation, header contact call to action, footer navigation, and not-found recovery to router links. Project cards and detail navigation unchanged. Email, CV download, social, and external project links stay native anchors, and `ActionLink` keeps its anchor surface because it also serves those cases.
+- Re-selecting the section already present in the URL changes nothing in history, so the route effect could not scroll; the header now scrolls that target directly.
+- Desktop activation no longer moves focus to the hidden mobile trigger. Mobile selection closes the panel and focus follows the new page content; `Escape` and outside click still return focus to the trigger.
+- `history.scrollRestoration` is now `manual` at the browser entry. With automatic restoration the browser overwrote the scroll position after Forward, so `/` + `#about` arrived at the wrong offset.
+- Verified with `playwright-cli` in Chromium at `1280px` and `390px`, with document reloads instrumented: 64 checks passed. Header navigation from EN and ID details, header contact call to action, footer navigation in both locales, and not-found recovery all swapped the view with zero `beforeunload` events and a surviving page marker. Targets landed in view with the shared offset, `main` received focus on real route changes, mobile closed the panel, `Meta`-click and `Meta+Enter` opened new tabs at the correct `href`, Back/Forward stayed reload-free with the Forward anchor landing correctly, reduced motion still reached the target, and no page, console, or request errors appeared. Regression suites for the locale unit also stayed green (10/10 switch positions, 94/94 locale, content, and keyboard checks).
+- One measurement note: the older font suite samples the instant the URL changes, before React commits the Indonesian tree, so it reports a transient English view under `/id/`. The suite that waits for the locale effect passes, so this is a timing artifact of the test rather than a state the user can interact with.
+- Documentation synchronized: `ARCHITECTURE.md` 1.6.33 records router links and manual scroll restoration; `DESIGN.md` 2.26.55 records in-place navigation and focus behavior. Static checks pass. Production manifest remains at zero projects; no commit, push, or deploy.
+
+### Checkpoint AK — bilingual overflow audit and contact heading wrap
+
+- Owner reported the Indonesian contact heading overflowing on desktop. Cause: `lg:whitespace-nowrap` forced a single line from `1024px`, and the section's `overflow-hidden` clipped the tail; the Indonesian heading needs about `1583px` at `72px` type while the content container offers `928px` at `1024px` and `1184px` at `1440px`.
+- Removed the single-line constraint and added `text-wrap: balance` on the contact heading. The English heading still fits one line (`551px` at `1024px`); the Indonesian heading now wraps to two lines at `1024px` and `1440px`, three at `768px`, and four at `320px` and `390px`, all inside the content container with no page overflow. Font size, spacing, and copy are unchanged.
+- Audited homepages and all six details in both locales for clipped text: `320`, `390`, `768`, `1024`, `1280`, `1440px` on homepages and `320`, `768`, `1024`, `1440px` on details. 132 checks passed with zero page overflow and zero unintended clipping. Deliberate overflow stays intact and was excluded explicitly: the mobile selected-work and highlights rails scroll horizontally, and the technology marquee is a moving masked strip. No other component needed a fix, so no other `nowrap` declaration was changed.
+- Locale switching with Contact on screen passed at `390`, `1024`, and `1440px`: the full Indonesian and English headings render inside bounds and `#contact` stays in view in both directions.
+- Screenshot review at `390`, `1024`, and `1440px` confirmed the heading reads completely with even line lengths; at `390px` the first line holds `Mari` alone because `Mari membangun` measures `356px` against `350px` of available width, and the same split appears without `text-wrap: balance`, so balancing is not the cause.
+- `DESIGN.md` 2.26.56 removes the desktop one-line rule: the heading wraps whenever the localized copy needs it and must never be clipped. Static checks pass. Browser zoom at `200%` remains an owner manual check; emulated zoom would not represent real browser zoom. Production manifest remains at zero projects; no commit, push, or deploy.
+
+### Checkpoint AL — favicon unit closed
+
+- Owner supplied the personal SVG mark and replaced the contents of `public/favicon.svg`; `index.html` retains the matching `/favicon.svg` reference and `image/svg+xml` type. The earlier candidate name `favicon-fian.svg` is not the active asset. Owner edits to both files are preserved without changes.
+- Source inspection confirms a standalone `64 × 64` SVG with matching viewBox, four vector paths, a `#111111` mark, and a white rounded-square background. No embedded raster, script, or external resource is present.
+- On 2026-11-01 the owner reported the favicon looked good after receiving the manual checklist. This closes the favicon unit as owner-confirmed, without inferring exact browser, route, light/dark, cache, or 16/32px coverage. No new browser automation is authorized or performed for this documentation closeout.
+- DESIGN.md 2.26.57 records the approved appearance; ARCHITECTURE.md 1.6.34 records the actual asset and head reference. Production build passes, including TypeScript checking. Parsed source and built HTML each contain one matching SVG favicon reference; SVG XML structure passes inspection, and `dist/favicon.svg` is byte-identical to the source asset. Whitespace verification passes. Production manifest still contains zero projects. No title change, asset redesign, publication change, commit, push, or deployment is part of this unit. Static generation, hydration, route metadata, and `404.html` remain next; project drafts and dependency-audit review remain release blockers.
+
+### Checkpoint AM — ReMi video click-to-load panel
+
+- Owner chose a media gallery: other media appear as thumbnails below the main image, and selecting the video thumbnail loads the player directly. Public link and embed permission are confirmed for `https://www.youtube.com/watch?v=_wer3NCOWQA`. Attribution is Latifian Iman as sole video creator, with ideas and suggestions from teammates; the earlier "contributed to the team video" wording is superseded in both narratives.
+- Video metadata lives in `content/projects/remi-mobile/project.yaml` as `media.video` with `provider: youtube` and the 11-character ID. The schema derives `youtube-nocookie.com` embed and `youtube.com/watch` URLs at generation time, rejects other providers, and requires matching `mediaCaption.video` in English and in Indonesian when that locale exists. Projects without video metadata render no panel.
+- `ProjectPage.tsx` renders one media gallery below the header. The hero image is the first item, so the initial view is unchanged. A local thumbnail row follows, then the caption for the active item. Selecting the video thumbnail mounts the `16:9` iframe with a localized title and no autoplay parameter; selecting the image unmounts the player and stops playback. The external YouTube link and third-party notice stay visible for any project with a video.
+- Thumbnails are local, not remote YouTube images: the image thumbnail reuses the project image asset and the video thumbnail is a play tile. The active thumbnail uses `aria-pressed` and a primary-color border. The row scrolls horizontally on narrow screens. A project with one media item renders no thumbnail row.
+- New bilingual UI strings are `videoNotice`, `videoWatch`, `videoPlayerLabel`, `mediaGalleryLabel`, `mediaGalleryImage`, and `mediaGalleryVideo`. They join the localized UI labels that still need locale-wide visual review.
+- CONTENT.md 1.10.39 records the approval and attribution. DESIGN.md 2.26.59 records the gallery placement and selection behavior. ARCHITECTURE.md 1.6.36 records the narrow schema and embed exception. All six projects remain `draft`; release validation is unchanged. No Playwright run, commit, push, or deployment is part of this unit.
+
+### Checkpoint AN — remote video thumbnail and caption-free gallery
+
+- Supersedes AM's local-video-tile and visible-caption presentation. Owner explicitly selected the direct YouTube thumbnail and removal of gallery caption/paragraph across project details, without moving their wording into narratives. Existing content facts, image alternatives, course attribution, and publication states remain unchanged.
+- Generator derives `thumbnailUrl` as `https://i.ytimg.com/vi/<validated-id>/mqdefault.jpg`. Remote thumbnail requests may occur before activation; the iframe still mounts only after video selection. Both thumbnails use a consistent `16:9` display; video has a play overlay and local tile fallback on load error.
+- Removed gallery caption props and rendering, retained caption source data and schema validation. Removed unused `videoNotice`; the bilingual video control label identifies YouTube player loading. The external video link joins the aside links with URL deduplication and remains available without gallery interaction.
+- CONTENT.md 1.10.40 records the explicit caption-display exception, superseding prior visible qualification requirements without changing authorship claims. DESIGN.md 2.26.60 and ARCHITECTURE.md 1.6.37 record remote-thumbnail behavior and the revised presentation.
+- Verification passed: both manifest generators, content validation, local tests 48/48 (including derived thumbnail URL, invalid ID rejection, and draft exclusion), typecheck, lint, production build, and whitespace check. Tests remain the owner-excluded local harness, not committed CI coverage. Production contains zero project records; sampled video ID and thumbnail URL are absent from the production artifact. Browser rendering, keyboard behavior, remote image failure fallback, and actual embed playback await owner manual checks. No Playwright, commit, push, or deployment.
+
+### Checkpoint AO — remove aside additional links
+
+- Owner requested removal of the aside list anchors. Removed the whole secondary-link list and its list-building logic, including the injected YouTube watch link. Primary Google Play/repository CTA and gallery playback remain unchanged. Removed unused `additionalProjectLinks` and `videoWatch` bilingual UI keys; source project link metadata remains intact.
+- DESIGN.md 2.26.61, ARCHITECTURE.md 1.6.38, and CONTENT.md 1.10.41 record the explicit override of the separate YouTube fallback requirement. No replacement link is added; video fallback without JavaScript or when embedding fails is intentionally no longer provided. All projects remain drafts.
+- Verification passed: development/production generation, local tests 48/48, typecheck, lint, production build, and whitespace check. Production still contains zero projects. Manual visual/keyboard regression remains pending; no browser automation, commit, push, or deployment.
+
+### Checkpoint AP — remove ReMi backend availability note
+
+- Owner requested removal of the dated backend-online sentence. Removed it from the project-status highlight in both ReMi Mobile narratives; the team Google Play publication sentence remains. No outage or third-party responsibility claim replaces it. Completed/unmaintained status and draft publication remain unchanged.
+- CONTENT.md 1.10.42 supersedes the historical availability note recorded in Checkpoint Y. Development manifest regenerated through the generator; content validation, local tests 48/48, typecheck, lint, production build, and whitespace check passed. Production still contains zero projects. Manual copy review remains owner-owned; no browser automation, commit, push, or deployment.
+
+### Checkpoint AQ — semicolon-free project prose
+
+- Removed six semicolons from Semina's bilingual summary, card summary, and SEO description. Audit found eight more in Mooda App captions/narratives, NKRI captions, and ReMi Web narratives. Split those sentences with appropriate capitalization, preserving facts, contribution boundaries, course attribution, and all draft states. No URL, entity, or code syntax changed.
+- CONTENT.md 1.10.43 records the English/Indonesian public-copy rule and synchronizes approved Semina card copy. The rule excludes required code/URL/entity syntax. Source scan now finds zero semicolons in project Markdown.
+- Development manifest regenerated through scripts. Content validation (including SEO length), local tests 48/48, typecheck, lint, production build, and whitespace check pass. Production retains zero projects. Manual copy/visual review is pending. No Playwright, dependency, publication change, commit, push, or deploy.
+
+### Checkpoint AR — static generation and hydration
+
+- Added `src/entry-server.tsx` rendering the shared `App` through `StaticRouter`, `src/lib/static-routes.ts` enumerating both homepages plus published bilingual detail routes, and `scripts/generate-static.ts` injecting rendered markup into the built Vite shell. `scripts/validate-dist.ts` checks each generated file, its `lang`, one `h1`, non-empty root, asset resolution, internal route links, and unexpected HTML output.
+- The production entry now hydrates existing markup and falls back to `createRoot` only for the development shell. Route `lang` is written at build time, and server-emitted resource preloads move into the document head before hydration.
+- Progressive enhancement: the locale switch is a router `Link`, the theme and menu triggers and gallery thumbnail row carry `data-js-only`, and `<noscript>` styles hide those controls while exposing the primary navigation. Hash-dependent language links adopt the fragment after mount so direct `/#section` loads do not mismatch.
+- Route enumeration is covered by five fixture tests: both homes, drafts excluded even when bilingual, both locales for a published record, a missing locale skipped, and manifest order preserved. Production still has zero projects, so the build emits only `dist/index.html` and `dist/id/index.html`; no draft route, draft title, server bundle, or unresolved asset appears in `dist/`.
+- Checks passed: `content:validate`, local tests 53/53, `typecheck`, `lint`, full `build` (client, SSR, static, validate), and `git diff --check`. Manual browser review of hydration and no-JavaScript behavior is pending. Metadata, `404.html`, sitemap, dependency audit, publication approval, and deployment remain outside this unit. No Playwright, dependency, publication change, commit, push, or deploy.
+
+### Checkpoint AS — progressive enhancement and key regression fixes
+
+- Fixed three defects from owner-authorized playwright-cli testing: omit header/footer Projects links when the locale homepage has no cards, default to usable wrapped navigation and hidden JS controls until React's mount effect enables enhancement, and give sibling media/related sections distinct locale-and-slug keys. All six projects remain drafts. Removed duplicate iframe fullscreen permission while keeping `allowFullScreen`, resolving the browser warning discovered by the stronger console harness.
+- Fallback CSS is scoped to the site header and lives in SiteHeader.css, replacing noscript-only CSS. Desktop fallback explicitly clears the translate utility so links stay inside the viewport. The validator now rejects internal links to missing fragment IDs. No content, dependency, release validator, commit, push, or deployment change.
+- Owner-authorized Chromium regression: production 48/48 checks and development gallery 21/21 checks passed, with no captured console warnings/errors or page errors on the final runs. Production covered both locales at 390/768/1280px, hydration, navigation, keyboard, disabled JavaScript, and a deliberately blocked JS bundle. Gallery covered both locales at 390/1280px and a deliberately invalid thumbnail response. Simulated failures are intentional test inputs, not unexpected network defects. Local artifact files remain ignored under .playwright-cli/. These results do not certify other engines, physical devices, playback availability, or owner manual visual approval.
+- Static checks passed: content validation, local tests 53/53, typecheck, lint, production build, and whitespace check. DESIGN.md 2.26.63 and ARCHITECTURE.md 1.6.40 synchronize fallback and navigation behavior. Manual visual confirmation remains pending. Metadata, 404.html, sitemap, dependency-audit review, and publication approval remain release blockers.
+
+### Checkpoint AT — homepage/detail metadata and hero focus copy
+
+- Owner approved bilingual homepage SEO and the existing portrait as the shared social image. Added strict `content/site/site.yaml`, typed metadata export, shared pure resolver, and React 19 head tags for homepage/detail title, description, canonical, reciprocal locale links, x-default, Open Graph and Twitter. Static generator moves marked metadata into head and removes the placeholder shell title. Unknown routes emit noindex without stale canonical/sharing fields, but static 404.html remains separate work.
+- Hero focus now reads `Mobile · Frontend · Backend` in both locales. Existing tablet dimensions are unchanged. Earlier APIs-based layout measurements do not prove the longer copy fits. Owner manual wrapping and visual checks remain pending.
+- Static checks: content validation, 60/60 local tests, typecheck, lint, build, and whitespace check passed. Production contains zero project records and only the EN/ID homepages. New tests cover metadata resolution, detail escaping, unavailable alternates, missing metadata, invalid origin and schema fields. Existing publication tests retain draft isolation. Tests remain local harness coverage, not fresh-clone CI certification.
+- Validator now verifies required head tags, canonical identity, reciprocal eligible alternates, locale values, sharing-copy consistency, and existing absolute sharing images. No browser automation requested or run for this unit. Hydration/head cleanup on navigation, social platform crop and rendering, and hero wrapping remain manual checks. All six projects stay draft. No dependency, commit, push, or deploy.
+- CONTENT.md 1.10.44, DESIGN.md 2.26.64, and ARCHITECTURE.md 1.6.41 synchronize current behavior. Earlier composition references using APIs are historical baselines, superseded by the Backend copy decision.
+- Owner-authorized playwright-cli verification, Chromium `156.0.8078.76`. 188 checks passed with no captured console warning/error, page error, or failed request. Covered both locales at 390/768/1023/1024/1100/1279/1280/1439/1440px: hero layout mode, single-line focus value, readable supporting width, rail bounds, availability and resume visibility, no horizontal overflow. Also covered mobile menu and Escape focus return, skip link, resume focus outline, live locale switch, Back/Forward, live resize across all four breakpoints, reduced motion, static metadata identity and sharing-image fetch, no-JavaScript output, blocked bundle, and detail metadata for four projects in both locales plus client navigation and locale switch.
+- Two defects fixed from that run. The detail title used the narrative heading, so `ReMi - Remind Me` was published instead of the public card name `ReMi Mobile`. Titles now compose from `cardTitle`. At `1440px` the 24px focus line measured `315px` against a `296px` side column and wrapped. The `90rem` step now also narrows the centre column to `27rem`, widening side columns to about `328px`.
+- Remaining limits: Chromium only, no screenshot review of social previews, no real browser zoom, and no mobile regression beyond this matrix. Rail text still overlaps the faded portrait edge below `1280px`, matching the approved overlay composition.
+
+### Checkpoint AU — hero rail space and narrow-desktop composition
+
+- Owner requested one-line Mobile · Frontend · Backend. First attempt widened only the left rail, which unbalanced the three-column grid at `1024px` and squeezed the supporting text into a near-vertical column. Owner reported the defect.
+- Superseding correction: the approved overlay composition now covers `48–79.9375rem` instead of ending at `64rem`, so both rails keep usable width below the grid threshold. Rail caps are `18rem`/`12rem` from `48–63.9375rem` and `min(24rem, 50% - var(--space-6))` for both rails from `64–79.9375rem`. The three-column grid starts at `80rem`. The intrinsic-width left rail rule that expanded column one and shrank column three was removed.
+- `20px` focus value and `14px` supporting text now hold through the narrow-desktop overlay, which is what keeps the line on one line. The previous `24px`/`16px` desktop step moved to `90rem`, where the centre column also narrows to `27rem`. Copy, portrait asset, mobile layout, header, and publication states are unchanged. Natural wrapping remains enabled for narrow space and enlarged text. DESIGN.md 2.26.65 owns the geometry.
+- Chromium regression confirmed the `1024px` fix: supporting text measures `384px` across three lines, focus value stays one line at `20px`, overlay holds from `768–1279px`, and the grid starts at `1280px`. The first run's `1440px` failure was a real `24px` wrap and is fixed by the widened side columns. Real browser zoom at `200%`, other engines, and physical devices remain unverified.
+- Typecheck, lint, full production build (including metadata/output validation), whitespace check, and the 188-check browser run passed. Manual visual confirmation stays owner-owned.
+
+### Checkpoint AV — consistent desktop hero alignment
+
+- Owner rejected the large visual difference between wide desktop and the 1149px overlay. Restored desktop grid from 1024px and restricted tablet overlay to 768–1023px. Desktop keeps left rail right-aligned and right rail left-aligned instead of flipping alignment at 1280px.
+- Equal minmax(0, 1fr) side columns now flank a flexible centre track, clamp(20rem, calc(100% - 37rem), 31rem), with existing 2rem gaps. At 1024px, the 928px content area budgets 320px centre and 272px on each side, rather than a fixed 496px centre that squeezes copy. Existing 1440px type/centre-track step is retained. No copy, asset, header, publication, metadata, or dependency change. No new code comments.
+- DESIGN.md 2.26.66 supersedes overlay-through-1279px geometry. Previous 188-check run does not certify this revised layout. Owner explicitly requested no Playwright for this correction. Typecheck, lint, full build including static metadata/output validation, and git diff --check passed. Manual review must cover both locales at 768/1023/1024/1149/1279/1280/1439/1440px, real 200% zoom, portrait clearance, focus-line fit, readable supporting text, and keyboard focus. Existing release blockers remain unchanged.
+
+### Checkpoint AW — owner hero confirmation and static recovery
+
+- Owner reported manual hero checks safe after Checkpoint AV. This closes the current hero visual review without inferring exact browser, zoom, device, or metadata coverage.
+- Static generator now renders English `/404.html` through the shared App outside the indexable route manifest. Existing English recovery copy and noindex title are reused, with homepage links for English and Bahasa Indonesia. Root-relative assets and router links remain usable without JavaScript. No redirect, SPA fallback, draft exposure, or hosting HTTP-status emulation is added.
+- Output validation now requires 404.html, English lang, one h1, rendered content, recovery title, noindex, both homepage links, valid internal fragments/assets, and no canonical/alternate/sharing tags. Other unexpected HTML remains rejected. Production still has two indexable homepages and zero projects, plus the separate error artifact.
+- No Playwright run. Manual checks must cover direct /404.html, unknown client paths, keyboard recovery, and disabled JavaScript. Unknown-path HTTP status needs hosting verification. CONTENT.md 1.10.45 and ARCHITECTURE.md 1.6.42 synchronize recovery copy and build contract. Sitemap/robots, dependency audit, publication approval, and remaining manual metadata review stay open.
+- Checks passed: content validation, local tests 60/60, typecheck, lint, full build including output validation, and git diff --check. Inspected generated 404 HTML: English lang, one h1, noindex, both homepage links, and root-relative assets. Indexable manifest still contains only / and /id/. These static checks do not confirm browser hydration or hosting status.
+
+### Checkpoint AX — not-found recovery and shell correction
+
+- Owner removed the Indonesian homepage recovery link from the English not-found page. The existing English label and destination remain. The output validator checks the main recovery content accordingly.
+- The not-found shell uses a minimum viewport height with a flexible main region, so its footer stays at the bottom on short pages and follows long content. The header action group remains right-aligned without the language switch, and no navigation item is active on not-found routes. DESIGN.md 2.26.67, CONTENT.md 1.10.46 and ARCHITECTURE.md 1.6.43 supersede the corresponding Checkpoint AW behavior.
+- Manual review of the revised recovery, header, footer and no-JavaScript fallback remains pending. Hosting HTTP status, sitemap/robots, publication approval, dependency audit and sharing review remain open.
+
+### Checkpoint AY — refresh layout stability
+
+- Fixed header remains fixed before and after React readiness. Desktop navigation retains its centered geometry and invisible JavaScript-only header controls retain their space. Mobile/tablet fallback is a horizontally scrollable fixed bottom strip, accessible without JavaScript or when the bundle fails. Enhanced mobile menu scrolls on short viewports.
+- Audit: mobile Experience disclosure and related-project pagination intentionally change below-fold content on enhancement to preserve no-JavaScript evidence. Gallery thumbnails also appear after enhancement. These are unchanged and are not a claim of zero page-wide layout shift. Development's empty shell and font loading can still produce an initial blank frame or font-related geometry changes.
+- Playwright CLI Chromium compared production static and no-JavaScript header/heading geometry on /, /id/, and /404.html at 390, 768, 1024, 1280 and 1440px. Delayed-bundle desktop measurement after fonts loaded matched before and after hydration. Tested blocked bundle, fallback navigation, short-viewport menu scrolling, Escape focus return, and repeated dev reloads including EN/ID ReMi detail. Production detail output remains unavailable while projects are drafts. Manual visual review and other browsers remain open.
+- Content validation, 60 local tests, typecheck, lint, production build and output validation passed. DESIGN.md 2.26.68 and ARCHITECTURE.md 1.6.44 own the updated fallback contract.
+
 ### Checkpoint D — desktop review gate, owner-owned
+
+
+
 
 Status: closed for the current composition and responsive pagination following the owner's manual confirmation on 2026-10-31, recorded in Checkpoint W. The checklist below remains a repeatable review reference, not evidence that every individual check or browser was explicitly confirmed.
 
@@ -1122,10 +1368,9 @@ Desktop was the initial review priority; the later responsive work and owner con
 
 ### Remaining content and release work
 
-- Indonesian narratives for all six project records, starting with `content/projects/fms-create/id.md`, which are required before `publication` may become `published`;
-- Indonesian content for the three experience entries;
-- publishing, which is required before Selected Work can render in a production manifest and before the header `Projects` anchor has a target;
-- routing, locale switching, static generation, metadata, and `404.html`, which belong to Phase 9.
+- All six project narratives and three experience entries have owner-approved bilingual copy; new localized UI labels still need units 4–5 locale-wide review;
+- publishing, which is required before Selected Work can render in a production manifest; Projects navigation stays omitted while the section is absent;
+- sitemap and robots.txt remain Phase 9 work. Static 404.html is implemented with manual recovery/hosting confirmation pending. Routing, locale switching, static generation, hydration, and route metadata are implemented.
 
 ## Current Next Unit
 
@@ -1133,6 +1378,6 @@ Units 1–5, the manifest-isolation fix, the comment audit, table detection, the
 
 The current composition and responsive pagination review gate is closed following the owner's manual confirmation in Checkpoint W. Automation coverage remains separate from that general manual approval; unconfirmed browser-specific and assistive-technology checks remain explicitly unverified.
 
-Next unit: write and review `content/projects/fms-create/id.md` against its approved English narrative and project sources, preserving factual equivalence, personal/team attribution, and the qualified media caption. Continue the remaining five Indonesian project narratives in approved project order, then complete Indonesian content for the three experience entries. Keep records as drafts until bilingual content is complete and reviewed. Routing, locale switching, and static generation follow the bilingual content review; do not relax release validation to make the six-project set pass early.
+Next unit: manual static-recovery confirmation, then sitemap and robots.txt from eligible public routes. Owner confirmed the current hero safe. Remaining metadata/sharing review and hosting HTTP-status verification stay separate. Records remain drafts; do not change publication without explicit approval or relax release validation.
 
-Release remains blocked by missing Indonesian narratives for all six records and Indonesian experience content, the `draft` state on every project record, and unfinished locale routing, static generation, metadata, and `404.html`. The current responsive composition review is no longer a blocker.
+Release remains blocked by the `draft` state on every project record, sitemap/robots, dependency-audit review, remaining manual confirmation, and hosting verification. Static 404.html implementation is complete, not proof of hosting HTTP behavior. Social-platform sharing remains unverified. Current hero review is owner-confirmed.

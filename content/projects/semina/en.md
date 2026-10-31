@@ -1,10 +1,10 @@
 ---
 locale: en
 title: Semina
-summary: An event-management CMS and ticket checkout API built as a learning project from a BuildWithAngga full-stack MERN course, covering React CMS workflows, role-based access, and transactional order handling.
-cardSummary: A learning project combining a React event-management CMS with a backend ticket checkout API, extended from BuildWithAngga MERN course material.
+summary: A website project for purchasing event tickets, developed from BuildWithAngga MERN course material. My contribution covers the React event-management CMS and backend ticket checkout API. Checkout through the participant web interface is not integrated.
+cardSummary: An event-ticket purchasing website learning project from BuildWithAngga MERN material, with a React CMS and checkout API. Participant web checkout is not integrated.
 roleSummary: Full-Stack Developer · Personal project
-seoDescription: Semina case study covering the React event CMS and backend checkout API I built from BuildWithAngga MERN course material.
+seoDescription: Semina, an event-ticket website project from BuildWithAngga MERN material. React CMS and API work. Participant web checkout is not integrated.
 mediaAlt:
   hero: Dark event-platform landing page promoting technology events with a green Browse Now button.
 mediaCaption:
@@ -24,7 +24,7 @@ highlights:
 
 ## Overview
 
-Semina is an event-management project with two parts. A React CMS handles categories, speakers, payment methods, events, and the order list. A backend API covers participant authentication, order history, and ticket checkout.
+Semina is a website project for purchasing event tickets. It includes a React CMS for managing categories, speakers, payment methods, events, and the order list, plus a backend API for participant authentication, order history, and ticket checkout.
 
 It is an independent learning project built from the BuildWithAngga Full Stack Developer — MERN Website Event course. The course supplied the starting scope, and I extended it into the workflows described here.
 

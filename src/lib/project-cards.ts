@@ -8,7 +8,7 @@ function collectCards(
   locale: Locale,
 ): ProjectCardProps[] {
   return projects.flatMap((project) => {
-    const href = projectDetailPath(project.slug);
+    const href = projectDetailPath(project.slug, locale);
     if (href === null) return [];
 
     const card = toProjectCardProps(project, href, locale);

@@ -5,8 +5,10 @@ import PageContainer from "../layout/PageContainer";
 import SectionHeader from "../layout/SectionHeader";
 import ActionLink from "../ui/ActionLink";
 import { projectIndexPath } from "../../lib/routes";
+import type { SiteStrings } from "../../types/site";
 
 type SelectedWorkSectionProps = {
+  strings: SiteStrings;
   cards: ProjectCardProps[];
 };
 
@@ -24,7 +26,10 @@ function cardVisibilityClass(index: number): string {
   return "";
 }
 
-function SelectedWorkSection({ cards }: SelectedWorkSectionProps) {
+function SelectedWorkSection({
+  strings,
+  cards,
+}: SelectedWorkSectionProps) {
   if (cards.length === 0) return null;
 
   const landingProjects = cards.slice(0, visibleProjectLimit);
@@ -40,12 +45,12 @@ function SelectedWorkSection({ cards }: SelectedWorkSectionProps) {
       <PageContainer visual>
         <SectionHeader
           titleId="selected-work-title"
-          eyebrow="/ Best Projects"
-          title="Selected Works"
+          eyebrow={strings.selectedEyebrow}
+          title={strings.selectedTitle}
         />
 
         <p className="mt-(--space-12) flex items-center justify-center gap-(--space-2) text-sm text-(--color-ink-secondary) md:hidden">
-          Swipe to see more projects
+          {strings.swipeProjects}
           <PiHandSwipeLeftLight aria-hidden="true" className="size-5 shrink-0" />
         </p>
 
@@ -57,7 +62,7 @@ function SelectedWorkSection({ cards }: SelectedWorkSectionProps) {
         >
           {landingProjects.map((project, index) => (
             <div key={project.href} className={cardVisibilityClass(index)}>
-              <ProjectCard {...project} />
+              <ProjectCard {...project} strings={strings} />
             </div>
           ))}
         </div>
@@ -82,7 +87,7 @@ function SelectedWorkSection({ cards }: SelectedWorkSectionProps) {
                 </svg>
               }
             >
-              Explore all {projectCount} projects
+              {strings.exploreProjects.replace("{count}", String(projectCount))}
             </ActionLink>
           </div>
         )}

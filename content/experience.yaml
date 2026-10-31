@@ -25,7 +25,17 @@ entries:
           - "Collaborated with backend developers to integrate REST APIs and real-time updates."
           - "Implemented application state management, authentication-based navigation, and local session storage."
           - "Integrated location features with Google Maps and manually tested customer and driver flows on Android."
-      id: null
+      id:
+        title: "Mobile Developer Intern"
+        period: "Jul 2025-Des 2025"
+        organizationNote: "Jarak jauh · Surabaya"
+        description: "Bekerja sebagai satu-satunya Mobile Developer dalam tim lintas peran beranggotakan empat orang, mencakup pengembangan antarmuka, integrasi API, dan pengujian manual prototipe aplikasi Flutter."
+        contributions:
+          - "Mendesain antarmuka mobile dan alur pengguna dengan Figma."
+          - "Mengembangkan antarmuka Flutter dan alur aplikasi sebagai satu-satunya Mobile Developer di tim."
+          - "Berkolaborasi dengan backend developer untuk mengintegrasikan REST API dan pembaruan real-time."
+          - "Mengimplementasikan state management aplikasi, navigasi berdasarkan status autentikasi, dan penyimpanan session lokal."
+          - "Mengintegrasikan fitur lokasi dengan Google Maps dan menguji alur pelanggan serta pengemudi secara manual di Android."
 
   - id: "mitra-informatika-mobile-developer-intern-2025"
     type: experience
@@ -47,7 +57,16 @@ entries:
           - "Migrated real-time communication from Socket.IO to WebSocket, including message dispatching, reconnect handling, and user activity status."
           - "Built personal voice and video call prototypes with WebRTC, covering signaling, media streams, and call-state management."
           - "Implemented message search, filtering, and chat-room pagination, and contributed to attachment handling and group interfaces."
-      id: null
+      id:
+        title: "Mobile Developer Intern"
+        period: "Jan 2025-Jun 2025"
+        organizationNote: "Di kantor · Surabaya"
+        description: "Bekerja sebagai salah satu dari dua Mobile Developer dalam tim lintas peran beranggotakan enam orang, berkontribusi pada pengembangan Flutter dan fitur komunikasi real-time."
+        contributions:
+          - "Mengembangkan dan menyempurnakan antarmuka Flutter, komponen yang dapat dipakai ulang, dan state management aplikasi."
+          - "Memigrasikan komunikasi real-time dari Socket.IO ke WebSocket, termasuk pengiriman pesan, penanganan koneksi ulang, dan status aktivitas pengguna."
+          - "Membangun prototipe panggilan suara dan video pribadi dengan WebRTC, mencakup signaling, media stream, dan pengelolaan call state."
+          - "Mengimplementasikan pencarian pesan, filter, dan pagination ruang chat, serta berkontribusi pada penanganan lampiran dan antarmuka grup."
 
   - id: "education-d4-informatics"
     type: education
@@ -68,4 +87,13 @@ entries:
           - "Explored Docker, CI/CD, agentic AI, Linux fundamentals, networking fundamentals, virtual machines, and basic VPS setup."
           - "Named as one of the creators on two software copyright registrations, with Politeknik Elektronika Negeri Surabaya as the copyright holder."
           - "Participated in HIMIT PENS student association activities, including external relations and student events."
-      id: null
+      id:
+        title: "Sarjana Terapan Teknik Informatika"
+        period: "2021-2026"
+        organizationNote: null
+        description: "Menyelesaikan pendidikan sarjana terapan melalui proyek perangkat lunak akademik, magang industri, dan kegiatan riset bersama Cyber Security Research Group (CSRG)."
+        contributions:
+          - "Mengembangkan aplikasi mobile penumpang FMS-CREATE dan prototipe telemetri armada untuk operator sebagai tugas akhir dalam Cyber Security Research Group (CSRG)."
+          - "Mempelajari Docker, CI/CD, agentic AI, dasar Linux, dasar jaringan, virtual machine, dan konfigurasi dasar VPS."
+          - "Tercatat sebagai salah satu pencipta pada dua pencatatan hak cipta perangkat lunak, dengan Politeknik Elektronika Negeri Surabaya sebagai pemegang hak cipta."
+          - "Berpartisipasi dalam kegiatan himpunan mahasiswa HIMIT PENS, termasuk hubungan eksternal dan acara kemahasiswaan."

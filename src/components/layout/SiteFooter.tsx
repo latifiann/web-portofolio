@@ -1,5 +1,7 @@
+import { Link } from "react-router";
 import { FaGithubSquare, FaInstagramSquare, FaLinkedin } from "react-icons/fa";
 import PageContainer from "./PageContainer";
+import type { SiteStrings } from "../../types/site";
 
 const socialLinks = [
   {
@@ -20,16 +22,18 @@ const socialLinks = [
 ];
 
 type SiteFooterProps = {
+  strings: SiteStrings;
   /** Prefix used for homepage anchors when the footer renders on another page. */
   homePath?: string;
+  hasSelectedWork: boolean;
 };
 
-function SiteFooter({ homePath = "" }: SiteFooterProps) {
+function SiteFooter({ strings, homePath = "", hasSelectedWork }: SiteFooterProps) {
   return (
     <footer className="bg-(--color-canvas) pb-(--footer-padding-bottom)">
       <PageContainer className="pt-(--footer-padding-top)">
 
-        <nav aria-label="Social links">
+        <nav aria-label={strings.socialLinks}>
           <ul className="m-0 flex list-none justify-center gap-(--space-2) p-0">
             {socialLinks.map(({ label, href, Icon }) => (
               <li key={label}>
@@ -45,46 +49,46 @@ function SiteFooter({ homePath = "" }: SiteFooterProps) {
           </ul>
         </nav>
 
-        <nav aria-label="Footer navigation">
+        <nav aria-label={strings.footerNavigation}>
           <ul className="m-0 mt-(--space-3) flex list-none flex-wrap justify-center gap-1 p-0">
             <li>
-              <a
-                href="/"
+              <Link
+                to={homePath || "/"}
                 className="inline-flex min-h-9 items-center rounded-sm px-(--space-2) text-xs font-medium text-(--color-ink-secondary) no-underline hover:text-(--color-primary)"
               >
-                Home
-              </a>
+                {strings.home}
+              </Link>
             </li>
 
             <li>
-              <a
-                href={`${homePath}#about`}
+              <Link
+                to={`${homePath}#about`}
                 className="inline-flex min-h-9 items-center rounded-sm px-(--space-2) text-xs font-medium text-(--color-ink-secondary) no-underline hover:text-(--color-primary)"
               >
-                About
-              </a>
+                {strings.about}
+              </Link>
             </li>
 
-            <li>
-              <a
-                href={`${homePath}#projects`}
+            {hasSelectedWork && <li>
+              <Link
+                to={`${homePath}#projects`}
                 className="inline-flex min-h-9 items-center rounded-sm px-(--space-2) text-xs font-medium text-(--color-ink-secondary) no-underline hover:text-(--color-primary)"
               >
-                Projects
-              </a>
-            </li>
+                {strings.projects}
+              </Link>
+            </li>}
 
             <li>
-              <a
-                href={`${homePath}#contact`}
+              <Link
+                to={`${homePath}#contact`}
                 className="inline-flex min-h-9 items-center rounded-sm px-(--space-2) text-xs font-medium text-(--color-ink-secondary) no-underline hover:text-(--color-primary)"
               >
-                Contact
-              </a>
+                {strings.contact}
+              </Link>
             </li>
           </ul>
         </nav>
-        <p className="mt-(--space-4) text-center text-xs text-(--color-ink-muted)">&copy; 2026 Latifian Iman. All rights reserved.</p>
+        <p className="mt-(--space-4) text-center text-xs text-(--color-ink-muted)">{strings.copyright}</p>
       </PageContainer>
     </footer>
   );

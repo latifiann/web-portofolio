@@ -3,6 +3,7 @@ import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadExperience } from "./content/experience.ts";
 import { renderManifest } from "./content/manifest.ts";
+import { loadSite, loadSiteMetadata } from "./content/site.ts";
 import { loadProjects, selectProjectsForManifest } from "./content/projects.ts";
 import type { Mode } from "./content/types.ts";
 
@@ -37,10 +38,12 @@ function main(): void {
 
   const projectResult = loadProjects(projectsRoot, options.mode);
   const experienceResult = loadExperience(experienceFile, options.mode);
+  const siteResult = loadSite(join(repositoryRoot, "content", "site"));
+  const metadataResult = loadSiteMetadata(join(repositoryRoot, "content", "site"));
 
-  const errors = [...projectResult.errors, ...experienceResult.errors];
+  const errors = [...projectResult.errors, ...experienceResult.errors, ...siteResult.errors, ...metadataResult.errors];
 
-  if (errors.length > 0) {
+  if (errors.length > 0 || !siteResult.value || !metadataResult.value) {
     console.error(`Content validation failed (${options.mode}):`);
     for (const error of errors) console.error(`- ${error}`);
     process.exitCode = 1;
@@ -60,7 +63,7 @@ function main(): void {
 
   const manifestPath = manifestPathFor(options.mode);
   mkdirSync(dirname(manifestPath), { recursive: true });
-  writeFileSync(manifestPath, renderManifest(included, experience, manifestPath), "utf8");
+  writeFileSync(manifestPath, renderManifest(included, experience, manifestPath, siteResult.value, metadataResult.value), "utf8");
   console.log(
     `Content manifest written (${options.mode}): ${included.length} project record(s), ${experienceLabel} at ${relative(repositoryRoot, manifestPath)}.`,
   );

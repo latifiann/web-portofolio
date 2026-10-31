@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { Link, useLocation } from "react-router";
 import PageContainer from "./PageContainer";
+import type { Locale } from "../../types/content";
+import type { SiteStringKey, SiteStrings } from "../../types/site";
 
-interface NavigationItem {
-  label: string;
+interface NavigationDefinition {
+  labelKey: SiteStringKey;
   href: string;
   icon: ReactNode;
 }
@@ -18,9 +21,9 @@ const strokeIconProps = {
   strokeLinejoin: "round",
 } as const;
 
-const navigationItems: NavigationItem[] = [
+const navigationDefinitions: NavigationDefinition[] = [
   {
-    label: "Home",
+    labelKey: "home",
     href: "#home",
     icon: (
       <svg {...strokeIconProps}>
@@ -31,7 +34,7 @@ const navigationItems: NavigationItem[] = [
     ),
   },
   {
-    label: "About",
+    labelKey: "about",
     href: "#about",
     icon: (
       <svg {...strokeIconProps}>
@@ -41,7 +44,7 @@ const navigationItems: NavigationItem[] = [
     ),
   },
   {
-    label: "Projects",
+    labelKey: "projects",
     href: "#projects",
     icon: (
       <svg {...strokeIconProps}>
@@ -52,7 +55,7 @@ const navigationItems: NavigationItem[] = [
     ),
   },
   {
-    label: "Experience",
+    labelKey: "experience",
     href: "#experience",
     icon: (
       <svg {...strokeIconProps}>
@@ -62,7 +65,7 @@ const navigationItems: NavigationItem[] = [
     ),
   },
   {
-    label: "Capabilities",
+    labelKey: "capabilities",
     href: "#skills",
     icon: (
       <svg {...strokeIconProps}>
@@ -71,7 +74,7 @@ const navigationItems: NavigationItem[] = [
     ),
   },
   {
-    label: "Technology",
+    labelKey: "technology",
     href: "#technology",
     icon: (
       <svg {...strokeIconProps}>
@@ -82,7 +85,7 @@ const navigationItems: NavigationItem[] = [
     ),
   },
   {
-    label: "Contact",
+    labelKey: "contact",
     href: "#contact",
     icon: (
       <svg {...strokeIconProps}>
@@ -104,15 +107,35 @@ const sectionIds = [
 const footerActiveHref = "#contact";
 
 type SiteHeaderProps = {
+  strings: SiteStrings;
+  locale: Locale;
+  languagePaths: { en: string | null; id: string | null };
   /** Prefix used for homepage anchors when the header renders on another page. */
   homePath?: string;
   activeNavigationHref?: string;
+  hasSelectedWork: boolean;
+  isNotFound: boolean;
 };
 
-function SiteHeader({ homePath = "", activeNavigationHref }: SiteHeaderProps) {
+function SiteHeader({
+  strings,
+  locale,
+  languagePaths,
+  homePath = "",
+  activeNavigationHref,
+  hasSelectedWork,
+  isNotFound,
+}: SiteHeaderProps) {
+  const navigationItems = navigationDefinitions
+    .filter((item) => hasSelectedWork || item.href !== "#projects")
+    .map((item) => ({
+      ...item,
+      label: strings[item.labelKey],
+    }));
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isThemeToastVisible, setIsThemeToastVisible] = useState(false);
   const [activeHref, setActiveHref] = useState<string>(navigationItems[0].href);
+  const location = useLocation();
   const headerRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -155,7 +178,7 @@ function SiteHeader({ homePath = "", activeNavigationHref }: SiteHeaderProps) {
   }, [isThemeToastVisible]);
 
   useEffect(() => {
-    if (activeNavigationHref) return;
+    if (activeNavigationHref || isNotFound) return;
 
     const scrollPadding = 160;
     const hero = document.getElementById("home");
@@ -165,6 +188,7 @@ function SiteHeader({ homePath = "", activeNavigationHref }: SiteHeaderProps) {
       let current = sectionIds[0];
 
       for (const id of sectionIds) {
+        if (id === "projects" && !hasSelectedWork) continue;
         const element = document.getElementById(id);
         if (!element) continue;
         if (element.offsetTop <= scrolledY) {
@@ -209,46 +233,87 @@ function SiteHeader({ homePath = "", activeNavigationHref }: SiteHeaderProps) {
       window.removeEventListener("scroll", updateActiveSection);
       window.removeEventListener("resize", updateActiveSection);
     };
-  }, [activeNavigationHref]);
+  }, [activeNavigationHref, hasSelectedWork, isNotFound]);
 
-  const resolvedActiveHref = activeNavigationHref ?? activeHref;
+  const resolvedActiveHref = isNotFound ? null : activeNavigationHref ?? activeHref;
+  const languageTarget =
+    locale === "en" ? languagePaths.id : languagePaths.en;
 
-  function handleNavigation() {
-    setIsMenuOpen(false);
-    menuButtonRef.current?.focus();
+  function handleNavigation(hash: string) {
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+      menuButtonRef.current?.focus();
+    }
+    // Re-selecting the section already in the URL produces no route change, so
+    // the route effect cannot scroll; bring the target back into view here.
+    if (location.hash === hash) {
+      document.getElementById(hash.slice(1))?.scrollIntoView();
+    }
   }
 
   return (
     <header
+      data-site-header
       ref={headerRef}
       className="fixed top-0 right-0 left-0 z-(--z-sticky) pt-(--space-3)"
     >
       <PageContainer visual>
-        <div className="relative flex items-center justify-between">
-          <span
-            aria-label="English is the current language; Indonesian is coming soon"
-            className="inline-flex min-h-10 items-center gap-1 rounded-full border border-(--color-border) bg-(--color-canvas)/95 px-(--space-3) font-sans text-[0.625rem] font-medium tracking-wide text-(--color-ink-muted) shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm md:min-h-11 lg:min-h-14 lg:px-(--space-4) lg:text-xs"
-          >
-            <svg
-              aria-hidden="true"
-              className="size-3.5 text-(--color-ink-secondary) lg:size-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="1.75"
-            >
-              <circle cx="12" cy="12" r="9" />
-              <path d="M3 12h18M12 3c2.2 2.5 3.3 5.5 3.3 9S14.2 18.5 12 21c-2.2-2.5-3.3-5.5-3.3-9S9.8 5.5 12 3Z" />
-            </svg>
-            <span className="font-semibold text-(--color-ink)">EN</span>
-            <span aria-hidden="true">/</span>
-            <span>ID</span>
-          </span>
+        <div
+          data-header-row
+          className="relative flex items-center justify-between"
+        >
+          {languagePaths.en !== null &&
+            languagePaths.id !== null &&
+            languageTarget !== null && (
+              <Link
+                to={languageTarget}
+                aria-label={
+                  locale === "en"
+                    ? strings.switchToIndonesian
+                    : strings.switchToEnglish
+                }
+                onClick={() => setIsMenuOpen(false)}
+                className="inline-flex min-h-10 items-center gap-1 rounded-full border border-(--color-border) bg-(--color-canvas)/95 px-(--space-3) font-sans text-xs font-medium tracking-wide no-underline shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm transition-colors hover:border-(--color-primary) hover:bg-(--color-surface-soft) md:min-h-11 lg:min-h-14 lg:px-(--space-4)"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="size-3.5 text-(--color-ink-secondary) lg:size-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M3 12h18M12 3c2.2 2.5 3.3 5.5 3.3 9S14.2 18.5 12 21c-2.2-2.5-3.3-5.5-3.3-9S9.8 5.5 12 3Z" />
+                </svg>
+                <span
+                  className={
+                    locale === "en"
+                      ? "font-bold text-(--color-primary)"
+                      : "text-(--color-ink-muted)"
+                  }
+                >
+                  EN
+                </span>
+                <span aria-hidden="true" className="text-(--color-ink-muted)">
+                  /
+                </span>
+                <span
+                  className={
+                    locale === "id"
+                      ? "font-bold text-(--color-primary)"
+                      : "text-(--color-ink-muted)"
+                  }
+                >
+                  ID
+                </span>
+              </Link>
+            )}
 
           <nav
             id="primary-navigation"
-            aria-label="Primary navigation"
-            className={`absolute top-full right-0 left-0 z-(--z-dropdown) mt-(--space-2) rounded-md border border-(--color-border) bg-(--color-canvas) p-(--space-2) shadow-[0_8px_24px_rgb(15_23_42_/_0.06)] lg:top-0 lg:left-1/2 lg:mt-0 lg:block lg:w-fit lg:-translate-x-1/2 lg:rounded-full lg:bg-(--color-ink) lg:p-2 ${isMenuOpen ? "block" : "hidden"}`}
+            aria-label={strings.primaryNavigation}
+            className={`absolute top-full right-0 left-0 z-(--z-dropdown) mt-(--space-2) max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-md border border-(--color-border) bg-(--color-canvas) p-(--space-2) shadow-[0_8px_24px_rgb(15_23_42_/_0.06)] lg:top-0 lg:left-1/2 lg:mt-0 lg:block lg:max-h-none lg:w-fit lg:-translate-x-1/2 lg:overflow-visible lg:rounded-full lg:bg-(--color-ink) lg:p-2 ${isMenuOpen ? "block" : "hidden"}`}
           >
             <ul className="m-0 flex list-none flex-col gap-1 p-0 lg:flex-row lg:gap-1">
               {navigationItems.map((item) => {
@@ -256,11 +321,11 @@ function SiteHeader({ homePath = "", activeNavigationHref }: SiteHeaderProps) {
                 const href = `${homePath}${item.href}`;
                 return (
                   <li key={item.href}>
-                    <a
-                      href={href}
+                    <Link
+                      to={href}
                       aria-current={isActive ? "location" : undefined}
-                      className="primary-navigation-link flex min-h-10 items-center rounded-md px-(--space-3) text-sm font-medium no-underline md:min-h-11 lg:min-h-0 lg:rounded-full lg:px-3 lg:py-2 lg:leading-6 lg:text-[0.6875rem] lg:font-semibold"
-                      onClick={handleNavigation}
+                      className="primary-navigation-link flex min-h-10 items-center rounded-md px-(--space-3) text-sm font-medium no-underline md:min-h-11 lg:min-h-0 lg:rounded-full lg:px-3 lg:py-2 lg:leading-6 lg:text-xs lg:font-semibold"
+                      onClick={() => handleNavigation(item.href)}
                     >
                       <span
                         aria-hidden="true"
@@ -269,17 +334,19 @@ function SiteHeader({ homePath = "", activeNavigationHref }: SiteHeaderProps) {
                         {item.icon}
                       </span>
                       {item.label}
-                    </a>
+                    </Link>
                   </li>
                 );
               })}
             </ul>
           </nav>
 
-          <div className="flex items-center gap-(--space-2)">
+          <div className="ml-auto flex items-center gap-(--space-2)">
             <button
               type="button"
-              aria-label="Theme switcher"
+              aria-label={strings.theme}
+              data-js-only
+              data-header-control
               className="inline-flex size-10 items-center justify-center rounded-full border border-(--color-border) bg-(--color-canvas)/95 text-(--color-ink) shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm transition-colors hover:border-(--color-primary) hover:bg-(--color-surface-soft) hover:text-(--color-primary) md:size-11 lg:size-14"
               onClick={() => setIsThemeToastVisible(true)}
             >
@@ -295,22 +362,25 @@ function SiteHeader({ homePath = "", activeNavigationHref }: SiteHeaderProps) {
                 <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
               </svg>
             </button>
-            <a
-              href={`${homePath}#contact`}
+            <Link
+              to={`${homePath}#contact`}
+              onClick={() => handleNavigation("#contact")}
               className="header-contact-link hidden min-h-9 items-center rounded-full border border-(--color-border) bg-(--color-canvas)/95 px-(--space-3) font-sans text-[0.625rem] font-medium text-(--color-ink) no-underline shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm transition-colors lg:inline-flex lg:min-h-14 lg:px-5 lg:text-xs lg:font-semibold lg:shadow-[0_1px_2px_rgb(15_23_42_/_0.04),0_8px_24px_rgb(15_23_42_/_0.06)] lg:backdrop-blur-none"
             >
-              Get in touch
-            </a>
+              {strings.getInTouch}
+            </Link>
             <button
               ref={menuButtonRef}
               type="button"
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-label={isMenuOpen ? strings.closeMenu : strings.openMenu}
               aria-expanded={isMenuOpen}
               aria-controls="primary-navigation"
+              data-js-only
+              data-header-control
               className="inline-flex size-10 items-center justify-center rounded-full bg-(--color-ink) text-(--color-canvas) shadow-[0_4px_12px_rgb(15_23_42_/_0.16)] md:size-11 lg:hidden"
               onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
             >
-              <span className="sr-only">{isMenuOpen ? "Close" : "Open"}</span>
+              <span className="sr-only">{isMenuOpen ? strings.close : strings.open}</span>
               <svg
                 aria-hidden="true"
                 className="size-4"
@@ -336,7 +406,7 @@ function SiteHeader({ homePath = "", activeNavigationHref }: SiteHeaderProps) {
           aria-live="polite"
           className="fixed right-(--space-4) bottom-(--space-4) z-(--z-toast) max-w-[calc(100vw-var(--space-8))] rounded-full bg-(--color-ink) px-(--space-4) py-(--space-3) text-sm font-medium text-(--color-canvas) shadow-[0_8px_24px_rgb(15_23_42_/_0.16)]"
         >
-          Theme switcher is not available yet.
+          {strings.themeUnavailable}
         </div>
       )}
     </header>

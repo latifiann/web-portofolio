@@ -1,7 +1,8 @@
 import PageContainer from "../layout/PageContainer";
 import portraitSrc from "../../../content/site/media/portrait/latifian-iman-portrait.webp";
+import type { SiteStrings } from "../../types/site";
 
-export default function HeroSection() {
+export default function HeroSection({ strings }: { strings: SiteStrings }) {
   return (
     <section
       id="home"
@@ -15,16 +16,16 @@ export default function HeroSection() {
             id="hero-title"
             className="hero-title relative z-(--z-raised) leading-none font-semibold tracking-tight text-(--color-ink) lg:translate-y-4"
           >
-            Hi, I&apos;m Latifian.
+            {strings.heroGreeting}
             <span className="hero-role mt-2 block font-serif font-normal italic tracking-normal text-(--color-ink)">
-              Software Developer
+              {strings.heroRole}
             </span>
           </h1>
 
           <div className="hero-portrait-wrapper relative z-(--z-raised) -mt-4 flex w-full flex-1 items-end justify-center md:-mt-16 md:-translate-y-4">
             <img
               src={portraitSrc}
-              alt="Portrait of Latifian Iman"
+              alt={strings.portraitAlt}
               width={1084}
               height={1451}
               fetchPriority="high"
@@ -39,12 +40,12 @@ export default function HeroSection() {
                   aria-hidden="true"
                   className="hero-availability-dot rounded-full bg-(--color-primary)"
                 />
-                Open to new opportunities
+                {strings.availability}
               </span>
 
-              <p className="hero-focus-label">Building across</p>
+              <p className="hero-focus-label">{strings.focusLabel}</p>
               <p className="hero-focus-value">
-                Mobile&thinsp;&middot;&thinsp;Frontend&thinsp;&middot;&thinsp;APIs
+                {strings.focusValue}
               </p>
             </div>
 
@@ -52,18 +53,16 @@ export default function HeroSection() {
 
             <div className="hero-right-rail">
               <p className="hero-supporting-text leading-relaxed text-(--color-ink-secondary)">
-                Passionate about creating intuitive digital experiences and
-                reliable software systems that connect people with meaningful
-                value.
+                {strings.heroStatement}
               </p>
               <a
                 href="/resume/latifian-iman-cv-ats.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hero-resume-link mt-(--space-4) inline-flex items-center rounded-full border border-(--color-border) bg-(--color-canvas) no-underline"
-                aria-label="View resume (PDF, opens in a new tab)"
+                aria-label={strings.resumeAccessible}
               >
-                <span>View resume</span>
+                <span>{strings.resume}</span>
                 <span aria-hidden="true" className="hero-resume-arrow">
                   &rarr;
                 </span>

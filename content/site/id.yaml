@@ -1,0 +1,100 @@
+schemaVersion: 1
+locale: id
+strings:
+  skip: Lewati ke konten utama
+  home: Beranda
+  about: Tentang
+  projects: Proyek
+  experience: Pengalaman
+  capabilities: Keahlian
+  technology: Teknologi
+  contact: Kontak
+  primaryNavigation: Navigasi utama
+  footerNavigation: Navigasi footer
+  socialLinks: Tautan media sosial
+  switchToEnglish: Ganti ke bahasa Inggris
+  switchToIndonesian: Ganti ke bahasa Indonesia
+  theme: Pengubah tema
+  themeUnavailable: Pengubah tema belum tersedia.
+  openMenu: Buka menu
+  closeMenu: Tutup menu
+  open: Buka
+  close: Tutup
+  getInTouch: Hubungi saya
+  copyright: © 2026 Latifian Iman. Hak cipta dilindungi.
+  heroGreeting: Halo, saya Latifian.
+  heroRole: Software Developer
+  portraitAlt: Potret Latifian Iman
+  availability: Terbuka untuk peluang
+  focusLabel: Membangun lintas bidang
+  focusValue: Mobile · Frontend · Backend
+  heroStatement: Bersemangat membangun digital experience yang intuitif dan software system yang andal untuk memberikan manfaat nyata bagi pengguna.
+  resume: Lihat CV
+  resumeAccessible: Lihat CV (PDF, dibuka di tab baru)
+  engineeringGreeting: Halo!
+  engineeringStatement: Fokus saya adalah memadukan strategi yang jelas, engineering yang matang, dan empati terhadap produk untuk menciptakan
+  engineeringAccent: experience yang menyelesaikan masalah nyata.
+  selectedEyebrow: / Proyek Unggulan
+  selectedTitle: Karya Pilihan
+  swipeProjects: Geser untuk melihat proyek lainnya
+  projectPreview: Pratinjau proyek
+  exploreProjects: Jelajahi semua {count} proyek
+  experienceEyebrow: / Perjalanan Karier
+  viewDetails: Lihat detail
+  hideDetails: Sembunyikan detail
+  capabilitiesEyebrow: / Keahlian Teknis
+  technologyTitle: Teknologi inti & ekosistem
+  technologyAccessible: Daftar teknologi. Fokuskan untuk menjeda animasi.
+  contactTitle: Mari membangun sesuatu yang bermanfaat.
+  contactBody: Saya terbuka untuk peluang kerja, proyek freelance, dan kolaborasi profesional. Email adalah cara paling langsung untuk memulai percakapan.
+  email: Kirim email
+  previous: Sebelumnya
+  next: Berikutnya
+  relatedTitle: Jelajahi Proyek Terkait
+  backToWork: Kembali ke karya pilihan
+  outcome: Hasil
+  technologies: Teknologi
+  technicalStack: Teknologi yang digunakan
+  relatedPage: Halaman proyek terkait
+  newTab: (dibuka di tab baru)
+  projectHighlights: Sorotan proyek
+  projectPagination: Navigasi halaman proyek terkait
+  pageIndicator: Halaman {page} dari {total}
+  viewRepository: Lihat Repository
+  viewGooglePlay: Lihat di Google Play
+  viewLink: Lihat di {label}
+  videoPlayerLabel: Video proyek
+  mediaGalleryLabel: Media proyek
+  mediaGalleryImage: Tampilkan gambar proyek
+  mediaGalleryVideo: Tampilkan video proyek (memuat player YouTube)
+  mobileApp: Aplikasi Mobile
+  webApp: Aplikasi Web
+  completed: Selesai
+  prototype: Prototipe
+  ongoing: Aktif
+  maintained: Dipelihara
+  unmaintained: Tidak dipelihara
+  finalAcademicProject: Tugas akhir perkuliahan
+  personalProject: Proyek pribadi
+  internshipPrototype: Prototipe magang
+  internshipProduct: Produk magang
+  notFoundTitle: Halaman tidak ditemukan
+  notFoundBody: Halaman ini tidak tersedia. Kembali ke beranda untuk melanjutkan.
+  notFoundHome: Kembali ke beranda
+  mobileDevelopment: Pengembangan Mobile
+  frontendDevelopment: Pengembangan Frontend
+  backendApi: Backend & REST API
+  realtimeIntegration: Integrasi Real-time
+  qualityAssurance: Penjaminan Kualitas Perangkat Lunak
+  teamCollaboration: Kolaborasi Tim
+  frontendEngineering: Frontend Engineering
+  frontendDescription: Membangun antarmuka terstruktur dengan React, JavaScript, dan Tailwind CSS.
+  backendDescription: Mengintegrasikan dan mengembangkan REST API dengan validasi dan penanganan error yang jelas.
+  mobileDescription: Membangun aplikasi Flutter dengan state management, navigasi, dan integrasi platform.
+  databases: Basis Data
+  databaseDescription: Menggunakan model data relasional dan dokumen pada backend proyek.
+  qualityDescription: Menggunakan pengujian manual dan otomatis untuk memeriksa perilaku produk serta aturan arsitektur.
+  manualTesting: Pengujian manual
+  automatedTesting: Pengujian otomatis
+  projectCollaboration: Proyek & Kolaborasi
+  collaborationDescription: Bekerja melalui alur Git bersama, handoff Figma, dan proses Agile.

@@ -26,7 +26,7 @@ highlights:
 
 FMS-CREATE is a fleet management system for electric bus operations. Passengers use the mobile app to see routes, stops, estimated arrivals, and the live position of a bus. A second variant serves fleet operators.
 
-The app was my final project for the applied informatics degree. I built the passenger-side application and the whole operator prototype individually, inside a wider ecosystem handled by a cross-platform team. The mobile codebase is a modular monolith, built so that its modules can be orchestrated into different application variants. Each variant is assembled by choosing a set of modules before the APK build. Module selection happens at build time, not dynamically while the app runs.
+The app was my final project for the Informatics Engineering program at Politeknik Elektronika Negeri Surabaya (PENS). I built the passenger-side application and the whole operator prototype individually, inside a wider ecosystem handled by a cross-platform team. The mobile codebase is a modular monolith, built so that its modules can be orchestrated into different application variants. Each variant is assembled by choosing a set of modules before the APK build. Module selection happens at build time, not dynamically while the app runs.
 
 A teammate built Nusantara EV Connect, the orchestration app that offers the module picker and automates the APK build. I did not build that orchestration tool. The repository is private and both Android builds stay internal, so the project has no store listing and no public demo.
 

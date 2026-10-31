@@ -8,32 +8,34 @@ import ContactSection from "../components/sections/ContactSection";
 import HeroSection from "../components/sections/HeroSection";
 import type { ProjectCardProps } from "../features/projects/ProjectCard";
 import type { TimelineEntry } from "../types/content";
+import type { SiteStrings } from "../types/site";
 
 type HomePageProps = {
+  strings: SiteStrings;
   projectCards: ProjectCardProps[];
   experienceEntries: TimelineEntry[];
 };
 
-function HomePage({ projectCards, experienceEntries }: HomePageProps) {
+function HomePage({ strings, projectCards, experienceEntries }: HomePageProps) {
   return (
     <main id="main-content" tabIndex={-1} className="pt-16">
-      <HeroSection />
+      <HeroSection strings={strings} />
 
       <PageContainer visual>
-        <EngineeringStatementSection />
+        <EngineeringStatementSection strings={strings} />
       </PageContainer>
 
-      <SelectedWorkSection cards={projectCards} />
+      <SelectedWorkSection strings={strings} cards={projectCards} />
 
       <PageContainer visual>
-        <ExperienceSection entries={experienceEntries} />
+        <ExperienceSection strings={strings} entries={experienceEntries} />
       </PageContainer>
 
-      <CapabilitiesSection />
+      <CapabilitiesSection strings={strings} />
 
-      <TechnologyStrip />
+      <TechnologyStrip strings={strings} />
 
-      <ContactSection />
+      <ContactSection strings={strings} />
     </main>
   );
 }

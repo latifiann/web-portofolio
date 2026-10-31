@@ -28,7 +28,7 @@ ReMi Web App is the web deliverable of the ReMi task and reminder product, built
 
 The web product is built with React, TypeScript, Vite, and Tailwind CSS, and consumes the team's REST API for authentication, tasks, deadline filters, and reminders. The team also planned an Eisenhower Matrix view, a profile area, a mission-and-coin gamification layer, and event analytics.
 
-I worked as a front-end developer on this web deliverable. The product scope below belongs to the team; this case study describes the work I took part in rather than claiming individual ownership of every feature. The repository is private and carries no personal commit identity, so no source link is published.
+I worked as a front-end developer on this web deliverable. The product scope below belongs to the team. This case study describes the work I took part in rather than claiming individual ownership of every feature. The repository is private and carries no personal commit identity, so no source link is published.
 
 The images shown here come from the team's landing page, which promotes the mobile app. They illustrate the product context rather than a screenshot of the task workspace.
 

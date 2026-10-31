@@ -1,4 +1,5 @@
 import PageContainer from "../layout/PageContainer";
+import type { SiteStrings } from "../../types/site";
 
 type Technology = {
   name: string;
@@ -48,7 +49,7 @@ function TechnologyItem({ technology }: { technology: Technology }) {
   );
 }
 
-function TechnologyStrip() {
+function TechnologyStrip({ strings }: { strings: SiteStrings }) {
   return (
     <section
       id="technology"
@@ -65,7 +66,7 @@ function TechnologyStrip() {
             id="technology-title"
             className="font-mono text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-(--color-ink-muted)"
           >
-            Core technologies &amp; ecosystem
+            {strings.technologyTitle}
           </h2>
           <span
             aria-hidden="true"
@@ -78,7 +79,7 @@ function TechnologyStrip() {
         className="technology-marquee"
         role="region"
         tabIndex={0}
-        aria-label="Technology list. Focus to pause animation."
+        aria-label={strings.technologyAccessible}
       >
         <div className="technology-marquee-track">
           <ul className="technology-marquee-group">

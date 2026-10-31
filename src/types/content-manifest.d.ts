@@ -1,6 +1,10 @@
 // Declared here so type-checking does not require both generated manifests to exist.
 declare module "@content-manifest" {
   import type { ExperienceEntryDetail, ProjectDetail } from "./content";
+  import type { SiteContent, SiteMetadataContent } from "./site";
+
+  export const site: SiteContent;
+  export const siteMetadata: SiteMetadataContent;
 
   export const projects: ProjectDetail[];
 

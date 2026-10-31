@@ -28,6 +28,14 @@ export interface ProjectMedia {
   alt: string;
 }
 
+export interface ProjectVideo {
+  provider: "youtube";
+  id: string;
+  embedUrl: string;
+  watchUrl: string;
+  thumbnailUrl: string;
+}
+
 export type ProjectBlock =
   | { type: "paragraph"; text: string }
   | { type: "list"; items: string[] };
@@ -51,6 +59,7 @@ export interface ProjectLocalizedContent {
   roleSummary: string;
   seoDescription: string;
   heroCaption: string;
+  videoCaption: string | null;
   outcomeSummary: string;
   highlights: ProjectHighlight[];
   sections: ProjectSection[];
@@ -108,6 +117,7 @@ export interface ProjectDetail {
   primaryLink: ProjectLink | null;
   ctaLabel: string | null;
   hero: ProjectMedia;
+  video: ProjectVideo | null;
   content: {
     en: ProjectLocalizedContent;
     id: ProjectLocalizedContent | null;

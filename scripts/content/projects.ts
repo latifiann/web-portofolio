@@ -45,6 +45,12 @@ const heroMediaSchema = z.object({
   focalPosition: z.string().min(1),
 });
 
+// Only providers with an approved click-to-load player belong here.
+const videoMediaSchema = z.object({
+  provider: z.literal("youtube"),
+  id: z.string().regex(/^[A-Za-z0-9_-]{11}$/, "a YouTube video ID must be 11 URL-safe characters"),
+});
+
 const projectSchema = z
   .object({
     schemaVersion: z.literal(1),
@@ -77,7 +83,7 @@ const projectSchema = z
     primaryLink: z.string().url().nullable(),
     ctaLabel: z.string().min(1).nullable().default(null),
     links: z.array(linkSchema),
-    media: z.object({ hero: heroMediaSchema }),
+    media: z.object({ hero: heroMediaSchema, video: videoMediaSchema.optional() }),
   })
   .superRefine((project, context) => {
     if (project.repository.visibility === "private" && project.repository.url !== null) {
@@ -148,7 +154,10 @@ const frontMatterSchema = z.object({
   roleSummary: z.string().min(1),
   seoDescription: z.string().min(1).max(160),
   mediaAlt: z.object({ hero: z.string().min(1) }),
-  mediaCaption: z.object({ hero: z.string().min(1) }),
+  mediaCaption: z.object({
+    hero: z.string().min(1),
+    video: z.string().min(1).optional(),
+  }),
   outcomeSummary: z.string().min(1),
   highlights: z.array(highlightSchema).min(1).max(3),
 });
@@ -182,6 +191,7 @@ function parseLocalizedContent(
       roleSummary: parsed.data.roleSummary,
       seoDescription: parsed.data.seoDescription,
       heroCaption: parsed.data.mediaCaption.hero,
+      videoCaption: parsed.data.mediaCaption.video ?? null,
       outcomeSummary: parsed.data.outcomeSummary,
       highlights,
       sections: parseBody(filePath, body),
@@ -241,6 +251,34 @@ function parseProject(projectsRoot: string, slug: string, mode: Mode): ParsedPro
       : (links.find((link) => link.url === record.primaryLink) ?? null);
   const heroAlt = english.heroAlt;
 
+  const video = record.media.video
+    ? {
+        provider: record.media.video.provider,
+        id: record.media.video.id,
+        embedUrl: `https://www.youtube-nocookie.com/embed/${record.media.video.id}`,
+        watchUrl: `https://www.youtube.com/watch?v=${record.media.video.id}`,
+        thumbnailUrl: `https://i.ytimg.com/vi/${record.media.video.id}/mqdefault.jpg`,
+      }
+    : null;
+
+  if (video && english.content.videoCaption === null) {
+    throw new Error(
+      `${englishFile}: a project with a video requires mediaCaption.video`,
+    );
+  }
+
+  if (!video && english.content.videoCaption !== null) {
+    throw new Error(
+      `${englishFile}: mediaCaption.video requires a video in project.yaml`,
+    );
+  }
+
+  if (video && indonesian && indonesian.content.videoCaption === null) {
+    throw new Error(
+      `${indonesianFile}: a project with a video requires mediaCaption.video`,
+    );
+  }
+
   const detail: ProjectDetail = {
     slug: record.slug,
     cardTitle: record.cardTitle,
@@ -264,6 +302,7 @@ function parseProject(projectsRoot: string, slug: string, mode: Mode): ParsedPro
       height: record.media.hero.height,
       alt: heroAlt,
     },
+    video,
     content: {
       en: english.content,
       id: indonesian ? indonesian.content : null,

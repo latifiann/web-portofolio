@@ -1,8 +1,8 @@
 ---
 name: Latifian Editorial Portfolio
-version: 2.26.50
+version: 2.26.68
 status: canonical
-last_updated: 2026-10-31
+last_updated: 2026-11-01
 description: Canonical UI/UX and implementation specification for latifian.dev.
 fonts:
   sans: Geist
@@ -308,7 +308,7 @@ Do not stack large diffuse shadows. Cards must not resemble floating SaaS dashbo
 
 ## 7. Navigation
 
-Desktop navigation has three visual zones: a compact static `EN / ID` language control on the left during the English-only draft, a floating full-pill control centered near the top, then a theme-preview icon button and `Get in touch` contact CTA on the right. Supporting actions remain visually quieter than primary navigation.
+Desktop navigation has three visual zones: a compact `EN / ID` language switch on the left, a floating full-pill control centered near the top, then a theme-preview icon button and `Get in touch` contact CTA on the right. Supporting actions remain visually quieter than primary navigation. The switch is one pill-shaped router link whose entire surface—icon, padding, and both locale labels—is clickable and points at the equivalent page, preserving a valid homepage anchor. The active locale renders bold in `--color-primary` while the inactive locale stays `--color-ink-muted`; both locale labels stay `12px` (`text-xs`) at every breakpoint, matching the other side controls. It never redirects automatically, works without JavaScript, and hides itself when no equivalent route exists.
 
 The floating navigation contains seven order: `Home`, `About`, `Projects`, `Experience`, `Capabilities`, `Technology`, `Contact`. `About` links to the engineering-statement section. `Experience`, `Capabilities`, and `Technology` expose the sections that previously had no dedicated navigation item. They do not introduce separate biography pages in public v1.
 
@@ -316,17 +316,20 @@ Rules:
 
 - minimum interactive target: `44 × 44px` where possible;
 - display the centered floating navigation as a horizontal row only from `>= 1024px` (`lg`, canonical desktop breakpoint); below that width it collapses to the mobile dropdown panel. The theme button and `Get in touch` expose on the same `lg` breakpoint, and the menu trigger appears below it;
-- desktop controls are enlarged together so the three zones stay visually balanced: language selector, centered navigation, and right actions all reach `56px` tall at `>= 1024px`, with navigation text at `11px` and side-control text at `12px`;
+- desktop controls are enlarged together so the three zones stay visually balanced: language selector, centered navigation, and right actions all reach `56px` tall at `>= 1024px`, with navigation and side-control text at `12px`; primary navigation text stays `14px` below desktop, while language labels stay `12px` at every breakpoint;
 - at tablet width (`768–1023px`) the header controls match the tablet action targets for visual consistency with the rest of the page: the language selector has a `44px` minimum height, the theme button and menu trigger are `44 × 44px`, and each dropdown item is at least `44px` tall; mobile keeps the compact `40px` controls and `40px` dropdown items;
 - the right zone is two separate floating surfaces, not a shared container: the theme icon button is a `56px` `canvas` secondary surface, and `Get in touch` is a `56px` `ink` surface with `canvas` text (same base treatment as the inactive navigation container), using `ink-secondary` on hover and `ink` on active — no saturated-blue fill;
 - the language selector, center navigation, and header `Get in touch` CTA all use the sans `Geist` family (not mono). The CTA desktop color states are authored as a named rule (`.header-contact-link`) inside the `>= 64rem` media query so the `canvas` text is not overridden by lower-specificity responsive utilities;
 - the centered floating navigation container uses `8px` padding and `4px` spacing between items; each navigation item uses `8px` vertical padding with `24px` line height, keeping the background visually tight to the label instead of a tall full-height pill;
 - active item has a clear background and text contrast;
-- active state follows the section currently in view, not only the last item clicked: hero → `Home`, `#about` → `About`, `#projects` → `Projects`, `#experience` → `Experience`, `#skills` → `Capabilities`, `#technology` → `Technology`, and `#contact`/footer → `Contact`. Exactly one item is active at any time;
+- active state follows the section currently in view, not only the last item clicked: hero → `Home`, `#about` → `About`, `#projects` → `Projects`, `#experience` → `Experience`, `#skills` → `Capabilities`, `#technology` → `Technology`, and `#contact`/footer → `Contact`. Exactly one item is active on the homepage; the not-found page has no active item;
 - the active item renders its matching outline icon before the label; inactive items render no icon. Icons are decorative, drawn as local inline SVG, use an outline (Linear) style, and are kept small;
 - the homepage three-zone navigation is fixed at the viewport top and each floating control follows scroll without a full-width header surface;
 - preserve a visible keyboard focus ring;
-- do not hide primary navigation behind hover-only interactions.
+- do not hide primary navigation behind hover-only interactions;
+- Before React is ready, including disabled JavaScript or a failed bundle, the theme-preview and menu triggers are invisible and retain their layout space. Desktop navigation retains its fixed centered geometry. Below desktop, primary navigation remains available as a horizontally scrollable fixed bottom strip until enhancement, without pushing page content; keyboard focus must reveal offscreen links. Enhanced mobile navigation is vertically scrollable on short viewports. The media gallery keeps its hero image visible and hides its thumbnail row. Enhancement begins only after React mounts, not merely when JavaScript is enabled.
+- Header and footer omit Projects when the locale homepage has no Selected Work cards. Do not render an empty section or expose drafts to preserve an anchor.
+- On the English not-found page, the language switch is hidden and the action group stays right-aligned. The footer rests at the viewport bottom when content is short and follows the content normally when it is long.
 - the theme-preview button is light-theme only in v1 and announces the approved unavailable-feature toast without changing tokens or persisting preference.
 
 Contrast on the centered floating navigation:
@@ -341,7 +344,9 @@ Navigation link colors are authored as a named rule (`.primary-navigation-link`)
 
 Active-item icons are always present in the DOM but visibly shown only on the active item. Their appearance animates width, opacity, and scale over `200ms` with `ease-out` so the icon expands smoothly and the label does not jump. Inactive links animate the same properties in reverse. Reduced-motion rules collapse these to near-instant feedback.
 
-On mobile, use a compact top bar with a dropdown panel beneath it. The menu trigger exposes an accessible name and `aria-expanded`; the panel closes on `Escape`, outside click, and route or anchor selection; focus returns to the trigger when it closes. The menu must not depend on hover, and the DOM reading order must remain meaningful without CSS. Do not use a sticky bottom navigation unless it is intentionally redesigned and tested; it is not part of the current canonical UI.
+On mobile, use a compact top bar with a dropdown panel beneath it. The menu trigger exposes an accessible name and `aria-expanded`; the panel closes on `Escape`, outside click, and route or anchor selection. Focus returns to the trigger when the panel closes without leaving the page, while a selection that changes the route moves focus to the new page content instead. The menu must not depend on hover, and the DOM reading order must remain meaningful without CSS. Do not use a sticky bottom navigation unless it is intentionally redesigned and tested; it is not part of the current canonical UI.
+
+Header and footer destinations change the view in place rather than reloading the document, and selecting the section already in the URL brings it back into view. Desktop selection leaves focus on the page content instead of moving it to the hidden mobile trigger.
 
 ## 8. Hero Composition
 
@@ -354,7 +359,7 @@ The hero combines oversized editorial type, a grayscale portrait, a pale-blue st
 3. Portrait as the central visual anchor.
 4. Availability badge when the status is current and verified.
 5. Short positioning statement.
-6. Engineering-focus line under the availability badge (`Building across / Mobile · Frontend · APIs`) communicating general scope without replacing the role title.
+6. Engineering-focus line under the availability badge (`Building across / Mobile · Frontend · Backend`) communicating general scope without replacing the role title. Owner revision on 2026-11-01 replaces APIs/API in both locales. Overlay is restricted to tablet (`48–63.9375rem`), with rail caps of `18rem` left and `12rem` right. From `64rem`, desktop retains inward-facing alignment at every width: left rail right-aligned, right rail left-aligned, both flanking the portrait. Equal flexible side columns surround a centre track of `clamp(20rem, calc(100% - 37rem), 31rem)`, with existing `2rem` gaps. The centre track adapts before squeezing the side copy: at a 1024px viewport, the 928px content width allocates 320px centre and 272px per side. Focus value stays `20px` and supporting text `14px` below `90rem`. From `90rem`, centre track is `27rem`, focus value `24px`, supporting text `16px`; at the composition's 1152px maximum, side columns are 328px. Natural wrapping stays enabled for narrow space or enlarged text. Mobile below `48rem` is unchanged. Earlier overlay-through-1279px measurements describe a superseded layout, not current visual acceptance. Manual visual confirmation remains pending.
 7. A `View resume` secondary action is always available in the hero. `Get in touch` is a header action and is no longer rendered inside the hero at any width.
 
 ### Portrait treatment
@@ -571,13 +576,19 @@ Composition order stays mobile semantic flow, then tablet, then desktop, as defi
 ### Case-study boundaries
 
 - A page presents the personal contribution and states team outcomes as team outcomes.
-- Media qualification wording from `CONTENT.md` travels with the visual it qualifies.
+- Media presentation follows the owner-approved caption-display exception in `CONTENT.md` Section 18; existing narrative attribution and image alternatives remain intact.
 - No fabricated technical rationale: when a decision's reason is unrecorded, the page omits that explanation instead of inventing it.
 - Pending sections stay absent until their evidence exists.
 
 The representative hero visual is required for every published case study. Galleries, videos, architecture diagrams, and additional media are optional. Missing optional media must not hide project text or leave empty controls. Prefer a normal external video link when an embed does not add essential understanding.
 
+An approved project video joins the hero image as a media gallery, not as a separate panel. When a project has more than one media item, the media frame is followed by a horizontal thumbnail row. No caption or explanatory paragraph appears below the gallery. The first item is the hero image. Selecting the video mounts a `16:9` player; returning to the image unmounts the iframe and stops playback. Playback never starts automatically. Locale or project changes reset selection to the hero.
+
+The image thumbnail reuses the local hero asset; the video thumbnail uses YouTube's `320 × 180` `mqdefault.jpg`, with explicit dimensions, lazy loading, and a play overlay. Failed thumbnail loads fall back to a local play tile. Thumbnail requests to `i.ytimg.com` may occur before activation; the iframe still mounts only after video selection. Thumbnails share a consistent `16:9` display size. Active state uses a primary border and `aria-pressed`; the row scrolls horizontally on narrow screens. The bilingual video control label identifies YouTube loading. The external YouTube fallback link lives in the aside's additional links, deduplicated against existing links. A single-media project has no thumbnail row.
+
 ## 12. Experience
+
+Owner revision: project asides show only technical stack, outcome, and the primary CTA when available. Additional-link lists, including the standalone YouTube fallback, are removed. This supersedes the additional-link placement above; gallery selection and playback remain unchanged.
 
 The experience section uses a vertical editorial timeline across viewport sizes. Timeline content fills the same horizontal boundaries as the surrounding homepage sections. Entry metadata is integrated into the main content; no separate metadata rail or column is used. It should be faster to scan than a résumé. Experience entries are not rendered as cards, panels, or boxed surfaces.
 
@@ -698,9 +709,11 @@ The `Core Technologies & Ecosystem` strip is secondary evidence. It renders as a
 
 ## 14. Contact and Footer
 
+The browser-tab favicon uses the owner-supplied personal mark: `#111111` vector shapes on a white rounded-square background, with transparent outer corners. The owner confirmed its appearance as satisfactory on 2026-11-01; this approval does not establish browser-specific or size-specific coverage.
+
 The contact section uses a vertical top-to-bottom wash that starts from `surface-accent`, blends through `surface-soft`, and fades to `canvas` at the bottom edge.
 
-At reference widths, center the contact heading, body, and primary action within the wash. The heading renders on one line on desktop (`>=64rem`) and may wrap on mobile and tablet without overflowing the viewport. No single-line constraint (`white-space: nowrap`) applies below `64rem`; the heading wraps at its natural break points inside the content container instead of being clipped by the section's `overflow-hidden`. Body copy is narrower than the heading so line lengths stay comfortable.
+At reference widths, center the contact heading, body, and primary action within the wash. The heading wraps at its natural break points inside the content container whenever the localized copy needs it, with balanced line lengths where the browser supports `text-wrap: balance`; the English heading still fits on one line at desktop width. No single-line constraint (`white-space: nowrap`) applies at any breakpoint, because the longer Indonesian heading would be clipped by the section's `overflow-hidden` on desktop. Body copy is narrower than the heading so line lengths stay comfortable.
 
 The approved contact heading is defined in `CONTENT.md`.
 
@@ -853,7 +866,8 @@ The portfolio supports English and Indonesian as complete locale states.
 - Brand names, company names, product names, and technology names remain unchanged.
 - Do not mix `Pengalaman Kerja` with English section content in the same locale.
 - Layout must tolerate Indonesian strings that are longer than English equivalents.
-- Locale selection persists across navigation when technically feasible.
+- Locale selection is URL-owned: English at `/` and Indonesian under `/id/`. The switch button navigates to the equivalent page and slug, so the choice persists across navigation, refresh, and back/forward without a stored preference.
+- The switch never performs an automatic browser-language redirect and never falls back to the other locale when translated content is unavailable; unavailable paths render the not-found state instead.
 - Published case studies exist in both locales. English-only drafts are local authoring states and are not public design states.
 
 ## 19. Content Voice

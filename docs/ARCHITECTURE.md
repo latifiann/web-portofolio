@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: technical-architecture
-version: 1.6.28
+version: 1.6.44
 status: canonical
-last_updated: 2026-10-31
+last_updated: 2026-11-01
 owner: Latifian Iman
 application_type: statically generated portfolio
 package_manager: npm
@@ -103,7 +103,7 @@ Use the smallest package set that implements these decisions. Pin resolved versi
 
 - `react` and `react-dom`;
 - `react-icons` for the icon glyphs (imported directly from provider subpaths so only used icons enter the production bundle);
-- `react-router-dom`;
+- `react-router`;
 - `react-helmet-async` for route-level head collection in server and browser rendering;
 
 **Build and content**
@@ -155,13 +155,17 @@ Failure of an external destination must not prevent the portfolio itself from re
 The application uses a small custom static-generation pipeline based on Vite's client and SSR builds.
 
 1. Validate content and build a typed content manifest.
-2. Build the browser bundle with Vite.
-3. Build an SSR entry with Vite.
-4. Enumerate all public routes from the route and content manifests.
-5. Render each route to HTML using React's server renderer.
-6. Inject page-specific head metadata and serialized, non-sensitive initial content.
-7. Write directory-index files to `dist/`.
+2. Generate fonts and typecheck the project references.
+3. Build the browser bundle with Vite.
+4. Build an SSR entry with Vite at `dist-ssr/entry-server.js`.
+5. Enumerate public routes from the production manifest: both homepages, plus both locales of a published project with complete content.
+6. Render each route to HTML using React's server renderer.
+7. Set the route's `<html lang>` on the built shell, move resource preload links into the document head, inject the rendered markup into `#root`, and write the directory-index file.
 8. Hydrate the generated markup in the browser for menus, locale switching, and enhanced navigation.
+
+Page-specific head metadata and static `404.html` are implemented. The sitemap remains a later unit. `dist-ssr/` holds the server bundle and the indexable route manifest used by validation, and it is never published. The generator renders `/404.html` through the shared App separately from that manifest, preserving English not-found markup and hydration at unknown paths without exposing drafts. The recovery link points to the English homepage and works without JavaScript. Output validation checks its English lang, one h1, non-empty rendered content, English-only main recovery link, title, noindex, assets, internal links, and absence of canonical/alternate/sharing metadata. Static generation does not set HTTP status: unknown-path HTTP 404 behavior remains a hosting verification requirement, not something Vite preview certifies.
+
+Implemented now: the pipeline above runs for both homepages. Detail routes are emitted only for a published project whose requested locale content exists. The production manifest currently contains zero projects, so the build writes `dist/index.html` and `dist/id/index.html`; draft isolation is enforced by the route enumerator rather than by relaxing publication state.
 
 Conceptual output:
 
@@ -195,7 +199,7 @@ The initial HTML must contain:
 - image dimensions and alternative text;
 - canonical, alternate-language, Open Graph, and description metadata.
 
-JavaScript enhances navigation and interaction. It must not be required to discover the identity, selected work, experience, project evidence, or contact routes.
+JavaScript enhances navigation and interaction. It must not be required to discover the identity, selected work, experience, project evidence, or contact routes. Controls that exist only to run client behavior carry `data-js-only`. Before React is ready, header controls retain their space but are invisible, desktop navigation keeps its fixed geometry, and mobile/tablet navigation is a scrollable fixed bottom strip. Other JavaScript-only controls remain hidden, including the media gallery thumbnails. An App mount effect sets `data-react-ready="true"` on the document element and removes it on unmount, enabling interaction without changing the initial hydration tree. This is not recovery from arbitrary runtime errors after enhancement. Header and footer receive Selected Work availability from the active locale's card selector and omit Projects when its homepage section is absent.
 
 ### 5.3 Hydration correctness
 
@@ -203,6 +207,8 @@ JavaScript enhances navigation and interaction. It must not be required to disco
 - Browser-only APIs may be accessed only inside effects or guarded utilities.
 - Random values, current timestamps, and viewport-dependent markup must not affect the server-rendered tree.
 - The copyright year may be generated at build time or supplied as stable content; it must not create a hydration mismatch.
+- Hash-dependent link targets render without the fragment during hydration and adopt it after mount, so a direct `/#section` load does not mismatch.
+- Resource preloads emitted by the server renderer are moved into the document head before the browser hydrates.
 - Decorative reveal states default to visible in generated HTML.
 
 ### 5.4 Development model
@@ -231,20 +237,20 @@ Before completing route, metadata, locale, or content-loading work, an agent mus
 
 Trailing-slash directory URLs are canonical because they map directly to static `index.html` files.
 
-The v1 target is exactly fourteen indexable routes: two homepages and twelve localized case studies. The current build is different: it ships only the English homepage, has no router installed, and every other row in the table above, including `/projects/`, is planned rather than reachable in a production build. Existing homepage links to those paths are reserved targets, not evidence that the routes exist. `404.html` is planned but not generated yet; once generated it is not indexable and never enters the sitemap. Adding the list-oriented project index later adds two indexable routes and requires the route-count validator to be updated in the same change.
+The v1 target is exactly fourteen indexable routes: two homepages and twelve localized case studies. React Router 7 provides client location, with BrowserRouter at the browser entry, StaticRouter during static generation, and useLocation in App instead of window location during rendering. Both locale homepages and manifest-backed detail paths resolve, and every UI consumer reads the active route locale without falling back to English. The header switch is a single linked pill that navigates to the equivalent page and slug and marks the active locale; unknown or unavailable paths render English client not-found recovery. Static generation writes both homepages and adds a detail route only for a published project with content in that locale, so the build currently emits `dist/index.html` and `dist/id/index.html` while the production manifest holds zero projects. Generated detail output is covered by route-enumeration tests until records are published. `404.html` and the sitemap remain later units, so client not-found recovery is not yet static-host recovery. `<html lang>` is written at build time per route and the client effect keeps it in sync during navigation. The future project index remains unavailable. Adding it later adds two indexable routes and requires the route-count validator to be updated in the same change.
 
 #### Development-only preview route
 
-`npm run dev` additionally resolves `/projects/<slug>/` for records present in the development manifest, including drafts, so project composition can be reviewed before routing exists. The resolver gates on `import.meta.env.DEV`, so the same source produces homepage-only output for `vite preview`, `npm run build`, and any deployed artifact. This preview is not a public route and must not be described as one; when the routing phase lands it is replaced by real static generation, and the gate is then removed rather than extended.
+Development resolves `/projects/<slug>/` and `/id/projects/<slug>/` for records in its manifest, including drafts. `projectDetailPath` requires a known record and matching locale content; outside development it additionally requires `publication: published`. Production's separate manifest currently contains zero projects. Unknown paths, unsupported locale prefixes, and unavailable slugs render English client not-found recovery, not homepage fallback. This is not generated `404.html` and does not set HTTP status. Typed `homePath` and `equivalentLocalePath` prepare localized links; active-locale propagation and switching remain units 4–5. `projectIndexPath` remains null.
 
 ### 6.2 Locale behavior
 
 - English is the default locale and uses unprefixed routes.
 - Indonesian always uses the `/id/` prefix.
-- The language switch maps to the equivalent page and slug in the other locale.
+- The language switch is one linked pill (a router `Link`, not a script-only button) that maps to the equivalent page and slug in the other locale, preserves a valid homepage anchor, renders the active locale in bold `--color-primary`, and is hidden when no equivalent route exists. It works without JavaScript.
 - A missing translation for published content is a production build failure. Published routes never fall back to another page or mixed-language content.
 - A deliberate language selection may be saved to local storage for the switch's future default, but it must not silently redirect a shared URL.
-- `<html lang>` is set to the active locale.
+- `<html lang>` is written at build time for each generated route and kept in sync by the client effect during navigation.
 - Every translated page publishes `hreflang="en"`, `hreflang="id"`, and an appropriate `x-default` URL.
 
 ### 6.3 Anchor navigation
@@ -259,7 +265,11 @@ Homepage sections use stable IDs:
 #contact
 ```
 
-Links from case studies to homepage sections use locale-aware absolute paths, for example `/id/#contact`. A sticky header must not obscure the target; apply `scroll-margin-top` through a shared token.
+Links from case studies to homepage sections use locale-aware absolute paths, for example `/id/#contact`. A sticky header must not obscure the target; apply `scroll-margin-top` through a shared token. Deep links with a hash scroll to the target on first render as well as after client-side route changes, because the client may mount the section after the browser has already resolved the URL fragment.
+
+Every in-app destination—header navigation, header contact call to action, footer navigation, project cards, detail navigation, and not-found recovery—renders as a router `Link`, so a normal activation swaps the view without requesting a new document while keeping a real `href` for new-tab and no-JavaScript use. Re-activating the section already present in the URL produces no route change, so the header scrolls that target into view directly. Email, CV download, social, and external project links stay native anchors.
+
+History scroll restoration is set to `manual` at the browser entry, because route effects own scroll position; leaving it automatic lets the browser overwrite a hash target after Back or Forward.
 
 ### 6.4 Slugs
 
@@ -273,7 +283,7 @@ Public-v1 stable slugs are `fms-create`, `remi-mobile`, and `semina`. Changing o
 
 ### 6.5 Unknown routes and missing content
 
-- Unknown routes render a branded not-found page with routes to Home, Projects, and Contact.
+- Unknown routes render a branded English not-found page with a recovery link to the English homepage. Shared header/footer keep eligible section links, including Contact and Projects only when its section exists.
 - An unknown project slug must return not-found content, not a blank case-study template.
 - Optional project fields are omitted cleanly; required-field failures stop the build.
 - `404.html` has a title, language, one `h1`, recovery links, and `noindex`; it does not require canonical or reciprocal locale metadata intended for indexable routes.
@@ -446,6 +456,8 @@ Before feature implementation starts, `docs/PRODUCTS.md`, `docs/DESIGN.md`, `doc
 
 ### 8.2 Project record
 
+Locale UI strings now live in `content/site/{en,id}.yaml`. `scripts/content/site.ts` validates both independently with an exhaustive enum-keyed Zod record and placeholder checks. The build aggregates errors alongside projects/experience and exports typed `site: SiteContent` through the mode-specific manifest. No YAML parser or file-system access enters the browser. Shared site facts and capability structures remain future migrations; capability display copy uses locale strings while its structural array stays in the component. App selects the string set from the route locale and passes typed strings and localized content down explicitly; no component falls back to English content. Localized card and related-project hrefs derive from the same locale, and the header switch uses `equivalentLocalePath` rather than a hard-coded prefix.
+
 `project.yaml` contains locale-independent facts and media metadata. The implemented shape, exercised by the ReMi draft, is:
 
 ```yaml
@@ -484,9 +496,14 @@ media:
     height: 800
     aspectRatio: 1.6
     focalPosition: center
+  video:
+    provider: youtube
+    id: _wer3NCOWQA
 ```
 
 `cardTitle` is the landing-card label and `caseStudyTitle` is the record heading; they are separate keys because the approved copy differs. `timeline.display` is the only timeline value rendered in the interface, so a display range never drifts from its structured dates. Link labels are locale-independent brand names; localized prose stays in the localized files. `primaryLink` is optional and holds a URL that must also appear in `links`; the generator resolves it to that link so the aside CTA reuses the approved label instead of guessing from array order. `media.hero.width` and `height` carry the intrinsic dimensions used for the image hint, and `source` is resolved at build time so no file-system path reaches the browser.
+
+`media.video` is optional and accepts only the approved click-to-load provider. It stores `provider: youtube` and an 11-character URL-safe video ID, never a free-form URL. The generator derives the `youtube-nocookie.com` embed URL, external `youtube.com/watch` URL, and `https://i.ytimg.com/vi/<id>/mqdefault.jpg` thumbnail URL. Thumbnail requests may occur before interaction; only the iframe requires selection. Thumbnail load failure switches to a local play tile. Switching to the hero unmounts the iframe; locale/project changes remount the gallery at the hero. A project without video renders no thumbnail row. Caption fields remain validated source data but are not rendered; no replacement narrative is added under CONTENT.md Section 18. The external YouTube fallback link joins aside links without duplicating an existing or primary destination.
 
 Localized Markdown begins with validated front matter:
 
@@ -501,6 +518,7 @@ mediaAlt:
   hero: Visible content described in one sentence.
 mediaCaption:
   hero: Qualification wording for the media.
+  video: Attribution wording for the optional project video.
 outcomeSummary: One verified summary of the team outcome.
 highlights:
   - label: Role
@@ -509,7 +527,7 @@ highlights:
 ---
 ```
 
-Front matter owns localized prose, alternative text, the media caption, the outcome summary, and up to three highlight cards. Only `## ` headings, paragraphs, and `- ` lists are accepted in the body; raw HTML, other heading levels, block quotes, code fences, and tables are rejected so content cannot outgrow the renderer. A project does not need empty sections merely to match the template.
+Front matter owns localized prose, alternative text, the media caption, the outcome summary, and up to three highlight cards. Only `## ` headings, paragraphs, and `- ` lists are accepted in the body; raw HTML, other heading levels, block quotes, code fences, and tables are rejected so content cannot outgrow the renderer. A project does not need empty sections merely to match the template. `mediaCaption.video` is optional and pairs one-to-one with `media.video`; the generator requires it in English and, when Indonesian content exists, in Indonesian as well.
 
 Table detection matches a header row followed by a delimiter row, with an equal cell count on both rows and every delimiter cell shaped as `:?-{3,}:?`. A literal pipe inside prose, or an escaped `\|`, is not treated as a separator, so ordinary text containing `|` stays a paragraph. Errors name the file and the body line that starts the table, and the number is body-relative because front matter is already stripped.
 
@@ -525,12 +543,14 @@ Table detection matches a header row followed by a delimiter row, with an equal 
 
 ### 8.3 Markdown safety
 
+Owner revision: `ProjectPage` no longer renders secondary project links or injects a YouTube watch link into the aside. This supersedes the fallback-link placement described above. Link metadata remains available in source and manifests; the primary CTA is unchanged. Without JavaScript or when embedding fails, the page no longer provides a separate video-watch fallback link.
+
 - Raw HTML is disabled.
 - MDX imports and JSX are not supported.
 - Only approved Markdown elements and plugins are enabled.
 - External links receive safe attributes through the renderer.
 - Heading levels are normalized beneath the page's single `h1`.
-- Content images must resolve through the project media registry; arbitrary remote embeds are rejected by default.
+- Content images must resolve through the project media registry; arbitrary remote embeds are rejected by default. The single exception is the optional `media.video` YouTube player, which is provider-restricted, ID-validated, and mounted only after the visitor selects its thumbnail.
 
 ### 8.4 Schema validation
 
@@ -557,6 +577,7 @@ Validation currently enforces:
 - an `ongoing` timeline must not declare `end`;
 - hero media source existence on disk;
 - nonempty alternative text for the hero, and a nonempty `mediaCaption.hero` and `outcomeSummary`;
+- optional `media.video` restricted to `provider: youtube` and an 11-character URL-safe ID, with matching `mediaCaption.video` in every available locale;
 - `seoDescription` at or under 160 characters;
 - one to three highlights, each with `label`, `value`, and `note`;
 - front matter `locale` matching the file it lives in;
@@ -961,6 +982,8 @@ The hero portrait may load eagerly with appropriate priority. Below-the-fold pro
 
 ### 13.4 Technology icons
 
+The separate browser-tab favicon is the owner-supplied standalone vector asset at `public/favicon.svg`, referenced from the document head as `/favicon.svg` with MIME type `image/svg+xml`. Preserve this root-relative reference for localized and nested routes. It replaces the starter icon without adding an icon generator or a PWA manifest.
+
 Trusted grayscale brand SVG marks for the Technology strip live locally under `public/technology-icons/`. A local provenance note and license record stay beside them in `README.md`.
 
 - Exact filename mapping used by `src/components/sections/TechnologyStrip.tsx`:
@@ -1003,6 +1026,12 @@ Rules:
 ## 15. Metadata, SEO, and Sharing
 
 Metadata is generated per static route from typed content.
+
+`content/site/site.yaml` provides strict bilingual homepage SEO and the canonical origin. The content loader validates both locales, rejects unknown fields and non-canonical origins, and exports typed `siteMetadata` through each generated manifest. The shared pure resolver in `src/lib/metadata.ts` receives route-helper destinations and approved localized content. Detail titles use `Latifian Iman — ${project.cardTitle}` so the social title matches the public card name, and descriptions use the localized `seoDescription` rather than card copy or the narrative heading. Both route types share the owner-approved imported portrait and locale-specific portrait alt. Open Graph uses `website`, `en_US`/`id_ID` and the available alternate locale. Twitter uses `summary_large_image`. These platform locale identifiers do not assert nationality or location.
+
+`RouteMetadata` uses React 19 native head hoisting for title, description, canonical, alternates, and sharing tags on the server and during client navigation. The static generator moves marked tags from the server render into head, alongside resource preloads, without duplicating the shell title. React escapes content. Canonicals omit query and fragment because they come from route helpers, and x-default points to the equivalent English route. Missing route recovery emits noindex without canonical or sharing metadata. This is not the still-pending static `404.html` unit. Existing publication filtering determines which records ever reach production metadata.
+
+The output validator checks one non-placeholder title, required descriptions and sharing fields, self-canonical, eligible reciprocal locale alternates and English x-default, locale-correct Open Graph values, and an existing same-origin absolute sharing image. Browser hydration, client metadata cleanup, and social-platform cropping still require manual verification for this unit.
 
 The sole production canonical origin is `https://latifian.dev`, stored as a locale-independent site fact in `content/site/site.yaml`. A hosting environment may expose another deployment URL but must not replace the canonical origin used by metadata, sitemap, alternate-language links, `x-default`, or structured data. Production builds fail when the configured origin is missing or differs.
 
@@ -1180,16 +1209,17 @@ Future `docs/QA.md` turns repeated manual checks into maintained release cases. 
 
 ### 20.5 Generated-output tests
 
-`scripts/validate-dist.ts` verifies:
+`scripts/validate-dist.ts` currently verifies:
 
-- exactly fourteen indexable public routes have HTML files;
-- every indexable HTML file has title, description, canonical URL under `https://latifian.dev`, `lang`, and one `h1`;
-- locale alternate links are reciprocal;
-- the sitemap contains exactly those fourteen indexable URLs and excludes `404.html`;
-- `404.html` contains a title, language, one `h1`, recovery links, and `noindex`;
-- referenced local assets exist;
-- no project outside the approved six, draft marker, private URL, source path, credential, or unpublished content key appears in `dist/`;
-- generated pages do not depend on a client request for primary content.
+- every route in `dist-ssr/routes.json` has a generated HTML file;
+- each generated file carries the route's `lang`, exactly one `h1`, and server-rendered markup inside `#root`;
+- no generated file keeps the development entry script, references `dist-ssr`, or leaves resource preloads inside `#root`;
+- every same-origin asset reference resolves inside `dist/`;
+- every internal route-like link points at a generated route;
+- internal fragment links, including same-page fragments, point at an ID in the destination route's generated HTML;
+- `dist/` contains no HTML route outside the enumerated set, so an unpublished detail page cannot ship unnoticed.
+
+Release-only checks still pending: the fourteen-route count after publication approval, sitemap contents, `404.html`, and the broader draft/private-content scan. Title/description/canonical/hreflang and reciprocal alternate checks now run for every generated eligible route.
 
 ## 21. Commands and Build Pipeline
 
@@ -1224,7 +1254,11 @@ Currently implemented subset, which is what the repository actually runs:
   "scripts": {
     "predev": "npm run content:build",
     "dev": "vite",
-    "build": "npm run content:build:production && npm run fonts:generate && tsc -b && vite build",
+    "build": "npm run content:build:production && npm run fonts:generate && tsc -b && npm run build:client && npm run build:ssr && npm run build:static && npm run build:validate",
+    "build:client": "vite build",
+    "build:ssr": "vite build --ssr src/entry-server.tsx --outDir dist-ssr",
+    "build:static": "tsx scripts/generate-static.ts",
+    "build:validate": "tsx scripts/validate-dist.ts",
     "fonts:generate": "tsx scripts/generate-fonts.ts",
     "content:build": "tsx scripts/build-content.ts",
     "content:build:production": "tsx scripts/build-content.ts --production",
@@ -1242,9 +1276,10 @@ The production content pass sits inside `build` rather than in a `prebuild` hook
 
 Differences from the target contract, all intentional until their phase lands:
 
-- no `images:build`, `build:client`, `build:ssr`, `build:static`, `build:validate`, or the aggregate `test` yet, because static generation, responsive image generation, and component tests do not exist; `test:content` runs the local-only content harness and is not available in a fresh clone;
+- no `images:build` or the aggregate `test` yet, because responsive image generation and component tests do not exist; `test:content` runs the local-only content harness and is not available in a fresh clone;
 - `typecheck` uses `tsc -b` because the repository is a project-references build with `tsconfig.app.json` and `tsconfig.node.json`; `tsc --noEmit` alone would miss the Node scripts;
-- font generation runs inside `build` under its own name rather than as a lifecycle hook.
+- font generation runs inside `build` under its own name rather than as a lifecycle hook;
+- static generation consumes the production manifest, writes its route manifest to `dist-ssr/`, and hydrates the generated markup instead of replacing it with a client render.
 
 Recommended CI order:
 

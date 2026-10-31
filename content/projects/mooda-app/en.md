@@ -1,14 +1,14 @@
 ---
 locale: en
 title: Mooda App
-summary: A Flutter ride-hailing prototype for passengers, built during an internship as the team's only mobile developer. I built the app's authentication, booking, live trip status, ratings, and history flows against the team's backend.
+summary: A Flutter ride-hailing app for passengers, built during an internship as the team's only mobile developer. I built the app's authentication, booking, live trip status, ratings, and history flows against the team's backend.
 cardSummary: A Flutter ride-hailing prototype for passengers, built during an internship as the team's only mobile developer.
 roleSummary: Mobile Developer · PT Piramida Teknologi Informasi
 seoDescription: Mooda App case study covering my work as the only mobile developer on a ride-hailing prototype, including Flutter features and live trip tracking.
 mediaAlt:
   hero: Three phone screens showing the Mooda App, with a map and a Request a Ride button, the splash screen, and a ride request form with pickup, drop-off, vehicle type, and payment options.
 mediaCaption:
-  hero: The visual presents the passenger app I built during the internship. Screenshots use demo data; the team's backend and web frontend are not shown.
+  hero: The visual presents the passenger app I built during the internship. Screenshots use demo data. The team's backend and web frontend are not shown.
 outcomeSummary: The team delivered a working ride-hailing prototype for passengers and drivers. It was not published to an app store, and the source code remains with the company.
 highlights:
   - label: Contribution
@@ -24,9 +24,9 @@ highlights:
 
 ## Overview
 
-Mooda App is a ride-hailing prototype for ordering trips, developed during my internship at PT Piramida Teknologi Informasi from July to December 2025. The team of four worked in a hybrid Agile-Waterfall process: two back-end developers, one web front-end developer, and me as the only mobile developer.
+Mooda App is a ride-hailing app for ordering trips, developed during my internship at PT Piramida Teknologi Informasi from July to December 2025. The team of four worked in a hybrid Agile-Waterfall process: two back-end developers, one web front-end developer, and me as the only mobile developer.
 
-I built the mobile app for passengers. The back-end API and the web front end were built by teammates, so this case study covers the mobile side only. The company owns the source code, so no repository link is published; the screenshots use demo data.
+I built the mobile app for passengers. The back-end API and the web front end were built by teammates, so this case study covers the mobile side only. The company owns the source code, so no repository link is published. The screenshots use demo data.
 
 The app runs on a feature-based layered architecture. Riverpod manages state, GoRouter handles authentication-based navigation, Hive keeps the local session, and Dio connects the app to the team's REST API. Trip updates arrive through Socket.IO, and Google Maps handles geolocation, reverse geocoding, location selection, and driver location updates.
 

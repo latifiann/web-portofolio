@@ -43,3 +43,6 @@ media:
     height: 800
     aspectRatio: 1.6
     focalPosition: center
+  video:
+    provider: youtube
+    id: _wer3NCOWQA

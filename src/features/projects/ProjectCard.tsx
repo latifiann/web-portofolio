@@ -1,4 +1,6 @@
 import { FiArrowUpRight } from "react-icons/fi";
+import { Link } from "react-router";
+import type { SiteStrings } from "../../types/site";
 import ProjectMetadata from "./ProjectMetadata";
 
 export type ProjectCardProps = {
@@ -27,11 +29,12 @@ function ProjectCard({
   href,
   preview,
   metadata,
-}: ProjectCardProps) {
+  strings,
+}: ProjectCardProps & { strings: SiteStrings }) {
   return (
     <article className="group h-full">
-      <a
-        href={href}
+      <Link
+        to={href}
         className="project-card-link flex h-full flex-col rounded-lg border border-(--color-border) bg-(--color-canvas) p-(--space-4) shadow-[0_1px_2px_rgb(15_23_42_/_0.04),0_8px_24px_rgb(37_99_235_/_0.08)] transition-all duration-(--motion-base) hover:-translate-y-0.5 hover:border-(--color-border-strong) hover:shadow-[0_1px_2px_rgb(15_23_42_/_0.05),0_12px_30px_rgb(37_99_235_/_0.16)]"
       >
         <div className="relative aspect-16/10 overflow-hidden rounded-lg bg-(--color-surface-soft)">
@@ -51,7 +54,7 @@ function ProjectCard({
               aria-hidden="true"
             >
               <span className="text-xs uppercase tracking-wider text-(--color-ink-muted)">
-                Project preview
+                {strings.projectPreview}
               </span>
             </div>
           )}
@@ -90,10 +93,11 @@ function ProjectCard({
             <ProjectMetadata
               stack={metadata.stack}
               totalStackCount={metadata.totalStackCount}
+              technologiesLabel={strings.technologies}
             />
           </div>
         </div>
-      </a>
+      </Link>
     </article>
   );
 }

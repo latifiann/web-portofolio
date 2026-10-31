@@ -1,0 +1,100 @@
+schemaVersion: 1
+locale: en
+strings:
+  skip: Skip to content
+  home: Home
+  about: About
+  projects: Projects
+  experience: Experience
+  capabilities: Capabilities
+  technology: Technology
+  contact: Contact
+  primaryNavigation: Primary navigation
+  footerNavigation: Footer navigation
+  socialLinks: Social links
+  switchToEnglish: Switch to English
+  switchToIndonesian: Switch to Indonesian
+  theme: Theme switcher
+  themeUnavailable: Theme switcher is not available yet.
+  openMenu: Open menu
+  closeMenu: Close menu
+  open: Open
+  close: Close
+  getInTouch: Get in touch
+  copyright: © 2026 Latifian Iman. All rights reserved.
+  heroGreeting: Hi, I'm Latifian.
+  heroRole: Software Developer
+  portraitAlt: Portrait of Latifian Iman
+  availability: Open to opportunities
+  focusLabel: Building across
+  focusValue: Mobile · Frontend · Backend
+  heroStatement: Passionate about creating intuitive digital experiences and reliable software systems that connect people with meaningful value.
+  resume: View resume
+  resumeAccessible: View resume (PDF, opens in a new tab)
+  engineeringGreeting: Hello!
+  engineeringStatement: My focus is on blending clear strategy, thoughtful engineering, and product empathy to craft
+  engineeringAccent: experiences that solve real problems.
+  selectedEyebrow: / Best Projects
+  selectedTitle: Selected Works
+  swipeProjects: Swipe to see more projects
+  projectPreview: Project preview
+  exploreProjects: Explore all {count} projects
+  experienceEyebrow: / Career Journey
+  viewDetails: View details
+  hideDetails: Hide details
+  capabilitiesEyebrow: / Technical Expertise
+  technologyTitle: Core technologies & ecosystem
+  technologyAccessible: Technology list. Focus to pause animation.
+  contactTitle: Let's build something useful.
+  contactBody: I'm open to employment opportunities, freelance projects, and professional collaboration. Email is the most direct way to start a conversation.
+  email: Email me
+  previous: Previous
+  next: Next
+  relatedTitle: Explore Related Projects
+  backToWork: Back to selected work
+  outcome: Outcome
+  technologies: Technologies
+  technicalStack: Technical stack
+  relatedPage: Related projects page
+  newTab: (opens in a new tab)
+  projectHighlights: Project highlights
+  projectPagination: Related projects pages
+  pageIndicator: Page {page} of {total}
+  viewRepository: View Repository
+  viewGooglePlay: View on Google Play
+  viewLink: View on {label}
+  videoPlayerLabel: Project video
+  mediaGalleryLabel: Project media
+  mediaGalleryImage: Show project image
+  mediaGalleryVideo: Show project video (loads YouTube player)
+  mobileApp: Mobile App
+  webApp: Web App
+  completed: Completed
+  prototype: Prototype
+  ongoing: Active
+  maintained: Maintained
+  unmaintained: Unmaintained
+  finalAcademicProject: Final academic project
+  personalProject: Personal project
+  internshipPrototype: Internship prototype
+  internshipProduct: Internship product
+  notFoundTitle: Page not found
+  notFoundBody: This page is unavailable. Return to the homepage to continue.
+  notFoundHome: Back to home
+  mobileDevelopment: Mobile Development
+  frontendDevelopment: Frontend Development
+  backendApi: Backend & REST API
+  realtimeIntegration: Real-time Integration
+  qualityAssurance: Software Quality Assurance
+  teamCollaboration: Team Collaboration
+  frontendEngineering: Frontend Engineering
+  frontendDescription: Build structured interfaces with React, JavaScript, and Tailwind CSS.
+  backendDescription: Integrate and develop REST API boundaries with validation and clear error handling.
+  mobileDescription: Build Flutter applications with state management, navigation, and platform integrations.
+  databases: Databases
+  databaseDescription: Work with relational and document data models used by project backends.
+  qualityDescription: Use manual and automated testing to check product behavior and architecture rules.
+  manualTesting: Manual testing
+  automatedTesting: Automated testing
+  projectCollaboration: Project & Collaboration
+  collaborationDescription: Work through shared Git workflows, Figma handoff, and Agile delivery.

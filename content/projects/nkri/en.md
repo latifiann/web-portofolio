@@ -8,7 +8,7 @@ seoDescription: NKRI case study covering my mobile contribution as one of two de
 mediaAlt:
   hero: Three phone screens showing the NKRI messaging app, with a chat thread containing a photo attachment, the login screen, and the chat list with unread, group, and favorite filters.
 mediaCaption:
-  hero: The visual presents the NKRI product, which the company maintains. Screenshots use demo data; this case study covers the real-time communication module I worked on.
+  hero: The visual presents the NKRI product, which the company maintains. Screenshots use demo data. This case study covers the real-time communication module I worked on.
 outcomeSummary: The company maintains the messaging product. My contribution covered the real-time communication module and an experimental calling prototype during the internship.
 highlights:
   - label: Contribution
@@ -30,7 +30,7 @@ The mobile app is built with Flutter and a shared set of reusable UI components.
 
 I worked on the mobile client. The company maintains the product, keeps the source code private, and owns the back-end services, so this case study covers my mobile contribution only. The screenshots use demo data.
 
-The calling feature stayed a prototype. We built personal voice and video calls on WebRTC with WebSocket signaling, covering the offer and answer exchange, ICE candidates, media streams, call state, and the flow for accepting and ending a call. It was not released as a calling platform.
+The calling feature stayed a prototype. We built personal voice and video calls on WebRTC with WebSocket signaling, covering the offer and answer exchange, ICE candidates, media streams, call state, and the flow for accepting and ending a call.
 
 ## My responsibilities
 

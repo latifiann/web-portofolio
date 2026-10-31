@@ -1,7 +1,8 @@
 import PageContainer from "../layout/PageContainer";
 import ActionLink from "../ui/ActionLink";
+import type { SiteStrings } from "../../types/site";
 
-function ContactSection() {
+function ContactSection({ strings }: { strings: SiteStrings }) {
   return (
     <section
       id="contact"
@@ -12,30 +13,28 @@ function ContactSection() {
         <div className="relative mx-auto text-center">
           <h2
             id="contact-title"
-            className="text-5xl leading-tight font-normal tracking-tight text-(--color-ink) md:text-7xl lg:whitespace-nowrap"
+            className="text-5xl leading-tight font-normal tracking-tight text-balance text-(--color-ink) md:text-7xl"
           >
-            Let&apos;s build something useful.
+            {strings.contactTitle}
           </h2>
           <p className="mx-auto mt-(--space-6) max-w-lg text-lg text-(--color-ink-secondary)">
-            I&apos;m open to employment opportunities, freelance projects,
-            and professional collaboration. Email is the most direct way to
-            start a conversation.
+            {strings.contactBody}
           </p>
           <div className="mt-(--space-8) flex flex-wrap justify-center gap-(--space-3)">
             <ActionLink
               href="mailto:latifian.iman44@gmail.com"
               appearance="solid"
             >
-              Email me
+              {strings.email}
             </ActionLink>
             <ActionLink
               href="/resume/latifian-iman-cv-ats.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="View resume (PDF, opens in a new tab)"
+              aria-label={strings.resumeAccessible}
               appearance="solid"
             >
-              View resume
+              {strings.resume}
             </ActionLink>
           </div>
         </div>

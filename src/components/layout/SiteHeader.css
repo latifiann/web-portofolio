@@ -61,3 +61,36 @@
     color: var(--color-canvas);
   }
 }
+/* The default survives disabled JavaScript and a failed browser bundle. */
+html:not([data-react-ready="true"]) [data-js-only]:not([data-header-control]) {
+  display: none !important;
+}
+
+html:not([data-react-ready="true"]) [data-header-control] {
+  visibility: hidden;
+}
+
+@media (max-width: 63.999rem) {
+  html:not([data-react-ready="true"]) body {
+    padding-bottom: 4rem;
+  }
+
+  html:not([data-react-ready="true"]) #primary-navigation {
+    position: fixed;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    max-height: 40vh;
+    margin: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    border-radius: 0;
+  }
+
+  html:not([data-react-ready="true"]) #primary-navigation > ul {
+    width: max-content;
+    flex-direction: row;
+  }
+}

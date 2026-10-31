@@ -3,9 +3,14 @@ type ProjectMetadataProps = {
   stack: string[];
   /** Length of the full project stack, used for the overflow count. */
   totalStackCount: number;
+  technologiesLabel: string;
 };
 
-function ProjectMetadata({ stack, totalStackCount }: ProjectMetadataProps) {
+function ProjectMetadata({
+  stack,
+  totalStackCount,
+  technologiesLabel,
+}: ProjectMetadataProps) {
   if (stack.length === 0) {
     return null;
   }
@@ -16,7 +21,7 @@ function ProjectMetadata({ stack, totalStackCount }: ProjectMetadataProps) {
   return (
     <ul
       className="flex list-none flex-wrap gap-(--space-2) p-0"
-      aria-label="Technologies"
+      aria-label={technologiesLabel}
     >
       {visibleStack.map((technology) => (
         <li

@@ -4,6 +4,7 @@ import { useState, useSyncExternalStore } from "react";
 import { BsFillBriefcaseFill } from "react-icons/bs";
 import { FaGraduationCap } from "react-icons/fa6";
 import type { TimelineEntry } from "../../types/content";
+import type { SiteStrings } from "../../types/site";
 
 function TimelineIcon({ type }: { type: TimelineEntry["type"] }) {
   return type === "education" ? (
@@ -25,7 +26,13 @@ function getServerReady() {
   return false;
 }
 
-function ExperienceEntryDetails({ entry }: { entry: TimelineEntry }) {
+function ExperienceEntryDetails({
+  entry,
+  strings,
+}: {
+  entry: TimelineEntry;
+  strings: SiteStrings;
+}) {
   const [open, setOpen] = useState(false);
   const ready = useSyncExternalStore(
     subscribeToClientReady,
@@ -55,17 +62,18 @@ function ExperienceEntryDetails({ entry }: { entry: TimelineEntry }) {
         aria-controls={`${entry.id}-details`}
         onClick={() => setOpen((value) => !value)}
       >
-        {open ? "Hide details" : "View details"}
+        {open ? strings.hideDetails : strings.viewDetails}
       </button>
     </div>
   );
 }
 
 type ExperienceSectionProps = {
+  strings: SiteStrings;
   entries: TimelineEntry[];
 };
 
-function ExperienceSection({ entries }: ExperienceSectionProps) {
+function ExperienceSection({ strings, entries }: ExperienceSectionProps) {
   return (
     <Section
       id="experience"
@@ -74,8 +82,8 @@ function ExperienceSection({ entries }: ExperienceSectionProps) {
     >
       <SectionHeader
         titleId="experience-title"
-        eyebrow="/ Career Journey"
-        title="Experience"
+        eyebrow={strings.experienceEyebrow}
+        title={strings.experience}
       />
 
       <ol className="experience-timeline">
@@ -112,7 +120,7 @@ function ExperienceSection({ entries }: ExperienceSectionProps) {
                 {entry.description}
               </p>
 
-              <ExperienceEntryDetails entry={entry} />
+              <ExperienceEntryDetails entry={entry} strings={strings} />
             </article>
           </li>
         ))}
