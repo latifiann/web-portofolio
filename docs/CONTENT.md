@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: content-specification
-version: 1.10.19
+version: 1.10.24
 status: canonical
-last_updated: 2026-10-30
+last_updated: 2026-10-31
 owner: Latifian Iman
 default_locale: en
 supported_locales:
@@ -260,7 +260,9 @@ Project-specific metadata is not approved until its local project facts and narr
 
 ## 11. Experience and Education
 
-Homepage experience contains only two internships, each with at most three contribution bullets:
+Homepage experience contains only two internships. Each entry carries three to five contribution bullets, and the counts do not have to match: Piramida uses five, Mitra uses four, and education uses four. The range exists so one bullet can hold one clear contribution group instead of packing several unrelated responsibilities together. It is not a target to fill.
+
+Entries lead with the role, team context, and responsibility rather than with the product the team was building:
 
 | ID | Role | Organization | Period | State |
 |---|---|---|---|---|
@@ -272,50 +274,44 @@ Homepage periods are display ranges in month/year form. Precise day-level dates 
 Education appears as a subsection inside Experience:
 
 ```text
-Sarjana Terapan (D4) Teknik Informatika
+Bachelor of Applied Computer Science (Informatics Engineering)
 Politeknik Elektronika Negeri Surabaya
 2021-2026
 ```
 
-GPA, PEPT score, certifications, organization experience, secondary-school education, and complete contribution history remain resume-only.
+The English degree title is the owner's requested wording on `2026-10-30`. It is not confirmed as an official translation of the diploma, so it must not be presented as one.
+
+GPA, PEPT score, professional certifications, secondary-school education, and complete contribution history remain resume-only. A short summary of academic research and student-organization activity is permitted in the education entry, as specified below. The longer organization history stays in the CV.
 
 ### Homepage experience copy
 
-The following English copy is approved for the local Phase 6 homepage draft. It is derived from the owner CV source and remains subject to normal editorial review before publication.
+Live English copy for the timeline now lives in `content/experience.yaml`, and the build validates it before it can reach the page. This document owns the editorial rules and attribution boundaries; it does not duplicate the strings, so a copy edit happens in one place.
 
-#### PT Piramida Teknologi Informasi
+| Entry ID | Approved copy location |
+|---|---|
+| `pt-piramida-mobile-developer-intern-2025` | `entries[0].content.en` |
+| `mitra-informatika-mobile-developer-intern-2025` | `entries[1].content.en` |
+| `education-d4-informatics` | `entries[2].content.en` |
 
-Context: `Mooda App · Four-person cross-functional team`
+Editorial rules that the YAML must keep satisfying:
 
-Description: `Flutter ride-hailing prototype for Mooda App, built with a four-person team, covering authentication, booking, ratings, profiles, and trip history.`
+- each internship states the role, team context, and responsibility before any product detail;
+- the product name, feature inventory, and team composition detail stay in the CV so the homepage does not read as a product case study;
+- the WebRTC work stays labelled a prototype;
+- three to five contribution bullets per entry, counts allowed to differ;
+- supporting labels stay a curated short list, not the full CV technology inventory;
+- no metric, outcome, or responsibility may be added beyond the owner-confirmed source.
 
-1. Built the Flutter prototype running authentication, booking, ratings, profiles, and trip history.
-2. Integrated the team backend REST APIs and real-time trip updates with Dio and Socket.IO.
-3. Connected Google Maps, Riverpod, GoRouter, and Hive while manually testing customer and driver flows on Android.
+The education entry mirrors the experience layout with the program, institution, and period plus a short research and organization summary. Its boundary claims are unchanged: `explored` and `basic VPS setup` mark learning scope, not professional proficiency or production infrastructure ownership, and the FMS-CREATE reference covers the passenger mobile app and an operator fleet-telemetry prototype, never the whole ecosystem.
 
-Supporting labels: `Flutter`, `Riverpod`, `Socket.IO`, `Google Maps`, `Figma`.
+The two copyright registrations remain supported by certificates, with Latifian Iman listed as one of ten creators and Politeknik Elektronika Negeri Surabaya as the copyright holder:
 
-#### Mitra Informatika
+| Registration | Number | Subject | Application date | First published |
+|---|---|---|---|---|
+| Web operator control centre | `001492729` | Aplikasi Web Pusat Kendali Operator Kendaraan Listrik pada Ekosistem Fleet Management System Edge-to-Cloud | 17 September 2026 | 14 September 2026 |
+| Mobile user service | `001071254` | Aplikasi Mobile Layanan Pengguna Kendaraan Listrik pada Ekosistem Fleet Management System Edge-to-Cloud | 2 Januari 2026 | 19 Desember 2025 |
 
-Context: `NKRI · Six-person cross-functional team`
-
-Description: `Flutter real-time communication modules for NKRI, built with a six-person team, covering messaging, presence, WebRTC calls, search, and pagination.`
-
-1. Contributed to Flutter real-time communication modules with Riverpod, Isar, Dio, and AutoRoute.
-2. Helped migrate communication from Socket.IO to WebSocket with reconnect handling and user activity status.
-3. Built WebRTC call prototypes and message search, filtering, and chat-room pagination flows.
-
-Supporting labels: `Flutter`, `WebSocket`, `WebRTC`, `Riverpod`, `Isar`.
-
-The education entry mirrors the experience layout, but only the program, institution, and period are verified:
-
-```text
-Title: Sarjana Terapan (D4) Teknik Informatika
-Organization: Politeknik Elektronika Negeri Surabaya
-Period: 2021-2026
-```
-
-Education description, contributions, and supporting labels remain local placeholders pending owner review; they are not approved public content and must be replaced before release.
+Application and first-publication dates are not certificate issue dates. Being named as a creator on the web-operator registration does not establish personal authorship of that web dashboard, and the FMS case study keeps the mobile contribution and team dashboard context separate. Certificate files, addresses, and the creator appendix remain internal evidence and are never published as site assets.
 
 ## 12. Capability Taxonomy
 
@@ -367,8 +363,26 @@ The resume source may contain contact details that are not permitted elsewhere o
 | `fms-create` | FMS-CREATE | FMS-CREATE | Mobile App | Dec 2025-Jul 2026 | Completed / Selesai | Mobile Developer | Private |
 | `remi-mobile` | ReMi Mobile | ReMi - Remind Me | Mobile App | 2024 | Completed, unmaintained / Selesai, tidak dipelihara | Mobile Developer | Private team repository |
 | `semina` | Semina | Semina | Web App | Aug-Oct 2026 | Prototype learning project / Prototipe proyek pembelajaran | Full-Stack Developer | Public backend |
+| `mooda-app` | Mooda App | Mooda App | Mobile App | Jul-Dec 2025 | Prototype / Prototipe | Mobile Developer | Private company code |
+| `nkri` | NKRI | NKRI | Mobile App | Jan-Jun 2025 | Active, maintained by the company / Aktif, dipelihara perusahaan | Mobile Developer | Private company code |
+| `remi-web` | ReMi Web App | ReMi - Remind Me (Web) | Web App | Aug-Nov 2024 | Completed, unmaintained / Selesai, tidak dipelihara | Front-End Developer | Private team repository |
 
-All three need complete English and Indonesian project content before `publication: published`.
+All six need complete English and Indonesian project content before `publication: published`. `mooda-app` is a prototype and was never released to an app store. `nkri` is maintained by the company, not by Latifian; the timeline covers only the internship. `remi-web` is a separate deliverable from `remi-mobile`.
+
+### Internship and team project publication boundary
+
+- Mooda App and NKRI may publish their names, descriptions, contribution boundaries, and owner-approved visuals. Their source code, code snippets, and repository links must never appear on the website, in card data, or in generated output.
+- Mooda App is described as a prototype built by the only Mobile Developer in a four-person cross-role team. The mobile app is personal work; the team's backend and web frontend are not.
+- NKRI is described from the position of one of two Mobile Developers in a six-person cross-role team. Voice and video calling were a prototype, not a shipped calling platform.
+- ReMi Web App is a separate academic deliverable from ReMi Mobile. The Front-End Developer role is owner-confirmed; product scope remains team scope, and individual feature ownership is not claimed unless supporting evidence exists.
+- No internship screenshot may show credentials, customer data, internal URLs, or unreviewed internal information.
+
+Owner-confirmed facts for the three records:
+
+- **Mooda App** — internship at PT Piramida Teknologi Informasi, July to December 2025, hybrid Agile-Waterfall, four-person team. Personal scope: the passenger mobile app, including authentication, booking and cancellation, real-time trip status, rating, profile, driver status, and trip history, with REST API, Socket.IO, Google Maps, Riverpod, GoRouter, and Hive. It was never published to an app store and the source stays with the company. The features match the owner's CV; no usage metric, store rating, or release claim is allowed.
+- **NKRI** — internship at Mitra Informatika, January to June 2025, six-person cross-role team. Personal scope: the real-time communication module, Socket.IO to WebSocket migration, reconnection and activity status, message search and filtering, chat-room pagination, attachment flows, and a WebRTC voice and video calling prototype. The company maintains the product; Latifian's contribution ends with the internship, and no current maintenance or ongoing development is claimed. No user count, uptime, or production-quality claim is allowed.
+- **ReMi Web App** — academic Agile Product Based Learning deliverable, August to November 2024, separate from `remi-mobile`. Personal scope stays at the level the CV confirms: participation as Front-End Developer on a responsive React, TypeScript, Vite, and Tailwind CSS product, covering authentication, task management, deadline search and filters, and API-based reminders as team scope. Deployment and end-to-end browser notifications remain unverified. The repository carries no personal commit identity, so no source link is published.
+- Screenshots for Mooda App and NKRI use demo data; the approved captions must say so. The ReMi Web hero comes from the team landing page that promotes the mobile app, and its caption must state that the image is product context rather than the task workspace.
 
 ### Project card context labels
 
@@ -379,6 +393,9 @@ Landing cards show a short context label identifying the project's company or ty
 | FMS-CREATE | Final academic project | Tugas akhir perkuliahan |
 | ReMi Mobile | Agile Teknik | Agile Teknik |
 | Semina | Personal project | Proyek pribadi |
+| Mooda App | Internship prototype | Prototipe magang |
+| NKRI | Internship product | Produk magang |
+| ReMi Web App | Agile Teknik | Agile Teknik |
 
 In-progress or project-status wording (for example `ongoing`) is internal card metadata, not public card copy. It may be stored in the content model but must not render on landing cards.
 
@@ -393,6 +410,9 @@ Preview images carry a short neutral badge identifying the project type as shown
 | FMS-CREATE | Mobile App |
 | ReMi Mobile | Mobile App |
 | Semina | Web App |
+| Mooda App | Mobile App |
+| NKRI | Mobile App |
+| ReMi Web App | Web App |
 
 ### Landing card technology badges
 
@@ -401,8 +421,11 @@ Preview images carry a short neutral badge identifying the project type as shown
 | FMS-CREATE | Flutter, Modular architecture, REST API, SSE, Google Maps |
 | ReMi Mobile | Flutter, BLoC, REST API |
 | Semina | React, Redux, Node.js, Express, MongoDB |
+| Mooda App | Flutter, Riverpod, Google Maps |
+| NKRI | Flutter, Riverpod, WebSocket |
+| ReMi Web App | React, TypeScript, Tailwind CSS |
 
-Landing cards show at most three curated technology badges plus an overflow count, and the count is derived from the full stack rather than from the badge list. FMS-CREATE shows `Flutter`, `Modular architecture`, `REST API`, and `+7`, because its record lists ten stack entries and three badges are visible. ReMi Mobile shows `Flutter`, `BLoC`, `REST API`, and `+4`. Semina shows `React`, `Redux`, `Node.js`, and `+11`. The visible card summary lives in the localized `cardSummary` field and the visible badges live in the record's `cardStack`. Both are separate from the detail `summary` and `stack`, so the preview stays short while the case study keeps its full evidence, and the homepage and related-project cards cannot drift apart. A badge may use a card-friendly alias for a stack entry, such as `Modular architecture` for `Modular monolith`, `SSE` for `Server-Sent Events`, or `Express` for `Express.js`. An alias never adds to the count. The full stack remains in the project record and appears on the detail page. Landing cards do not render a media qualification note; contribution and media boundaries stay preserved through visible card copy, role, title, and alternative text, and full qualification belongs to the detail case study.
+Landing cards show at most three curated technology badges plus an overflow count, and the count is derived from the full stack rather than from the badge list. FMS-CREATE shows `Flutter`, `Modular architecture`, `REST API`, and `+7`, because its record lists ten stack entries and three badges are visible. ReMi Mobile shows `Flutter`, `BLoC`, `REST API`, and `+4`. Semina shows `React`, `Redux`, `Node.js`, and `+11`. Mooda App shows `Flutter`, `Riverpod`, `Google Maps`, and `+7`. NKRI shows `Flutter`, `Riverpod`, `WebSocket`, and `+5`. ReMi Web App shows `React`, `TypeScript`, `Tailwind CSS`, and `+2`. The visible card summary lives in the localized `cardSummary` field and the visible badges live in the record's `cardStack`. Both are separate from the detail `summary` and `stack`, so the preview stays short while the case study keeps its full evidence, and the homepage and related-project cards cannot drift apart. A badge may use a card-friendly alias for a stack entry, such as `Modular architecture` for `Modular monolith`, `SSE` for `Server-Sent Events`, or `Express` for `Express.js`. An alias never adds to the count. The full stack remains in the project record and appears on the detail page. Landing cards do not render a media qualification note; contribution and media boundaries stay preserved through visible card copy, role, title, and alternative text, and full qualification belongs to the detail case study.
 
 ### Approved project card copy
 
@@ -411,6 +434,9 @@ Landing cards show at most three curated technology badges plus an overflow coun
 | FMS-CREATE | A passenger-side Flutter application for electric-vehicle fleet operations, built with modular architecture, REST APIs, SSE, and Google Maps. | Aplikasi Flutter sisi penumpang untuk operasional armada kendaraan listrik, dibangun dengan arsitektur modular, REST API, SSE, dan Google Maps. |
 | ReMi Mobile | An academic task and reminder application for students, delivered as a mobile project and published by the team on Google Play. | Aplikasi pengelolaan tugas dan pengingat untuk mahasiswa, dikembangkan sebagai proyek akademik mobile dan dipublikasikan oleh tim di Google Play. |
 | Semina | A learning project combining a React event-management CMS with a backend ticket checkout API, extended from BuildWithAngga MERN course material. | Proyek pembelajaran yang menggabungkan CMS manajemen event berbasis React dengan API checkout tiket, dikembangkan dari materi kelas MERN BuildWithAngga. |
+| Mooda App | A Flutter ride-hailing prototype for passengers, built during an internship as the team's only mobile developer. | Prototipe ride-hailing berbasis Flutter untuk penumpang, dikembangkan selama magang sebagai satu-satunya mobile developer di tim. |
+| NKRI | A real-time messaging application for chat, file sharing, and calling, built during an internship by a six-person cross-role team. | Aplikasi perpesanan real-time untuk chat, berbagi berkas, dan panggilan, dikembangkan selama magang oleh tim lintas peran beranggotakan enam orang. |
+| ReMi Web App | A React and TypeScript web deliverable for the ReMi task and reminder product, built by an academic team. | Produk web berbasis React dan TypeScript untuk aplikasi tugas dan pengingat ReMi, dikembangkan oleh tim akademik. |
 
 ## 15. FMS-CREATE Content Boundary
 

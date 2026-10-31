@@ -1,0 +1,71 @@
+schemaVersion: 1
+
+# Locale-independent facts sit on the entry. Anything a reader must read in
+# their own language sits under `content.<locale>`. Array order is the rendered
+# timeline order, so no separate order field exists to drift from it.
+entries:
+  - id: "pt-piramida-mobile-developer-intern-2025"
+    type: experience
+    organization: "PT Piramida Teknologi Informasi"
+    technologies:
+      - "Flutter"
+      - "Riverpod"
+      - "Socket.IO"
+      - "Google Maps"
+      - "Figma"
+    content:
+      en:
+        title: "Mobile Developer Intern"
+        period: "Jul 2025-Dec 2025"
+        organizationNote: "Remote · Surabaya"
+        description: "Worked as the sole Mobile Developer in a four-person cross-functional team, covering interface development, API integration, and manual testing of a Flutter application prototype."
+        contributions:
+          - "Designed mobile interfaces and user flows with Figma."
+          - "Developed Flutter interfaces and application flows as the team's sole Mobile Developer."
+          - "Collaborated with backend developers to integrate REST APIs and real-time updates."
+          - "Implemented application state management, authentication-based navigation, and local session storage."
+          - "Integrated location features with Google Maps and manually tested customer and driver flows on Android."
+      id: null
+
+  - id: "mitra-informatika-mobile-developer-intern-2025"
+    type: experience
+    organization: "Mitra Informatika"
+    technologies:
+      - "Flutter"
+      - "WebSocket"
+      - "WebRTC"
+      - "Riverpod"
+      - "Isar"
+    content:
+      en:
+        title: "Mobile Developer Intern"
+        period: "Jan 2025-Jun 2025"
+        organizationNote: "On-site · Surabaya"
+        description: "Worked as one of two Mobile Developers in a six-person cross-functional team, contributing to Flutter development and real-time communication features."
+        contributions:
+          - "Developed and refined Flutter interfaces, reusable components, and application state management."
+          - "Migrated real-time communication from Socket.IO to WebSocket, including message dispatching, reconnect handling, and user activity status."
+          - "Built personal voice and video call prototypes with WebRTC, covering signaling, media streams, and call-state management."
+          - "Implemented message search, filtering, and chat-room pagination, and contributed to attachment handling and group interfaces."
+      id: null
+
+  - id: "education-d4-informatics"
+    type: education
+    organization: "Politeknik Elektronika Negeri Surabaya"
+    technologies:
+      - "Docker"
+      - "CI/CD"
+      - "Linux"
+      - "Research"
+    content:
+      en:
+        title: "Bachelor of Applied Computer Science (Informatics Engineering)"
+        period: "2021-2026"
+        organizationNote: null
+        description: "Completed an applied undergraduate degree through academic software projects, industry internships, and research activities with the Cyber Security Research Group (CSRG)."
+        contributions:
+          - "Developed FMS-CREATE's passenger mobile app and an operator fleet-telemetry prototype as my final academic project within the Cyber Security Research Group (CSRG)."
+          - "Explored Docker, CI/CD, agentic AI, Linux fundamentals, networking fundamentals, virtual machines, and basic VPS setup."
+          - "Named as one of the creators on two software copyright registrations, with Politeknik Elektronika Negeri Surabaya as the copyright holder."
+          - "Participated in HIMIT PENS student association activities, including external relations and student events."
+      id: null

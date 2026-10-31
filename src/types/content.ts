@@ -56,6 +56,40 @@ export interface ProjectLocalizedContent {
   sections: ProjectSection[];
 }
 
+export type TimelineEntryType = "experience" | "education";
+
+export interface ExperienceLocalizedContent {
+  locale: Locale;
+  title: string;
+  period: string;
+  organizationNote: string | null;
+  description: string;
+  contributions: string[];
+}
+
+export interface ExperienceEntryDetail {
+  id: string;
+  type: TimelineEntryType;
+  organization: string;
+  technologies: string[];
+  content: {
+    en: ExperienceLocalizedContent;
+    id: ExperienceLocalizedContent | null;
+  };
+}
+
+export interface TimelineEntry {
+  id: string;
+  type: TimelineEntryType;
+  title: string;
+  organization: string;
+  period: string;
+  description: string;
+  organizationNote?: string;
+  contributions: string[];
+  technologies: string[];
+}
+
 export interface ProjectDetail {
   slug: string;
   cardTitle: string;
@@ -69,7 +103,7 @@ export interface ProjectDetail {
   stack: string[];
   cardStack: string[];
   publication: PublicationState;
-  homepageOrder: 1 | 2 | 3 | null;
+  homepageOrder: 1 | 2 | 3 | 4 | 5 | 6 | null;
   links: ProjectLink[];
   primaryLink: ProjectLink | null;
   ctaLabel: string | null;

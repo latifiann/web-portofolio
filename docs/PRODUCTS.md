@@ -1,13 +1,13 @@
 ---
 product: latifian.dev
 document: product-specification
-version: 1.2.1
+version: 1.2.2
 status: canonical
-last_updated: 2026-10-15
+last_updated: 2026-10-31
 owner: Latifian Iman
 primary_positioning: Software Developer
 primary_goal: Balanced opportunities
-initial_scope: Complete bilingual homepage and three project case studies
+initial_scope: Complete bilingual homepage and six project case studies
 default_locale: en
 supported_locales:
   - en
@@ -204,13 +204,18 @@ The site must not split into separate recruiter and client experiences in the fi
 
 The homepage Selected Work section is a curated preview, not a screenshot gallery. It presents concise, general project information and links each card to its full case study.
 
-The landing preview shows at most six selected projects on desktop, at most four on tablet, and at most three on mobile. Current verified set contains exactly three, in this homepage order:
+The landing preview shows at most six selected projects on desktop, at most four on tablet, and at most three on mobile. The approved public set contains exactly six, in this homepage order:
 
 1. FMS-CREATE;
 2. ReMi Mobile;
-3. Semina.
+3. Semina;
+4. Mooda App;
+5. NKRI;
+6. ReMi Web App.
 
 Every selected-work card must link to a complete case study. Card-only projects are outside the approved set. Additional projects may be prepared as drafts but must not appear in production navigation, routes, metadata, or generated artifacts until their content and facts are complete and verified.
+
+Mooda App and NKRI are internship projects. Their names, descriptions, and approved visuals may be published; their source code, snippets, and repository links must not be. ReMi Web App is a team course project: its card and case study may describe team scope and the owner-confirmed Front-End Developer participation, but must not attribute specific product features to personal implementation without supporting evidence.
 
 A curated project index at `/projects/` is an approved future scope. It reuses the same verified project cards and never bypasses the detail-page requirement.
 
@@ -683,9 +688,9 @@ Public v1 is one complete bilingual release. The numbered milestones below are i
 
 ### Milestone 2 — Evidence
 
-- exactly three selected project cards using verified content: FMS-CREATE, ReMi Mobile, and Semina;
+- exactly six selected project cards using verified content: FMS-CREATE, ReMi Mobile, Semina, Mooda App, NKRI, and ReMi Web App;
 - reusable case-study template;
-- complete English and Indonesian case studies for all three selected projects;
+- complete English and Indonesian case studies for all six selected projects;
 - experience and capability content;
 - résumé and professional-profile links.
 
@@ -743,7 +748,7 @@ Changes requiring an update to this document include:
 - changing the default locale or localization scope;
 - changing the primary conversion path;
 - expanding the first-release non-goals;
-- changing the three-project public-v1 set or its order;
+- changing the approved public-v1 project set or its order;
 - allowing a published project without both supported locales.
 
 Small visual refinements belong in `DESIGN.md`. Copy edits belong in `CONTENT.md`. Technical choices belong in `ARCHITECTURE.md`.
@@ -758,7 +763,7 @@ An AI agent working on this product MUST:
 - use verified project sources before writing project content;
 - distinguish personal contribution from team outcomes;
 - preserve the homepage plus case-study scope;
-- preserve the public-v1 project set and order: FMS-CREATE, ReMi Mobile, and Semina;
+- preserve the public-v1 project set and order: FMS-CREATE, ReMi Mobile, Semina, Mooda App, NKRI, ReMi Web App;
 - make contact actions direct and professional;
 - keep locale content complete and internally consistent;
 - follow `DESIGN.md` for visual and interaction decisions;
@@ -782,7 +787,7 @@ An AI agent MUST NOT:
 The following information must be supplied or verified in subsequent documents before final production content is complete:
 
 - current résumé asset import;
-- approved English and Indonesian narratives for all three public-v1 projects;
+- approved English and Indonesian narratives for all six public-v1 projects;
 - unresolved project-specific facts, attribution, dates, outcomes, and links listed in `CONTENT.md`;
 - release-time verification for availability, public contact URLs, repository status, and live-demo availability;
 - social-sharing image assets;

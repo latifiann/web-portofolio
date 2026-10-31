@@ -1,6 +1,7 @@
 import SiteFooter from "./components/layout/SiteFooter";
 import SiteHeader from "./components/layout/SiteHeader";
-import { findProject, projects } from "./generated/content-manifest";
+import { experience, findProject, projects } from "@content-manifest";
+import { selectTimelineEntries } from "./lib/experience";
 import {
   selectProjectCards,
   selectRelatedProjectCards,
@@ -16,6 +17,7 @@ function App() {
   const project = route.page === "project" ? findProject(route.slug) : undefined;
   const homePath = project ? "/" : "";
   const projectCards = selectProjectCards(projects, activeLocale);
+  const timelineEntries = selectTimelineEntries(experience, activeLocale);
   const relatedProjects = project
     ? selectRelatedProjectCards(projects, project.slug, activeLocale)
     : [];
@@ -38,7 +40,10 @@ function App() {
           relatedProjects={relatedProjects}
         />
       ) : (
-        <HomePage projectCards={projectCards} />
+        <HomePage
+          projectCards={projectCards}
+          experienceEntries={timelineEntries}
+        />
       )}
 
       <SiteFooter homePath={homePath} />

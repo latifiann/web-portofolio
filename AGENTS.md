@@ -33,11 +33,13 @@ This section is quick operational reference. Detailed rules remain in sections b
 - Sync implementation and owning documentation in same task when user intent is clear and permanent.
 - State objective, allowed files, concepts, and acceptance criteria before learning unit.
 - Review user first attempt before replacing code.
+- Use the `question` tool for required user decisions; follow "Questions and User Decisions" for fallback behavior.
 - Make smallest complete change. Reuse existing token, component, pattern, and dependency when suitable.
 - Run relevant static checks.
 - Give manual browser checklist after UI or interaction change.
 - Check privacy, attribution, draft state, and release boundary before public-content change.
 - Report verification, spec drift, docs sync, blockers, and decisions needing confirmation.
+- Comment only when code does not show the reason: explain why, a browser or build workaround, or an invariant that crosses files. Skip comments that restate a name, parameter, or type.
 
 ### Don't
 
@@ -46,6 +48,7 @@ This section is quick operational reference. Detailed rules remain in sections b
 - Do not use Playwright, MCP browser tools, browser automation, or automated browser accessibility checks unless the user explicitly requests it. When the user requests it, that request overrides this restriction for that task.
 - Do not claim UI passed before user reports manual result.
 - Do not replace user first attempt unless requested.
+- Do not write a comment that restates the code, or a comment claiming behavior that the implementation does not enforce.
 - Do not expose draft, private URL, credential, local path, or prohibited content.
 - Do not add dependency, abstraction, component variant, or feature without active need.
 - Do not refactor unrelated code.
@@ -94,6 +97,18 @@ Latifian learns React through small, production-relevant units.
 - Create packages, folders, helpers, and abstractions only when active work consumes them.
 - Reuse existing components and tokens before adding variants.
 - Keep changes narrow. Do not refactor unrelated code.
+
+## Questions and User Decisions
+
+- When user input is needed to proceed—clarification, preference, scope, or explicit approval—use the `question` tool if available instead of asking only in plain text.
+- Apply this rule to existing "stop and ask" requirements, including conflicting documents and ambiguous manual edits.
+- Ask one focused question per decision. Provide concise, meaningful choices when appropriate, and allow a custom answer when supported.
+- Mark a recommended option when there is a clear reason for recommending it.
+- Do not ask unnecessary questions when the request is already clear. Do not ask again for approval the user has already given.
+- Wait for the answer before performing work that depends on that decision. Continue independent work only when allowed by the active task and mode.
+- If the `question` tool is unavailable or fails, briefly explain the limitation and ask the same question in plain text.
+- Do not treat a dismissed, canceled, or unanswered question as approval.
+- This rule does not replace tool permissions or expand authorization to edit, commit, push, deploy, or run browser automation.
 
 ## Manual Testing
 

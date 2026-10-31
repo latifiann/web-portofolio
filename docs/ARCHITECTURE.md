@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: technical-architecture
-version: 1.6.18
+version: 1.6.26
 status: canonical
-last_updated: 2026-10-30
+last_updated: 2026-10-31
 owner: Latifian Iman
 application_type: statically generated portfolio
 package_manager: npm
@@ -46,9 +46,9 @@ When these goals conflict, prefer accurate and accessible static content over no
 
 Public v1 is one complete bilingual release. The English-first vertical slice is an internal, local learning milestone only; it must not replace the existing public portfolio or enter a remote public preview. Every project in the production manifest requires validated English and Indonesian content.
 
-Public v1 contains exactly three case studies, ordered on the homepage as FMS-CREATE, ReMi Mobile, and Semina. No card-only or fourth project enters the v1 production artifact.
+Public v1 contains exactly six case studies, ordered on the homepage as FMS-CREATE, ReMi Mobile, Semina, Mooda App, NKRI, and ReMi Web App. No card-only project enters the v1 production artifact.
 
-The homepage Selected Work section is a curated preview with future capacity: it targets up to six landing slots but currently renders the three verified projects at every width. Slot visibility beyond the current set stays CSS-only, never `window.innerWidth`, so markup is identical for hydration and static generation: the fourth slot appears from the tablet breakpoint (`hidden md:block`) because tablet capacity is four, and slots five and six appear only on desktop (`hidden lg:block`). A curated project index (`/projects/`) is approved future scope; it must not ship before its detail routes are complete.
+The homepage Selected Work section is a curated preview at its full capacity: up to six landing slots, four on tablet, and three on mobile. Slot visibility stays CSS-only, never `window.innerWidth`, so markup is identical for hydration and static generation: the fourth slot appears from the tablet breakpoint (`hidden md:block`) because tablet capacity is four, and slots five and six appear only on desktop (`hidden lg:block`). A curated project index (`/projects/`) is approved future scope; it must not ship before its detail routes are complete.
 
 ## 2. Constraints and Non-goals
 
@@ -224,11 +224,14 @@ Before completing route, metadata, locale, or content-loading work, an agent mus
 | FMS-CREATE | `/projects/fms-create/` | `/id/projects/fms-create/` |
 | ReMi Mobile | `/projects/remi-mobile/` | `/id/projects/remi-mobile/` |
 | Semina | `/projects/semina/` | `/id/projects/semina/` |
+| Mooda App | `/projects/mooda-app/` | `/id/projects/mooda-app/` |
+| NKRI | `/projects/nkri/` | `/id/projects/nkri/` |
+| ReMi Web App | `/projects/remi-web/` | `/id/projects/remi-web/` |
 | Not found | generated `404.html` | English recovery content with `noindex` |
 
 Trailing-slash directory URLs are canonical because they map directly to static `index.html` files.
 
-The v1 target is exactly eight indexable routes: two homepages and six localized case studies. The current build is different: it ships only the English homepage, has no router installed, and every other row in the table above, including `/projects/`, is planned rather than reachable in a production build. Existing homepage links to those paths are reserved targets, not evidence that the routes exist. `404.html` is planned but not generated yet; once generated it is not indexable and never enters the sitemap. Adding the list-oriented project index later adds two indexable routes and requires the route-count validator to be updated in the same change.
+The v1 target is exactly fourteen indexable routes: two homepages and twelve localized case studies. The current build is different: it ships only the English homepage, has no router installed, and every other row in the table above, including `/projects/`, is planned rather than reachable in a production build. Existing homepage links to those paths are reserved targets, not evidence that the routes exist. `404.html` is planned but not generated yet; once generated it is not indexable and never enters the sitemap. Adding the list-oriented project index later adds two indexable routes and requires the route-count validator to be updated in the same change.
 
 #### Development-only preview route
 
@@ -342,6 +345,13 @@ porto-latifiann/
 │   └── resume/
 ├── scripts/
 │   ├── build-content.ts
+│   ├── content/
+│   │   ├── types.ts
+│   │   ├── diagnostics.ts
+│   │   ├── markdown.ts
+│   │   ├── projects.ts
+│   │   ├── experience.ts
+│   │   └── manifest.ts
 │   ├── generate-static.ts
 │   ├── generate-images.ts
 │   └── validate-dist.ts
@@ -359,7 +369,8 @@ porto-latifiann/
 │   │   ├── locale/
 │   │   └── projects/
 │   ├── generated/
-│   │   └── content-manifest.ts
+│   │   ├── content-manifest.development.ts
+│   │   └── content-manifest.production.ts
 │   ├── pages/
 │   │   ├── HomePage.tsx
 │   │   ├── ProjectPage.tsx
@@ -387,6 +398,27 @@ This tree describes the target end state, not folders that must be created in ad
 `src/generated/` and `dist/` are build outputs. They must not be edited manually. Whether generated manifests are committed should be decided once and enforced consistently; the recommended default is to ignore them and regenerate in validation and build commands.
 
 `public/generated/media/` is also generated and ignored. The image step writes optimized variants there before the Vite client build copies them into `dist/media/` or another single documented public path. It must clean only its own generated directory and never delete hand-authored files from `public/`.
+
+### Content build module boundaries
+
+`scripts/build-content.ts` is the only entry point: it reads the flags, owns the source and manifest paths, runs the loaders, prints collected errors, and writes one manifest per mode. Each `scripts/content/` module owns one concern:
+
+| Module | Owns | Must not |
+|---|---|---|
+| `types.ts` | `Mode`, `ParsedProject`, `LoadResult` | read files or know content rules |
+| `diagnostics.ts` | `formatIssues` for schema errors | know which schema produced the error |
+| `markdown.ts` | front matter split and the restricted body parser | resolve project files or validate project metadata |
+| `projects.ts` | project schema, per-record parsing, homepage-order and release-set rules, mode filtering and ordering | write the manifest or read experience |
+| `experience.ts` | experience schema, per-entry parsing, Indonesian completeness | write the manifest or read projects |
+| `manifest.ts` | generated module text, hero imports, placeholder replacement | read content files or decide which records are included |
+
+Rules that must survive future edits:
+
+- Add a content domain by adding a module and one loader call in the entry point, not by appending another schema and parser to `build-content.ts`.
+- Loaders collect errors instead of throwing across the pipeline, so one broken source cannot hide another. The pipeline writes nothing while any error remains.
+- Only the entry point may read `process.argv`, write files, or call `main()`. Importing a module from a test must have no side effects.
+- Loaders receive their source paths as arguments instead of importing repository globals, so they can be exercised against temporary fixtures.
+- Generated manifests are compared byte-for-byte when this pipeline is refactored. A refactor that changes the output without changing content is a defect.
 
 ### Documentation filename normalization
 
@@ -479,6 +511,8 @@ highlights:
 
 Front matter owns localized prose, alternative text, the media caption, the outcome summary, and up to three highlight cards. Only `## ` headings, paragraphs, and `- ` lists are accepted in the body; raw HTML, other heading levels, block quotes, code fences, and tables are rejected so content cannot outgrow the renderer. A project does not need empty sections merely to match the template.
 
+Table detection matches a header row followed by a delimiter row, with an equal cell count on both rows and every delimiter cell shaped as `:?-{3,}:?`. A literal pipe inside prose, or an escaped `\|`, is not treated as a separator, so ordinary text containing `|` stays a paragraph. Errors name the file and the body line that starts the table, and the number is body-relative because front matter is already stripped.
+
 
 `publication` has two values:
 
@@ -529,29 +563,75 @@ Validation currently enforces:
 - English narrative present for every record, and Indonesian narrative present for every `published` record;
 - body vocabulary restricted to `## ` headings, paragraphs, and `- ` lists, with every section nonempty.
 
-Not yet automated even though the release contract requires them: unique experience IDs, canonical origin equality with `https://latifian.dev`, the eight-route count, `404.html`, and a check that every published page’s links resolve. Those belong to the static-generation phase and must land before release.
+`content/experience.yaml` is validated in the same pass, independently of project results, so a broken project record cannot hide an experience error. It enforces:
+
+- `schemaVersion: 1` and a nonempty `entries` array;
+- unique kebab-case `id` values that act as stable anchors for `aria-controls`;
+- `type` limited to `experience` or `education`;
+- a nonempty `organization` and one to five `technologies` without repeats;
+- English content for every entry, with Indonesian nullable until release;
+- a nonempty `title`, `period`, `description`, and three to five `contributions` in each available locale;
+- `organizationNote` as a nonempty string or `null`, never an empty string;
+- unknown keys rejected at every level, so a misspelled key fails instead of disappearing.
+
+`release` additionally requires Indonesian content on every entry and names each entry that is still missing it.
+
+The schema deliberately does not fix an entry count, a bullet count per entry beyond the 3–5 range, or the order of `experience` before `education`. Array order is the rendered order, and the current two internships plus one education entry are content, not a structural rule.
+
+Not yet automated even though the release contract requires them: canonical origin equality with `https://latifian.dev`, the eight-route count, `404.html`, and a check that every published page’s links resolve. Those belong to the static-generation phase and must land before release. Unique experience IDs moved out of this list when `experience.yaml` validation landed.
 
 Builds fail with file path, content key, and actionable error text. Validation must not replace missing facts with defaults that could misrepresent the project.
 
 ### 8.5 Generated content manifest
 
-`scripts/build-content.ts` writes `src/generated/content-manifest.ts`, a typed module consumed by both server and browser entries. The file is gitignored and regenerated on every validation and build, so it is never edited by hand.
+`scripts/build-content.ts` writes one typed module per mode: `src/generated/content-manifest.development.ts` for development, and `src/generated/content-manifest.production.ts` for both production and release. Release shares the production output because the two modes publish the same record set. The files are gitignored and regenerated by the scripts, so they are never edited by hand.
+
+Both entries import the alias `@content-manifest`. `vite.config.ts` resolves that alias from the Vite command, not from `mode`: `serve` maps to the development manifest and `build` maps to the production manifest. A `vite build --mode development` therefore still ships the production records, so a mode flag cannot become a path for drafts to enter a build. `src/types/content-manifest.d.ts` declares the alias shape, which keeps strict TypeScript independent of which generated file currently exists: a fresh production build needs only the production output, and a dev session needs only the development output.
 
 Shape:
 
 - one static `import` per included hero image, emitted as a Vite asset import, so hashed filenames and bundle placement stay under the bundler instead of the manifest. The import specifier is computed with `path.relative` from the manifest directory, never by slicing the repository root or hard-coding a `../` depth, because a wrong prefix resolves outside the repository and only fails at bundler time;
 - `projects`, typed as `ProjectDetail[]`, holding the locale-independent record plus both localized payloads;
+- `experience`, typed as `ExperienceEntryDetail[]`, holding every validated timeline entry with its localized payloads. It is not filtered by project publication, because an internship and a degree have no draft state of their own;
 - `findProject(slug)`, the only lookup the app uses.
 
 Consequences that must survive refactoring:
 
 - production generation includes only `published` content, so a draft record cannot reach a production route, metadata record, or browser bundle;
 - `npm run build` runs the `production` pass as its first step, before `tsc -b` and `vite build`, so even a developer machine with local drafts ships a clean artifact;
+- the development and production outputs never overwrite each other, so a production build does not empty the manifest a running dev server reads; no restoration step is required after a build;
 - a production manifest may legitimately be empty; the generator emits `[]` rather than an invalid array literal;
 - records sort by `homepageOrder`, then slug, so the manifest is deterministic;
 - the manifest contains only public information: no draft notes, evidence comments, private URLs, credentials, unpublished contact data, or file-system paths.
 
 `npm run predev` regenerates in `development` mode so drafts resolve locally, and `resolveLocalRoute` in `src/lib/routes.ts` returns a project route only when `import.meta.env.DEV` is true. Production and `vite preview` therefore always render the homepage; that is intended, not a routing bug. The local preview is a review convenience for the person writing content, not a shipped route, and it disappears the moment routing and static generation replace it.
+
+### 8.6 Experience source
+
+`content/experience.yaml` is the single source for the homepage timeline. Array order is rendered order, so no separate ordering field exists to drift from it.
+
+```yaml
+schemaVersion: 1
+entries:
+  - id: kebab-case-identifier
+    type: experience # or education
+    organization: Shared non-localized name
+    technologies: [Shared, Technology, Labels]
+    content:
+      en:
+        title: Localized role or program name
+        period: Localized display range
+        organizationNote: Localized location line, or null
+        description: Localized sentence
+        contributions: [Three to five localized sentences]
+      id: null
+```
+
+Facts that read the same in every language stay on the entry. Anything a reader must understand in their own language sits under `content.<locale>`, which is why `period` and `organizationNote` are localized even though they look short.
+
+`selectTimelineEntries` in `src/lib/experience.ts` resolves one locale into the render-ready `TimelineEntry[]`. When an entry has no content for the requested locale it is skipped rather than falling back to English, matching the project-card rule that the UI never guesses a language. Release validation, not the UI, is what guarantees completeness.
+
+`ExperienceSection` receives that array as an `entries` prop and owns no content: no timeline array, no locale resolution, no content import. Header copy and the disclosure labels stay in the component until localized site strings land, so the section is content-driven for entries only.
 
 ## 9. Type and Domain Model
 
@@ -567,6 +647,40 @@ type ProjectStatus = "ongoing" | "completed" | "prototype" | "archived"
 type PublicationState = "draft" | "published"
 
 type MaintenanceState = "maintained" | "unmaintained" | null
+
+type TimelineEntryType = "experience" | "education"
+
+interface ExperienceLocalizedContent {
+  locale: Locale
+  title: string
+  period: string
+  organizationNote: string | null
+  description: string
+  contributions: string[]
+}
+
+interface ExperienceEntryDetail {
+  id: string
+  type: TimelineEntryType
+  organization: string
+  technologies: string[]
+  content: {
+    en: ExperienceLocalizedContent
+    id: ExperienceLocalizedContent | null
+  }
+}
+
+interface TimelineEntry {
+  id: string
+  type: TimelineEntryType
+  title: string
+  organization: string
+  period: string
+  description: string
+  organizationNote?: string
+  contributions: string[]
+  technologies: string[]
+}
 
 type ProjectBlock =
   | { type: "paragraph"; text: string }
@@ -619,6 +733,8 @@ interface ProjectDetail {
 ```
 
 `ProjectBlock` is the safety boundary: the renderer switches on a closed union instead of injecting HTML, so a content author cannot introduce markup. `ProjectLocalizedContent` is keyed by locale inside `ProjectDetail` rather than wrapped in a generic `LocalizedPage<T>`, because every page needs both locales at once for the switch and neither may silently fall back. `content.id` is nullable only while a record is a draft; `release` mode rejects null.
+
+`ExperienceEntryDetail` follows the same pattern for the timeline: shared facts on the record, localized prose under `content`, English always present, Indonesian nullable until release. `TimelineEntry` is the separate render-ready shape, so a section never resolves a locale or reaches into nested content. The two types stay distinct instead of collapsing into one optional-field type, because a missing translation must be a selector decision, not something the renderer discovers mid-tree.
 
 Rules:
 
@@ -683,6 +799,8 @@ Allowed dependency rules:
 - CapabilitiesSection
 - TechnologyStrip
 - ContactSection
+
+`ExperienceSection` is the first homepage section whose content is fully external: it takes `entries: TimelineEntry[]` and renders them in array order. `HeroSection`, `EngineeringStatement`, `CapabilitiesSection`, `TechnologyStrip`, and `ContactSection` still hold their own strings; that migration is separate and must not be simulated by moving one section's copy into a shared file early.
 
 **Pages**
 
@@ -1012,7 +1130,7 @@ Budget exceptions require evidence, a documented reason, and a follow-up action.
 
 ### 20.2 Unit tests
 
-Use Vitest for:
+Use the Node test runner through `tsx` (`npm run test:content`, `node --import tsx --test scripts/content/*.test.ts src/lib/*.test.ts`). No second test runner is added just for the build scripts. Cover:
 
 - locale-aware URL helpers;
 - project selectors and sorting;
@@ -1021,6 +1139,12 @@ Use Vitest for:
 - route enumeration;
 - safe Markdown transformation;
 - media-manifest behavior.
+
+Current coverage: `scripts/content/markdown.test.ts` covers `parseBody`; `scripts/content/projects.test.ts` covers the publication boundary, homepage order, public-v1 set, sorting, and body errors through `loadProjects`; `scripts/content/experience.test.ts` covers locale completeness, source rules, and order; `src/lib/experience.test.ts` covers `selectTimelineEntries`.
+
+Those files are a local harness, not a repository artifact. They are listed in `.git/info/exclude`, so they exist on the owner's machine but are absent from every clone and from CI. `npm run test:content` therefore works only where those files exist, and it is not a release gate. The enforced checks on any machine stay `npm run content:validate`, `npm run lint`, `npm run typecheck`, and `npm run build`; without the local harness, draft exclusion and locale completeness are protected only by the build scripts themselves.
+
+Tests that import project sources under `src/` live in `src/lib/` so the app project type-checks them; they declare `/// <reference types="node" />` instead of adding Node globals to the browser project. Build-time tests live in `scripts/content/` and are type-checked by `tsconfig.node.json`.
 
 ### 20.3 Component and integration tests
 
@@ -1054,13 +1178,13 @@ Future `docs/QA.md` turns repeated manual checks into maintained release cases. 
 
 `scripts/validate-dist.ts` verifies:
 
-- exactly eight indexable public routes have HTML files;
+- exactly fourteen indexable public routes have HTML files;
 - every indexable HTML file has title, description, canonical URL under `https://latifian.dev`, `lang`, and one `h1`;
 - locale alternate links are reciprocal;
-- the sitemap contains exactly those eight indexable URLs and excludes `404.html`;
+- the sitemap contains exactly those fourteen indexable URLs and excludes `404.html`;
 - `404.html` contains a title, language, one `h1`, recovery links, and `noindex`;
 - referenced local assets exist;
-- no fourth project, draft marker, private URL, source path, credential, or unpublished content key appears in `dist/`;
+- no project outside the approved six, draft marker, private URL, source path, credential, or unpublished content key appears in `dist/`;
 - generated pages do not depend on a client request for primary content.
 
 ## 21. Commands and Build Pipeline
@@ -1102,6 +1226,7 @@ Currently implemented subset, which is what the repository actually runs:
     "content:build:production": "tsx scripts/build-content.ts --production",
     "content:validate": "tsx scripts/build-content.ts --check",
     "content:validate:release": "tsx scripts/build-content.ts --check --release",
+    "test:content": "node --import tsx --test scripts/content/*.test.ts src/lib/*.test.ts",
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -1113,7 +1238,7 @@ The production content pass sits inside `build` rather than in a `prebuild` hook
 
 Differences from the target contract, all intentional until their phase lands:
 
-- no `images:build`, `build:client`, `build:ssr`, `build:static`, `build:validate`, or `test` yet, because static generation, responsive image generation, and tests do not exist;
+- no `images:build`, `build:client`, `build:ssr`, `build:static`, `build:validate`, or the aggregate `test` yet, because static generation, responsive image generation, and component tests do not exist; `test:content` runs the local-only content harness and is not available in a fresh clone;
 - `typecheck` uses `tsc -b` because the repository is a project-references build with `tsconfig.app.json` and `tsconfig.node.json`; `tsc --noEmit` alone would miss the Node scripts;
 - font generation runs inside `build` under its own name rather than as a lifecycle hook.
 
@@ -1329,7 +1454,7 @@ A technical change is complete only when all relevant conditions are true:
 - performance budgets are maintained or any exception is documented;
 - related documentation is updated when the architecture contract changed.
 
-Public v1 is releaseable only when all three approved projects are published in both locales; exactly eight indexable routes and eight sitemap URLs are generated; `404.html` is non-indexable; all required commands pass; documented keyboard, reduced-motion, no-JavaScript, accessibility, and responsive release checks pass; and no draft, fourth project, secret, private URL, or local source path enters `dist/`. Automation choice for release checks requires explicit later decision.
+Public v1 is releaseable only when all six approved projects are published in both locales; exactly fourteen indexable routes and fourteen sitemap URLs are generated; `404.html` is non-indexable; all required commands pass; documented keyboard, reduced-motion, no-JavaScript, accessibility, and responsive release checks pass; and no draft, unapproved project, secret, private URL, or local source path enters `dist/`. Automation choice for release checks requires explicit later decision.
 
 Cutover is complete only when HTTPS and `latifian.dev` work on the selected host, all direct routes pass, old URLs have explicit outcomes, the rollback point is recorded, and pre-replacement `porto-latifiann` commits remain reachable.
 

@@ -1,8 +1,8 @@
 ---
 name: Latifian Editorial Portfolio
-version: 2.26.44
+version: 2.26.47
 status: canonical
-last_updated: 2026-10-30
+last_updated: 2026-10-31
 description: Canonical UI/UX and implementation specification for latifian.dev.
 fonts:
   sans: Geist
@@ -423,9 +423,9 @@ Selected Work is the primary evidence section. It must present projects as conci
 ### Project selection
 
 - The landing preview shows at most six projects: at most three on mobile, at most four on tablet, and up to six on desktop.
-- Current verified set contains exactly three, in this order: FMS-CREATE, ReMi Mobile, and Semina.
+- Current approved set contains exactly six, in this order: FMS-CREATE, ReMi Mobile, Semina, Mooda App, NKRI, ReMi Web App.
 - Every card links to a complete bilingual case study; card-only projects are not shown.
-- Item visibility across an unset project count is CSS-driven, never `window.innerWidth`. The fourth slot appears from the tablet breakpoint (`hidden md:block`) because tablet capacity is four, and slots five and six appear only on desktop (`hidden lg:block`). Current three-item set renders identically at every width.
+- Item visibility across an unset project count is CSS-driven, never `window.innerWidth`. The fourth slot appears from the tablet breakpoint (`hidden md:block`) because tablet capacity is four, and slots five and six appear only on desktop (`hidden lg:block`). A set smaller than the current capacity renders identically at every width.
 - Prioritize relevance, engineering depth, clear ownership, and credible outcomes.
 - Do not fill space with weaker projects.
 
@@ -447,7 +447,7 @@ The project name and contribution must be understandable without inspecting the 
 
 - Desktop: three-column grid; up to six cards.
 - Tablet: two columns; at most four.
-- Mobile (`<768px`): horizontal CSS scroll-snap rail; at most three projects, with one full-width card aligned inside the content margins at rest. The scroll viewport reaches the screen edges during a swipe; inline padding and scroll padding use the mobile container-padding token so snapped cards retain the `20px` inset. Keep the `16px` inter-card gap and thin scrollbar. Above the rail, show the localized swipe hint with decorative `pi/PiHandSwipeLeftLight` from `react-icons/pi`. The `Explore all N projects` link stays below and outside the rail. No autoplay, duplicated cards, carousel dependency, or viewport JavaScript.
+- Mobile (`<768px`): horizontal CSS scroll-snap rail; at most three projects, with one full-width card aligned inside the content margins at rest. The scroll viewport reaches the screen edges during a swipe; inline padding and scroll padding use the mobile container-padding token so snapped cards retain the `20px` inset. Keep the `16px` inter-card gap and a thin scrollbar. The scrollbar track is inset by the mobile container-padding token so the bar starts and ends on the content gutter, while the scroll viewport still reaches the screen edges to expose the next-card peek. Browsers without pseudo-element scrollbars keep the thin native bar, which stays full width because the platform cannot inset it. Above the rail, show the localized swipe hint with decorative `pi/PiHandSwipeLeftLight` from `react-icons/pi`. The `Explore all N projects` link stays below and outside the rail. No autoplay, duplicated cards, carousel dependency, or viewport JavaScript.
 - The rail is keyboard-focusable with a visible focus indicator and an accessible name from the section heading; project links remain reachable in DOM order. Swiping and links work without JavaScript. Verify focused cards scroll into view without clipping.
 - Card order comes from the validated content manifest, not CSS positioning. Card copy, badges, and preview metadata come from that record as well, so a project shows the same card content in Selected Work and in related projects.
 - When the manifest yields no card, the whole Selected Work section is absent, including its heading, swipe hint, and card count. The `Explore all N projects` action renders only when the curated project index route exists; a reserved but unreachable path never becomes a visible action.
@@ -605,12 +605,12 @@ The date range displays as a compact neutral full-pill chip rather than a plain 
 - role and date range;
 - company or organization, employment type, and location on one line;
 - a short product description in body type (not mono metadata);
-- two or three highest-value contribution bullets with a visible marker;
+- three to five highest-value contribution bullets with a visible marker;
 - compact technology tags rendered as the same full-pill `chip` badge as the period badge.
 
 ### Density limits
 
-- Maximum 3 bullets per homepage item.
+- Three to five bullets per homepage item. Counts may differ between items; the range groups one contribution per bullet instead of forcing matching counts.
 - Target 12–22 words per bullet.
 - Maximum 5 technology tags per item.
 - Use the CV or LinkedIn for complete history.

@@ -1,0 +1,41 @@
+schemaVersion: 1
+slug: remi-web
+publication: draft
+homepageOrder: 6
+cardTitle: ReMi Web App
+caseStudyTitle: ReMi - Remind Me (Web)
+category: Web App
+timeline:
+  start: "Aug 2024"
+  end: "Nov 2024"
+  ongoing: false
+  display: Aug-Nov 2024
+status: completed
+maintenance: unmaintained
+roles:
+  - Front-End Developer
+teamContext: Agile Teknik
+stack:
+  - React
+  - TypeScript
+  - Vite
+  - Tailwind CSS
+  - REST API
+cardStack:
+  - React
+  - TypeScript
+  - Tailwind CSS
+repository:
+  visibility: private
+  url: null
+demoUrl: null
+primaryLink: null
+ctaLabel: null
+links: []
+media:
+  hero:
+    source: ./media/remi-website.webp
+    width: 1280
+    height: 800
+    aspectRatio: 1.6
+    focalPosition: center

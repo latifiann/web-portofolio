@@ -1,9 +1,9 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.10.62
+version: 1.10.76
 status: canonical
-last_updated: 2026-10-30
+last_updated: 2026-10-31
 owner: Latifian Iman
 testing_mode: manual-first
 ---
@@ -247,7 +247,7 @@ Deliverables:
 
 - vertical editorial experience timeline at every width, container-aligned content, integrated entry metadata with a shared role/date row on desktop and tablet (`>=768px`), visible contribution bullets, and education as the final differentiated node;
 - short product descriptions in body type replacing the mono context line;
-- education entry mirrors the internship structure; unverified education detail remains an explicit local placeholder pending owner review;
+- education entry mirrors the internship structure with an owner-confirmed research and organization summary, including CSRG activities, two software copyright registrations, and HIMIT PENS involvement;
 - self-hosted variable WOFF2 per variable font family with a matching `weight` range and `font-synthesis: none`;
 - period shows as a compact month-year neutral badge; timeline nodes use filled briefcase and graduation-cap glyphs; Experience body may use the scoped system sans fallback when canonical-sans rasterization defects appear in target browsers;
 - two approved internships with evidence density limits preserved;
@@ -285,7 +285,7 @@ Manual check:
 
 ## Phase 7: Structured Content and Validation
 
-Status: in progress (2026-10-27). Project records, localized front matter, schema validation, and the deterministic manifest exist for the ReMi draft. Site, locale-string, experience, and capability sources are still inline in components, and no tests exist yet.
+Status: in progress (2026-10-31). Project records, localized front matter, schema validation, the deterministic manifest, and `content/experience.yaml` exist, and the schema accepts six homepage slots. All six approved project records exist as English drafts with media. Publication boundary, homepage order, and locale completeness have local regression tests; site, locale-string, and capability sources are still inline in components, and no Indonesian narrative exists yet.
 
 Deliverables:
 
@@ -378,7 +378,7 @@ Deliverables:
 
 - per-route title, description, canonical, alternate-language links, Open Graph, Twitter metadata, sitemap, robots, and truthful structured data;
 - `404.html` with recovery links and `noindex`;
-- output validator for exact eight indexable routes, assets, metadata, and accidental private content.
+- output validator for exact fourteen indexable routes, assets, metadata, and accidental private content.
 
 Checks:
 
@@ -392,7 +392,7 @@ Status: deferred
 
 `docs/QA.md` will grow from successful manual checks. Browser automation, Playwright, axe, automated screenshot baselines, performance measurement, host adapter, deploy, and cutover are deferred until explicitly scheduled. Owner-run side-by-side comparison with approved Stitch captures is a required manual final-fidelity gate.
 
-Public v1 remains blocked until bilingual content and media exist for all three projects, output has eight indexable routes plus non-indexable `404.html`, no private or prohibited content enters `dist/`, release checks are recorded, and hosting plus history-preserving cutover are approved.
+Public v1 remains blocked until bilingual content and media exist for all six projects, output has fourteen indexable routes plus non-indexable `404.html`, no private or prohibited content enters `dist/`, release checks are recorded, and hosting plus history-preserving cutover are approved.
 
 ## Styling and Component Refactor Checkpoints
 
@@ -753,7 +753,7 @@ Accuracy corrections (superseding earlier Checkpoint text):
 Open items, unchanged by this checkpoint:
 
 - static generation without JavaScript is not implemented; `dist/index.html` still ships an empty `#root`;
-- Education entries are placeholders pending owner review;
+- Education copy was filled on `2026-10-30` and is no longer a placeholder; wrapping of the longer degree title is still pending manual review;
 - the fourth Selected Work slot is unfilled;
 - Unit 5 still owns the routing, tablet four-slot, and repository-fact drift, and should also reconcile the portrait `width`/`height` hint;
 - sub-pixel breakpoint bands stay unmeasured.
@@ -928,7 +928,141 @@ Checks run: `npm run lint`, `npm run typecheck`, `npm run build`. Homepage visua
 - Owner revision on `2026-10-30`: the card keeps a curated badge list, but the overflow count now reports the full stack. `toProjectCardProps` sets `metadata.totalStackCount` from `project.stack.length`, `ProjectCard` requires it, and `ProjectMetadata` computes `totalStackCount - visibleStack.length`.
 - No total is stored in content or the manifest, so the count cannot drift from the record. An alias badge such as `Modular architecture`, `SSE`, or `Express` names one stack entry and never adds to the count.
 - Expected cards: FMS-CREATE `Flutter`, `Modular architecture`, `REST API`, `+7`; ReMi Mobile `Flutter`, `BLoC`, `REST API`, `+4`; Semina `React`, `Redux`, `Node.js`, `+11`.
-- Static checks passed after the change. Visual review of the homepage and related cards is still owner-owned.
+- Static checks passed after the change. The owner confirmed the mobile rail scrollbar sits on the content gutter on `2026-10-30`; no visual defect was reported.
+- Owner follow-up on `2026-10-30`: the mobile rail scrollbar must sit on the content gutter instead of the screen edge. `SelectedWorkSection.css` now insets `::-webkit-scrollbar-track` with `--container-padding-mobile`, keeps the full-bleed viewport for the next-card peek, and moves `scrollbar-width: thin` into an `@supports not selector(::-webkit-scrollbar)` fallback so Chromium does not drop the pseudo-element styling. Firefox cannot inset its native bar; Safari support for track margin is unverified. Visual confirmation on Chromium, Firefox, and Safari is owner-owned and still pending. No Playwright run was requested for this change.
+
+### Checkpoint I — manifest isolation
+
+- `scripts/build-content.ts` now writes one output per mode: `src/generated/content-manifest.development.ts` for development, and `src/generated/content-manifest.production.ts` for production and release. Release reuses the production output because both publish the same set.
+- `vite.config.ts` aliases `@content-manifest` by Vite command: `serve` reads the development output, `build` reads the production output. `vite build --mode development` still ships production records, so a mode flag cannot leak drafts into a build.
+- `src/types/content-manifest.d.ts` declares the alias shape, so strict TypeScript no longer depends on which generated file exists.
+- `src/App.tsx` and `src/lib/routes.ts` import the alias instead of a generated path. The previous shared `content-manifest.ts` is removed.
+- Verified: the development output kept the same hash across a production generation and a dev regeneration; the production output kept its hash across a dev regeneration; a build with the development output deleted succeeded and produced only the production file; `vite build --mode development` shipped no draft copy; the running dev server still served all three records after the build, with no restoration step.
+- Current counts stay development three records, production zero. Release validation still fails on draft status and missing Indonesian content, which is the expected state.
+
+### Checkpoint J — automated UI review
+
+- `playwright-cli` covered the homepage and all three case studies at `1280 × 900`, `768 × 1024`, and `390 × 844`, plus breakpoint probes at `767`, `1023`, and `1024`.
+- Passed: card order and copy, curated badges with `+7`, `+4`, `+11`, `Explore all` hidden, correct detail links, related-project exclusion, single `h1` per page, no duplicate ids, every `aria-labelledby` resolving, no nameless controls, `noopener noreferrer` on external links, full-bleed rail with required scroll snap, last card reachable, `44 × 44px` tablet header controls, aside width `288px` from `1024`, skip link focus transfer, card activation by keyboard, mobile menu `aria-expanded` with Escape returning focus, reduced-motion transitions at `1e-05s`, and zero console errors or failed requests.
+- Limits: remote services were not exercised, the theme switcher is still unavailable and shows its `role="status"` notice, and detail `document.title` remains the app default until static metadata lands.
+
+### Checkpoint K — experience and education copy revision
+
+- Owner revision on `2026-10-30`: both internship entries now lead with the role, team context, and responsibility instead of opening with the product. Product names and feature inventories stay in the CV so the homepage does not read as a case study.
+- The education entry uses the owner's requested English title `Bachelor of Applied Computer Science (Informatics Engineering)` and replaces every placeholder with confirmed content.
+- Education copy covers the CSRG final academic project, explored topics (Docker, CI/CD, agentic AI, Linux fundamentals, networking fundamentals, virtual machines, basic VPS setup), two software copyright registrations, and HIMIT PENS involvement.
+- Copyright facts come from the owner's certificates: Latifian Iman is one of ten named creators on both registrations, and Politeknik Elektronika Negeri Surabaya holds the copyright. Numbers `001492729` (web operator) and `001071254` (mobile user service). Application and first-publication dates are recorded in `docs/CONTENT.md` and are not treated as certificate issue dates.
+- Being a creator on the web-operator registration is not used to claim authorship of that dashboard; the FMS case study keeps its mobile-versus-team boundary.
+- `docs/CONTENT.md` now permits a short academic research and organization summary in the education entry, while the full organization history, GPA, PEPT score, professional certifications, and secondary school remain resume-only.
+- The per-entry bullet limit changed from a maximum of three to a range of three to five with matching counts allowed to differ. Applied counts are Piramida five, Mitra four, and education four. The education entry names FMS-CREATE as the CSRG final academic project, keeping the passenger mobile app and operator fleet-telemetry prototype boundary.
+- Section-fix on `2026-10-30`: `docs/DESIGN.md` still carried "two or three highest-value contribution bullets" and "Maximum 3 bullets per homepage item". Both were rewritten to the three-to-five range and the document moved to `2.26.46`.
+- Pending: manual wrapping check of the longer degree title at `1280`, `768`, and `390`. No CSS or layout change was made for it. The owner reported the Experience manual pass as safe on `2026-10-30`, covering the bullet revision, wrapping, and disclosure behavior.
+
+### Checkpoint L — experience props boundary
+
+- `ExperienceSection` no longer owns experience data. It exports `TimelineEntry`, accepts an `entries` prop, and renders whatever it receives. Markup, CSS, IDs, icons, disclosure state, header copy, and the toggle labels are unchanged.
+- `HomePage` now holds the `timeline` array and passes it in. That placement is a deliberate temporary stopgap, not the target source: it keeps the arrays out of the renderer while the experience YAML schema is still undecided.
+- Scope was limited to the props boundary. Nothing was moved into `content/` and no schema was invented, because `title`, `description`, `contributions`, and `organizationNote` still need a bilingual storage decision before they can be split into facts and localized prose.
+- Next unit for this section: define the experience record shape, then replace the `HomePage` array with validated manifest data. The array must not survive that migration.
+
+### Checkpoint M — experience source migration
+
+- `content/experience.yaml` is now the only source for the homepage timeline. The temporary `timeline` array is gone from `HomePage`, and `ExperienceSection` imports no content.
+- Shape: shared facts (`id`, `type`, `organization`, `technologies`) on the entry; localized prose (`title`, `period`, `organizationNote`, `description`, `contributions`) under `content.<locale>`. English is required, Indonesian is `null` until translation is approved. Array order is rendered order, so no ordering field was added.
+- Validation runs inside the existing `scripts/build-content.ts` pass and is evaluated independently of project results, so a broken project record cannot hide an experience error. It enforces `schemaVersion: 1`, unique kebab-case IDs, the two `type` values, nonempty organization, one to five non-repeated technologies, three to five contributions per available locale, non-null-but-nonempty `organizationNote`, and rejection of unknown keys at every level. `release` also names every entry still missing Indonesian content.
+- The experience parse was deliberately hoisted out of the project-error guard after a fixture run showed release errors hiding the experience message.
+- `selectTimelineEntries` in `src/lib/experience.ts` resolves one locale into `TimelineEntry[]` and skips an entry with no content for that locale rather than falling back to English.
+- Manifest contract gained a second export, `experience: ExperienceEntryDetail[]`, declared in `src/types/content-manifest.d.ts`. It is not filtered by project publication, because an internship has no draft state.
+- Fixture checks (temporary copies, restored byte-for-byte): duplicate ID rejected, two contributions rejected, empty `organization` rejected, misspelled `description` rejected, release mode reports all three missing Indonesian entries.
+- Verified: production manifest still holds zero project records while carrying all three experience entries, so draft isolation is unchanged; the development manifest hash is identical before and after a production build; the bundle contains no YAML parser, no `node:fs`, and no draft project title.
+- Pending: owner manual pass over the homepage after the data-source change. Copy, order, 5/4/4 counts, and disclosure behavior are intended to be byte-identical, but the write path changed.
+- Still inline and out of scope here: the `/ Career Journey` eyebrow, `Experience` heading, and the `View details` / `Hide details` labels. They belong to the localized site-string unit.
+
+### Checkpoint N — content build module split
+
+- `scripts/build-content.ts` is now an entry point only: flags, source paths, loader calls, error output, manifest write. It went from 703 lines to roughly 80.
+- New modules under `scripts/content/`: `types.ts` (`Mode`, `ParsedProject`, `LoadResult`), `diagnostics.ts` (`formatIssues`), `markdown.ts` (front matter and restricted body parser), `projects.ts` (project schema, parsing, homepage-order and release-set rules, mode filtering and ordering), `experience.ts` (experience schema, parsing, Indonesian completeness), `manifest.ts` (generated module text and hero imports).
+- Behavior is unchanged by construction: both generated manifests were hashed before and after the split and matched byte-for-byte — development `81757018…`, production `36c340e0…`. The production build again left the development manifest untouched.
+- Error independence is now structural, not incidental. Each loader returns `{ value, errors }`, and the entry point concatenates both lists. A fixture run that broke `semina/project.yaml` `status` and duplicated an experience ID reported both errors in one pass, where the earlier guarded pipeline could hide one behind the other.
+- Loaders take their source paths as arguments and nothing writes on import, so validators can later be exercised against temporary fixtures. Only the entry point reads `process.argv` or touches the file system for output.
+- Fixture checks on temporary copies, restored byte-identically (`experience.yaml` `a75e8c71…`, `semina/project.yaml` `06ecd8a7…`): project enum failure plus duplicate experience ID surfaced together; unknown experience key rejected; six contributions rejected by the 3–5 rule; `--release` reported the three unpublished projects and all three entries missing Indonesian content in the same run.
+- `docs/ARCHITECTURE.md` 1.6.21 records the module table and the rules that keep the split from regressing into one file: add a domain as a module plus one loader call, loaders collect errors, only the entry point has side effects, and generated manifests must stay byte-identical across refactors.
+- Not done by intent: no test framework was added. The fixture checks were run ad hoc; turning them into committed tests belongs to the test unit that Phase 7 still lists as missing.
+- Pending: owner manual pass over the homepage after both the experience source migration and this split, since neither has been reviewed in the browser yet.
+
+### Checkpoint O — comment audit
+
+- Scope was every comment in `src/`, `scripts/`, `vite.config.ts`, and root config, not just the new build modules. Comment style had drifted into restating function names, types, and control flow.
+- Removed: doc blocks on `splitFrontMatter`, `parseBody`, `formatIssues`, `loadExperience`, `loadProjects`, `selectProjectsForManifest`, `renderManifest`, `toProjectCardProps`, `selectProjectCards`, `selectRelatedProjectCards`, `canResolveProjectDetail`, `projectIndexPath`, `resolveLocalRoute`, `main`, `ExperienceLocalizedContent`, `TimelineEntry`, `ParsedProject`, `LoadResult`, `Mode`, plus the file-description comment in `ProjectPage.css`.
+- Shortened to one line where the reason still matters: Vite alias keyed by `command` rather than `mode`, ambient manifest declaration, and the hero placeholder that crosses parser and renderer.
+- Kept because each states a rule the code cannot show locally: Tailwind preflight ownership in `base.css`, the `44px` target in `ActionLink.css`, focus-indicator specificity in `ProjectCard.css`, the rail and scrollbar split in `SelectedWorkSection.css`, section-spacing ownership in `CapabilitiesSection.css`, the `homePath` anchor prefix in `SiteHeader` and `SiteFooter`, and the two vendor-prefix notes.
+- Vendor-prefix claims were checked against the built asset instead of trusted: `dist/assets/*.css` contains the emitted `-webkit-mask-image` declarations, so those two comments stay accurate.
+- Removed two inaccurate claims from `markdown.ts`: "no HTML injection path exists" was not provable from `splitFrontMatter`, and "tables are rejected" was false. The parser was not changed in this task.
+- New unresolved drift: `parseBody` rejects raw HTML, heading levels, block quotes, and code fences, but a table row falls through to the paragraph branch. Recorded in `docs/ARCHITECTURE.md` 1.6.22 as a verified gap against the unchanged contract, and it needs a parser fix before narrative content relies on table rejection.
+- `AGENTS.md` gained one Do rule and one Don't rule so the style survives the next contributor or agent.
+- Behavior unchanged: both generated manifests still hash to development `81757018…` and production `36c340e0…`, and the diff touches comments only.
+
+### Checkpoint P — table detection and first regression tests
+
+- Closed the Checkpoint O drift. `parseBody` now rejects a Markdown table before the row reaches the paragraph branch, so the `docs/ARCHITECTURE.md` contract is enforced instead of only documented.
+- Detector is deliberately narrow: a header row plus a delimiter row with the same cell count, where every delimiter cell matches `:?-{3,}:?`. It is not a general Markdown parser, and it does not reject every line containing `|`.
+- Literal pipes in prose still parse as paragraphs, and an escaped `\|` is not a cell separator. A header followed by a delimiter with a different cell count stays a paragraph rather than a false positive.
+- Diagnostics name the file and the body line that starts the table, and the number is body-relative because front matter is stripped before `parseBody` runs. Message: `Markdown tables are not supported; use paragraphs or "- " lists`.
+- Added `scripts/content/markdown.test.ts` with 18 cases using the Node test runner through `tsx`, plus `npm run test:content`. Coverage: outer and bare pipes, alignment, single column, table after paragraph and after list, padded delimiters, no trailing newline, body line reporting, and the existing rejections for raw HTML, unsupported headings, block quotes, and code fences.
+- Audited `content/projects/*/en.md` and `id.md` first: no narrative contains a table, so the new rule changes no existing content. Both generated manifests still hash to development `81757018…` and production `36c340e0…`.
+- `docs/ARCHITECTURE.md` 1.6.23 replaces the verified gap with the enforced behavior, the detector limits, and the new test command.
+- Still open in Phase 7 testing: schema refinements, project selectors and sorting, metadata generation, route enumeration, and component behavior have no tests yet. This checkpoint adds the first content-script tests, not a finished testing phase.
+
+### Checkpoint Q — publication boundary and locale regression tests
+
+- Owner reported the homepage and case-study manual review as safe on `2026-10-31`. Recorded as owner-reported pass without treating the earlier checklist as exhaustively re-verified; no defects were reported.
+- Added `scripts/content/projects.test.ts` against temporary fixture directories. It proves: a draft loads in development, a draft is excluded from the production manifest, release rejects a draft, a published record needs `id.md`, a complete published record is selected, duplicate `homepageOrder` fails, a published order gap fails, the public-v1 set passes only in `fms-create, remi-mobile, semina` order, a missing public-v1 record is reported, selection sorts by `homepageOrder` then slug, and selection does not reorder its input.
+- The table rule is now proven through `loadProjects`, not only through `parseBody`: a fixture narrative containing a table produces `<file>/en.md: body line 4: Markdown tables are not supported`.
+- Added `scripts/content/experience.test.ts`: English-only content is accepted before release, release rejects a missing Indonesian entry, complete bilingual content passes, missing source is reported, duplicate ids fail, contributions outside 3–5 fail, repeated technologies fail, and source order is preserved.
+- Added `src/lib/experience.test.ts` for `selectTimelineEntries`: locale mapping, optional `organizationNote`, Indonesian selection, skipping entries without the requested locale instead of falling back to English, and source order.
+- Deviation from the planned file list: the selector test sits in `src/lib/` rather than `scripts/content/`. `tsconfig.node.json` uses `nodenext`, and importing `src/lib/experience.ts` from a script pulls its extensionless app import into that program and fails `TS2835`. The app project already covers `src/`, so the test lives there with `/// <reference types="node" />` and does not add Node globals to the browser project.
+- `npm run test:content` now runs `scripts/content/*.test.ts` and `src/lib/*.test.ts`: 46 tests, 46 pass.
+- By owner decision, those test files are **not** part of the repository. They are listed in `.git/info/exclude`, so they stay on the owner's machine while clones and GitHub never see them. Recorded consequence: `npm run test:content` is unavailable in a fresh clone, it is not a CI gate, and draft exclusion plus locale completeness are otherwise protected only by the build scripts. Docs state this instead of implying committed coverage.
+- `npm run content:validate:release` still fails by design, and the messages were kept as diagnostics: three records are still drafts and three experience entries have no Indonesian content. No publication flag or copy was changed to make it pass.
+- Both generated manifests are unchanged: development `81757018…`, production `36c340e0…`. The browser bundle contains no test code.
+
+### Checkpoint R — six-project public scope
+
+- Owner decision: expand the public set from three to six, ordered FMS-CREATE, ReMi Mobile, Semina, Mooda App, NKRI, ReMi Web App. The order keeps the existing three first and lets the new projects fill tablet and desktop capacity.
+- Owner decision: internship projects may publish name, description, and approved visuals, but never source code, snippets, or repository links.
+- Corrected an earlier internal claim: the empty fourth slot was never a release blocker. `PRODUCTS.md` always specified a curated set, and six slots are capacity, not a quota. The blockers are missing bilingual content, missing routes, and missing media.
+- Synced `PRODUCTS.md` 1.2.2 (scope, selected-work list, milestones, agent constraints), `CONTENT.md` 1.10.23 (registry rows, internship and team-project publication boundary, pending card copy), `DESIGN.md` 2.26.47 (approved set list, capacity wording), and `ARCHITECTURE.md` (six case studies, fourteen indexable routes, output validator wording).
+- Code contract widened: `homepageOrder` accepts `1–6` in the Zod schema and in `ProjectDetail`; `releaseSlugs` lists six; the order validator's type guard matches.
+- Created only `content/projects/{mooda-app,nkri,remi-web}/media/.gitkeep`. No `project.yaml` exists for them yet, so the loader ignores the directories and both manifests stay byte-identical: development `81757018…`, production `36c340e0…`.
+- `CONTENT.md` registry marks `nkri` and `remi-web` lifecycle as pending instead of guessing maintenance state, and states that card context labels, preview labels, badge lists, and card copy for the three new projects stay pending until each case study is drafted.
+- Local test harness updated to six slugs and still passes; it remains excluded from git.
+- `npm run content:validate:release` is expected to keep failing: six required records are not published, and three of them do not exist yet.
+
+### Checkpoint S — three new draft records
+
+- Owner supplied media: `mooda-app/media/mooda.webp`, `nkri/media/nkri.webp`, `remi-web/media/remi-website.webp`. All three are `1280 × 800` (`1.6`), matching the existing card frame without cropping.
+- Owner confirmed the Mooda and NKRI screenshots use demo data, NKRI is maintained by the company, and ReMi Web is completed and unmaintained. ReMi Web copy was limited to what the CV confirms: Front-End Developer participation and team scope.
+- Created three `project.yaml` records as `draft`, with `homepageOrder` `4`, `5`, and `6`: Mooda App (prototype, no maintenance value, private company code), NKRI (ongoing, maintained by the company, private company code), ReMi Web App (completed, unmaintained, private team repository). None carries a repository URL, demo URL, or CTA, so no source link can appear.
+- Created three `en.md` narratives with `Overview` and `My responsibilities`. Media captions state the product boundary: the Mooda and NKRI screenshots use demo data, and the ReMi Web hero is the team landing page that promotes the mobile app rather than the task workspace.
+- One validation round failed on `mooda-app/en.md` because `seoDescription` passed `160` characters; the description was shortened and the record then passed.
+- `CONTENT.md` 1.10.24 now carries confirmed registry rows, card context labels, preview labels, badge lists with `+7`, `+5`, and `+2` overflow, approved card copy in both languages, and the owner-confirmed facts plus prohibited claims for the three records. The previous pending markers were replaced because the facts are now confirmed.
+- `content:validate` passes with six development records. Production still shows zero project cards because every record stays `draft`; the production manifest is unchanged at `36c340e0…`. The development manifest changed on purpose to `1e1452ba…` because it now carries six records.
+- Local harness still passes 46/46 and stays excluded from git.
+- `content:validate:release` now fails only on unpublished records and missing Indonesian content, not on missing files.
+
+### Checkpoint T — owner-requested automation pass on the six-project set
+
+The owner asked for a `playwright-cli` pass, which for this task overrides the manual-first rule. Chrome for Testing was not installed, so the session ran on system Google Chrome; no browser binary was installed. The development server ran on `http://localhost:5174/` because `5173` was occupied.
+
+- Homepage card counts held at every checked width: six at `1280` and `1024`, four at `1023` and `768`, three at `767`, `390`, and `320`. No page-level horizontal overflow at any width.
+- Card order, detail destinations, loaded images, alternative text, and badge overflow (`+7`, `+4`, `+11`, `+7`, `+5`, `+2`) matched the approved registry.
+- All six detail routes returned one `h1`, the `Overview` and `My responsibilities` sections, a loaded `1280 × 800` hero, a visible caption, a two-column related grid from `768` and one column below, and no page-level overflow. Related cards excluded the current project and followed manifest order, so the three newest records point back to FMS-CREATE and ReMi Mobile.
+- No detail page rendered a repository or source call to action unless its record lists one: only Semina shows `View Repository`, and only ReMi Mobile shows the Google Play link. The word "repository" appears in the new narratives only as prose describing private ownership.
+- Each detail page keeps two `Back to selected work` links, one above the hero and one in the related section. Both were already documented and are not a duplicate-control defect.
+- Skip link is first in tab order, menu opens with focus on the close control, `Escape` closes it and returns focus to the trigger, the Experience disclosure toggles with `aria-expanded`, and the mobile rail scrolls to the last card, snaps, and reveals a card on focus. Reduced motion left every section visible with no transform.
+- No console errors and no failed local requests on any route, in development or in the production preview.
+- Production preview confirmed zero project cards, no `#projects` section, and no new-project copy in the built bundle. The header `Projects` anchor still has no target in production, which remains the documented pre-routing limitation. Any `/projects/<slug>/` path on the preview falls back to the homepage because static generation does not exist yet.
+- Not tested: intentional-touch gestures on a real device, real browser zoom, and Safari or Firefox scrollbar rendering. Automation results do not replace the owner's visual review of the three new cards and case studies.
 
 ### Checkpoint D — desktop review gate, owner-owned
 
@@ -948,12 +1082,15 @@ Tablet and mobile widths follow only after desktop approval, because desktop is 
 ### Deferred behind this gate
 
 - Indonesian narrative, which is required before `publication` may become `published`;
-- Indonesian narratives for every record, including the FMS-CREATE and Semina drafts;
+- Indonesian narratives for every record, including the FMS-CREATE, Semina, Mooda App, NKRI, and ReMi Web drafts;
 - publishing, which is required before Selected Work can render in a production manifest and before the header `Projects` anchor has a target;
-- related-project tablet and mobile review, which now has two development destinations but has not been checked at those widths;
-- routing, locale switching, static generation, metadata, and `404.html`, which belong to Phase 9;
-- manifest isolation: development and production currently share `src/generated/content-manifest.ts`, so running a production build while a dev server is live leaves that server with zero records and it falls back to the homepage until restarted. Split the generated files and select by Vite mode before routing work.
+- related-project tablet and mobile review, which now has six development destinations but has not been checked at those widths;
+- routing, locale switching, static generation, metadata, and `404.html`, which belong to Phase 9.
 
 ## Current Next Unit
 
-Units 1–5 are closed. Three detail records now exist in the development manifest: FMS-CREATE, ReMi Mobile, and Semina. All three are drafts built from owner-confirmed sources. Next: owner review of `/projects/semina/` at `1280px`, then the still-open tablet and mobile review for all three pages and the homepage regression check. The single-source card migration is complete, so homepage and related cards now share one mapper and cannot drift. Next is owner review of the homepage cards against the three detail pages, then the still-open tablet and mobile review. Do not add routing, locale switching, or static generation before those reviews, because the layout may still change. Release remains blocked by static generation, missing Indonesian narratives, the card-source migration, and the unfilled fourth Selected Work slot.
+Units 1–5, the manifest-isolation fix, the comment audit, table detection, the publication/locale regression tests, and the six-project content set are closed. Those tests are a local harness only, excluded from git by owner decision. All six approved records — FMS-CREATE, ReMi Mobile, Semina, Mooda App, NKRI, ReMi Web App — now exist as English drafts in the development manifest, each with owner-supplied media at `1280 × 800`.
+
+The structural half of that review is now covered by the owner-requested automation pass in Checkpoint T, which found no blocking defect. Next unit: owner visual review of the three new cards and case studies at `1280`, `768`, and `390`, since automation cannot approve composition or copy reading. Then write the Indonesian narratives, which are the remaining content blocker. Do not add routing, locale switching, or static generation before that review, because copy and facts may still change, and do not relax release validation to make the six-project set pass early.
+
+Release remains blocked by static generation, missing Indonesian narratives for all six records, the `draft` state on every record, and the pending owner review of the new composition.

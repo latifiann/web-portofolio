@@ -7,12 +7,14 @@ import TechnologyStrip from "../components/sections/TechnologyStrip";
 import ContactSection from "../components/sections/ContactSection";
 import HeroSection from "../components/sections/HeroSection";
 import type { ProjectCardProps } from "../features/projects/ProjectCard";
+import type { TimelineEntry } from "../types/content";
 
 type HomePageProps = {
   projectCards: ProjectCardProps[];
+  experienceEntries: TimelineEntry[];
 };
 
-function HomePage({ projectCards }: HomePageProps) {
+function HomePage({ projectCards, experienceEntries }: HomePageProps) {
   return (
     <main id="main-content" tabIndex={-1} className="pt-16">
       <HeroSection />
@@ -24,7 +26,7 @@ function HomePage({ projectCards }: HomePageProps) {
       <SelectedWorkSection cards={projectCards} />
 
       <PageContainer visual>
-        <ExperienceSection />
+        <ExperienceSection entries={experienceEntries} />
       </PageContainer>
 
       <CapabilitiesSection />

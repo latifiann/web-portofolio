@@ -1,0 +1,44 @@
+schemaVersion: 1
+slug: nkri
+publication: draft
+homepageOrder: 5
+cardTitle: NKRI
+caseStudyTitle: NKRI
+category: Mobile App
+timeline:
+  start: "Jan 2025"
+  end: "Jun 2025"
+  ongoing: false
+  display: Jan-Jun 2025
+status: ongoing
+maintenance: maintained
+roles:
+  - Mobile Developer
+teamContext: Mitra Informatika
+stack:
+  - Dart
+  - Flutter
+  - Riverpod
+  - Isar
+  - Dio
+  - AutoRoute
+  - WebSocket
+  - WebRTC
+cardStack:
+  - Flutter
+  - Riverpod
+  - WebSocket
+repository:
+  visibility: private
+  url: null
+demoUrl: null
+primaryLink: null
+ctaLabel: null
+links: []
+media:
+  hero:
+    source: ./media/nkri.webp
+    width: 1280
+    height: 800
+    aspectRatio: 1.6
+    focalPosition: center

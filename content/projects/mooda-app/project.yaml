@@ -1,0 +1,46 @@
+schemaVersion: 1
+slug: mooda-app
+publication: draft
+homepageOrder: 4
+cardTitle: Mooda App
+caseStudyTitle: Mooda App
+category: Mobile App
+timeline:
+  start: "Jul 2025"
+  end: "Dec 2025"
+  ongoing: false
+  display: Jul-Dec 2025
+status: prototype
+maintenance: null
+roles:
+  - Mobile Developer
+teamContext: PT Piramida Teknologi Informasi
+stack:
+  - Dart
+  - Flutter
+  - Riverpod
+  - GoRouter
+  - Dio
+  - REST API
+  - Socket.IO
+  - Google Maps
+  - Hive
+  - Figma
+cardStack:
+  - Flutter
+  - Riverpod
+  - Google Maps
+repository:
+  visibility: private
+  url: null
+demoUrl: null
+primaryLink: null
+ctaLabel: null
+links: []
+media:
+  hero:
+    source: ./media/mooda.webp
+    width: 1280
+    height: 800
+    aspectRatio: 1.6
+    focalPosition: center

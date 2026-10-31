@@ -12,6 +12,7 @@
     "content:build:production": "tsx scripts/build-content.ts --production",
     "content:validate": "tsx scripts/build-content.ts --check",
     "content:validate:release": "tsx scripts/build-content.ts --check --release",
+    "test:content": "node --import tsx --test scripts/content/*.test.ts src/lib/*.test.ts",
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "preview": "vite preview"

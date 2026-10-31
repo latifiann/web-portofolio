@@ -9,7 +9,6 @@
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
-    scrollbar-width: thin;
   }
 
   .project-rail > * {
@@ -21,13 +20,25 @@
     height: 6px;
   }
 
+  /* Inset the track so the bar lines up with the content gutter while the
+     rail itself keeps bleeding to the screen edges for the next card peek. */
   .project-rail::-webkit-scrollbar-track {
+    margin-inline: var(--container-padding-mobile);
     background: transparent;
   }
 
   .project-rail::-webkit-scrollbar-thumb {
     background: var(--color-border-strong);
     border-radius: var(--radius-full);
+  }
+
+  /* Browsers without pseudo-element scrollbars fall back to the thin native
+     bar, which cannot be inset and stays full width. */
+  @supports not selector(::-webkit-scrollbar) {
+    .project-rail {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border-strong) transparent;
+    }
   }
 }
 

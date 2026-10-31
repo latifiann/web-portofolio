@@ -18,10 +18,6 @@ function collectCards(
   });
 }
 
-/**
- * Landing cards for Selected Work, in `homepageOrder` sequence. Records without
- * a homepage slot stay out of the preview.
- */
 export function selectProjectCards(
   projects: ProjectDetail[],
   locale: Locale,
@@ -37,10 +33,6 @@ export function selectProjectCards(
   return collectCards(ordered, locale);
 }
 
-/**
- * Up to two other projects in manifest order. The current project is always
- * excluded so a case study never recommends itself.
- */
 export function selectRelatedProjectCards(
   projects: ProjectDetail[],
   currentSlug: string,
