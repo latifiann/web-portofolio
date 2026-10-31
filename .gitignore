@@ -24,6 +24,10 @@ lerna-debug.log*
 !.env.example
 *.local
 
+# Local contributor instructions and internal documentation
+/AGENTS.md
+/docs/
+
 # Tool caches
 .eslintcache
 *.tsbuildinfo
