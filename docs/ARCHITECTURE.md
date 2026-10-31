@@ -1,7 +1,7 @@
 ---
 product: latifian.dev
 document: technical-architecture
-version: 1.6.44
+version: 1.6.46
 status: canonical
 last_updated: 2026-11-01
 owner: Latifian Iman
@@ -163,9 +163,9 @@ The application uses a small custom static-generation pipeline based on Vite's c
 7. Set the route's `<html lang>` on the built shell, move resource preload links into the document head, inject the rendered markup into `#root`, and write the directory-index file.
 8. Hydrate the generated markup in the browser for menus, locale switching, and enhanced navigation.
 
-Page-specific head metadata and static `404.html` are implemented. The sitemap remains a later unit. `dist-ssr/` holds the server bundle and the indexable route manifest used by validation, and it is never published. The generator renders `/404.html` through the shared App separately from that manifest, preserving English not-found markup and hydration at unknown paths without exposing drafts. The recovery link points to the English homepage and works without JavaScript. Output validation checks its English lang, one h1, non-empty rendered content, English-only main recovery link, title, noindex, assets, internal links, and absence of canonical/alternate/sharing metadata. Static generation does not set HTTP status: unknown-path HTTP 404 behavior remains a hosting verification requirement, not something Vite preview certifies.
+Page-specific head metadata, static `404.html`, `sitemap.xml` and `robots.txt` are implemented. `dist-ssr/` holds the server bundle and the indexable route manifest used by validation, and it is never published. The generator renders `/404.html` through the shared App separately from that manifest, preserving English not-found markup and hydration at unknown paths without exposing drafts. The recovery link points to the English homepage and works without JavaScript. Output validation checks its English lang, one h1, non-empty rendered content, English-only main recovery link, title, noindex, assets, internal links, and absence of canonical/alternate/sharing metadata. Static generation does not set HTTP status: unknown-path HTTP 404 behavior remains a hosting verification requirement, not something Vite preview certifies.
 
-Implemented now: the pipeline above runs for both homepages. Detail routes are emitted only for a published project whose requested locale content exists. The production manifest currently contains zero projects, so the build writes `dist/index.html` and `dist/id/index.html`; draft isolation is enforced by the route enumerator rather than by relaxing publication state.
+The six owner-approved bilingual project records are published in the local production manifest. The build writes both homepages and twelve localized project pages. Detail routes are emitted only for a published project whose requested locale content exists; draft isolation remains enforced by the route enumerator. This local build is not deployment approval.
 
 Conceptual output:
 
@@ -237,11 +237,11 @@ Before completing route, metadata, locale, or content-loading work, an agent mus
 
 Trailing-slash directory URLs are canonical because they map directly to static `index.html` files.
 
-The v1 target is exactly fourteen indexable routes: two homepages and twelve localized case studies. React Router 7 provides client location, with BrowserRouter at the browser entry, StaticRouter during static generation, and useLocation in App instead of window location during rendering. Both locale homepages and manifest-backed detail paths resolve, and every UI consumer reads the active route locale without falling back to English. The header switch is a single linked pill that navigates to the equivalent page and slug and marks the active locale; unknown or unavailable paths render English client not-found recovery. Static generation writes both homepages and adds a detail route only for a published project with content in that locale, so the build currently emits `dist/index.html` and `dist/id/index.html` while the production manifest holds zero projects. Generated detail output is covered by route-enumeration tests until records are published. `404.html` and the sitemap remain later units, so client not-found recovery is not yet static-host recovery. `<html lang>` is written at build time per route and the client effect keeps it in sync during navigation. The future project index remains unavailable. Adding it later adds two indexable routes and requires the route-count validator to be updated in the same change.
+The local production build generates fourteen indexable routes: two homepages and twelve localized case studies. React Router 7 provides client location, with BrowserRouter at the browser entry, StaticRouter during static generation, and useLocation in App instead of window location during rendering. Both locale homepages and manifest-backed detail paths resolve, and every UI consumer reads the active route locale without falling back to English. The header switch is a single linked pill that navigates to the equivalent page and slug and marks the active locale; unknown or unavailable paths render English client not-found recovery. Static `404.html` and the sitemap are generated separately from the indexable route HTML. `<html lang>` is written at build time per route and the client effect keeps it in sync during navigation. The future project index remains unavailable.
 
 #### Development-only preview route
 
-Development resolves `/projects/<slug>/` and `/id/projects/<slug>/` for records in its manifest, including drafts. `projectDetailPath` requires a known record and matching locale content; outside development it additionally requires `publication: published`. Production's separate manifest currently contains zero projects. Unknown paths, unsupported locale prefixes, and unavailable slugs render English client not-found recovery, not homepage fallback. This is not generated `404.html` and does not set HTTP status. Typed `homePath` and `equivalentLocalePath` prepare localized links; active-locale propagation and switching remain units 4–5. `projectIndexPath` remains null.
+Development resolves `/projects/<slug>/` and `/id/projects/<slug>/` for records in its manifest, including drafts. `projectDetailPath` requires a known record and matching locale content; outside development it additionally requires `publication: published`. Unknown paths, unsupported locale prefixes, and unavailable slugs render English client not-found recovery, not homepage fallback. This does not set HTTP status. `projectIndexPath` remains null.
 
 ### 6.2 Locale behavior
 
@@ -560,7 +560,7 @@ Owner revision: `ProjectPage` no longer renders secondary project links or injec
 |---|---|---|---|
 | `development` | none | every valid record, drafts included | uniqueness only; gaps allowed |
 | `production` | `--production` | `published` records only | `1..n` without gaps across published records |
-| `release` | `--release` | `published` records only | exactly `fms-create`, `remi-mobile`, `semina` at `1..3` |
+| `release` | `--release` | `published` records only | the six public-v1 projects in approved order `1..6` |
 
 `--check` validates without writing, and `npm run content:validate` / `npm run content:validate:release` wrap it. `release` is stricter than `production`: it additionally enforces the exact public-v1 slug set, the order those slugs must occupy, `publication: published` on every included record, and a non-null Indonesian narrative for each. `production` therefore stays usable while the public set is still incomplete.
 
@@ -625,7 +625,7 @@ Consequences that must survive refactoring:
 - records sort by `homepageOrder`, then slug, so the manifest is deterministic;
 - the manifest contains only public information: no draft notes, evidence comments, private URLs, credentials, unpublished contact data, or file-system paths.
 
-`npm run predev` regenerates in `development` mode so drafts resolve locally, and `resolveLocalRoute` in `src/lib/routes.ts` returns a project route only when `import.meta.env.DEV` is true. Production and `vite preview` therefore always render the homepage; that is intended, not a routing bug. The local preview is a review convenience for the person writing content, not a shipped route, and it disappears the moment routing and static generation replace it.
+`npm run predev` regenerates in `development` mode so drafts resolve locally. Production and `vite preview` resolve published project routes from the separate production manifest; draft routes are development-only.
 
 ### 8.6 Experience source
 
@@ -1052,7 +1052,7 @@ Structured data:
 - Case studies may use `CreativeWork` or `SoftwareApplication` only when the schema truthfully fits the project.
 - Do not publish rating, organization, employment, or product claims solely to fill a schema field.
 
-The target build generates `sitemap.xml` and `robots.txt` from the same public route manifest. Draft projects never enter the route manifest, sitemap, or client bundle. A published case study may describe a project with a private repository, but no private repository URL enters public output.
+The build generates `sitemap.xml` from the indexable route manifest and validated canonical origin in `content/site/site.yaml`. It generates `robots.txt` with `User-agent: *`, `Allow: /`, and the canonical sitemap URL. Output validation requires the exact deterministic generated contents and checks each manifest route has HTML. Neither file contains draft routes or 404, and the sitemap omits unsupported dates, priority and frequency. Draft projects never enter the route manifest, sitemap, or client bundle. A published case study may describe a project with a private repository, but no private repository URL enters public output.
 
 ## 16. Accessibility Architecture
 
@@ -1219,7 +1219,7 @@ Future `docs/QA.md` turns repeated manual checks into maintained release cases. 
 - internal fragment links, including same-page fragments, point at an ID in the destination route's generated HTML;
 - `dist/` contains no HTML route outside the enumerated set, so an unpublished detail page cannot ship unnoticed.
 
-Release-only checks still pending: the fourteen-route count after publication approval, sitemap contents, `404.html`, and the broader draft/private-content scan. Title/description/canonical/hreflang and reciprocal alternate checks now run for every generated eligible route.
+The current local production output has fourteen indexable routes; sitemap and 404 output are validated for the eligible routes. Title/description/canonical/hreflang and reciprocal alternate checks run for every generated route. A broader private-content and media review remains a release gate; a targeted scan alone is not exhaustive.
 
 ## 21. Commands and Build Pipeline
 

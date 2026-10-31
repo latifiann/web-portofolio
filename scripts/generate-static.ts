@@ -2,6 +2,8 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import type { Locale } from "../src/types/content.ts";
+import { loadSiteMetadata } from "./content/site.ts";
+import { createRobots, createSitemap } from "./crawl-files.ts";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const clientRoot = join(repositoryRoot, "dist");
@@ -88,6 +90,8 @@ async function main(): Promise<void> {
   }
 
   const routes = readRoutes(loaded);
+  const site = loadSiteMetadata(join(repositoryRoot, "content/site"));
+  if (!site.value) throw new Error(site.errors.join("\n"));
   const shell = readFileSync(shellPath, "utf8").replace(/<title>[^<]*<\/title>/, "");
 
   if (!shell.includes(shellRoot)) {
@@ -135,6 +139,8 @@ async function main(): Promise<void> {
   }
 
   writeFileSync(routeManifestPath, `${JSON.stringify(routes, null, 2)}\n`, "utf8");
+  writeFileSync(join(clientRoot, "sitemap.xml"), createSitemap(site.value.canonicalOrigin, routes.map((route) => route.path)), "utf8");
+  writeFileSync(join(clientRoot, "robots.txt"), createRobots(site.value.canonicalOrigin), "utf8");
 
   console.log(
     `Static HTML written: ${routes.length} indexable route(s) and 404.html at dist/ (${routes

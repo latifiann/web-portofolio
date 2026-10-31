@@ -1,7 +1,7 @@
 ---
 product: latifian.dev
 document: content-specification
-version: 1.10.46
+version: 1.10.47
 status: canonical
 last_updated: 2026-11-01
 owner: Latifian Iman
@@ -387,7 +387,7 @@ The resume source may contain contact details that are not permitted elsewhere o
 | `nkri` | NKRI | NKRI | Mobile App | Jan-Jun 2025 | Active, maintained by the company / Aktif, dipelihara perusahaan | Mobile Developer | Private company code |
 | `remi-web` | ReMi Web App | ReMi - Remind Me (Web) | Web App | Aug-Nov 2024 | Completed, unmaintained / Selesai, tidak dipelihara | Front-End Developer | Private team repository |
 
-All six now hold English and Indonesian project drafts with owner-approved bilingual copy. ReMi Web App approval was confirmed on `2026-10-31`. All records stay `publication: draft`; copy approval does not authorize publication. `mooda-app` is a prototype and was never released to an app store. `nkri` is maintained by the company, not by Latifian; the timeline covers only the internship. `remi-web` is a separate deliverable from `remi-mobile`.
+The owner approved publication of all six bilingual project records on `2026-11-01`; each now uses `publication: published` in the local production build. This approval does not authorize deployment or cutover. Earlier draft-status notes below describe historical checkpoints and are superseded by this decision. `mooda-app` is a prototype and was never released to an app store. `nkri` is maintained by the company, not by Latifian; the timeline covers only the internship. `remi-web` is a separate deliverable from `remi-mobile`.
 
 ### Internship and team project publication boundary
 
@@ -594,6 +594,7 @@ A local bilingual detail draft exists at `content/projects/remi-mobile/` as `pro
 ### Approved facts
 
 - Public scope: a React event-management CMS plus a backend API for participant authentication, orders, and ticket checkout. Accepted on `2026-10-30`.
+- The owner reconfirmed the React CMS plus backend scope on `2026-11-01`; the former backend-only contributor summary is superseded. This does not grant authorship of the participant landing-page template or complete platform ownership.
 - Owner-directed product framing (`2026-10-31`): introduce Semina as a website project for purchasing event tickets, not only as a CMS. Both locale summaries, card summaries, SEO descriptions, and opening paragraphs use this framing. CMS and backend remain the contribution scope; short summaries also state that participant web checkout is not integrated, so the product purpose does not imply a working end-to-end purchasing website.
 - Case-study role line: `Full-Stack Developer · Personal project`.
 - Timeline: `Aug-Oct 2026`, taken from Git history. The end month is the last recorded work, not a confirmed completion or active-development state.

@@ -7,6 +7,8 @@ import {
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Locale } from "../src/types/content.ts";
+import { loadSiteMetadata } from "./content/site.ts";
+import { validateCrawlFiles } from "./crawl-files.ts";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const clientRoot = join(repositoryRoot, "dist");
@@ -256,6 +258,15 @@ function main(): void {
 
   const routes = readRoutes();
   const routePaths = new Set(routes.map((route) => route.path));
+  const site = loadSiteMetadata(join(repositoryRoot, "content/site"));
+  if (!site.value) throw new Error(site.errors.join("\n"));
+  const readOptional = (name: string): string | null => {
+    const file = join(clientRoot, name);
+    return existsSync(file) && statSync(file).isFile() ? readFileSync(file, "utf8") : null;
+  };
+  for (const problem of validateCrawlFiles(site.value.canonicalOrigin, routes.map((route) => route.path), readOptional("sitemap.xml"), readOptional("robots.txt"))) {
+    fail(problem);
+  }
 
   if (routePaths.size !== routes.length) {
     fail("Route manifest contains duplicate paths");

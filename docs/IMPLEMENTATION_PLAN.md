@@ -1,7 +1,7 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.11.15
+version: 1.11.20
 status: canonical
 last_updated: 2026-11-01
 owner: Latifian Iman
@@ -1346,6 +1346,37 @@ The owner asked for a `playwright-cli` pass, which overrides the manual-first ru
 - Playwright CLI Chromium compared production static and no-JavaScript header/heading geometry on /, /id/, and /404.html at 390, 768, 1024, 1280 and 1440px. Delayed-bundle desktop measurement after fonts loaded matched before and after hydration. Tested blocked bundle, fallback navigation, short-viewport menu scrolling, Escape focus return, and repeated dev reloads including EN/ID ReMi detail. Production detail output remains unavailable while projects are drafts. Manual visual review and other browsers remain open.
 - Content validation, 60 local tests, typecheck, lint, production build and output validation passed. DESIGN.md 2.26.68 and ARCHITECTURE.md 1.6.44 own the updated fallback contract.
 
+### Checkpoint AZ — sitemap and crawler policy
+
+- Static generation writes sitemap.xml from the indexable route list and validated site origin, and robots.txt permits crawling and identifies that sitemap. Current output contains only the English and Indonesian homepages, without draft routes or 404. No invented dates or priority are emitted.
+- Output validation requires the exact generated files and existing HTML for every indexable route. Tracked tests exercise missing and extra routes, draft and duplicate URLs, wrong origins and blocking robots policies. ARCHITECTURE.md 1.6.45 owns the build contract.
+- Content validation, 63 local tests, typecheck, lint, build and whitespace check passed. Separate temporary output fixtures confirmed the full validator rejects a missing route and an added draft URL. Existing content tests are locally excluded from Git; only the new crawl-file test is tracked, so fresh-clone coverage is not certified.
+- Publication approval, dependency-audit review, metadata/sharing review, manual visual review and hosting verification remain open.
+
+### Checkpoint BA — targeted dependency audit remediation
+
+- Updated locked Vite 8.3.0 to 8.3.5, source-map-js 1.2.1 to 1.2.2, and ip-address 10.7.2 to 10.7.5 within existing dependency ranges. Vite's compatible PostCSS, Rolldown, native bindings and related dependencies also updated. No dependency, override, major upgrade or forced downgrade was added.
+- npm audit changed from 20 findings (18 moderate, 2 high) to 17 moderate and no high. The production-only audit reports zero. Remaining findings follow minimatch through ESLint and TypeScript ESLint, and glob/minimatch through ttf2woff2's node-gyp tooling. npm suggests breaking downgrades; no compatibility or security outcome is assumed without a separate decision. Review remaining tooling risk before release.
+- Content validation, 63 local tests, typecheck, lint, production build and output validation passed. The build generated two indexable routes, no draft routes, and validated sitemap and robots. Existing content tests remain locally excluded from Git, so fresh-clone test coverage is not certified. Manual browser review is pending.
+
+### Checkpoint BB — metadata and sharing output review
+
+- Reviewed generated homepage heads against the approved CONTENT.md Section 19 copy and executable site metadata. Both titles, localized descriptions, canonical URLs, reciprocal EN/ID and English x-default alternates, Open Graph identity and Twitter cards match the current contract. Canonical and sharing URLs use https://latifian.dev without query or fragment. The generated English 404 has noindex and no canonical, alternates or sharing metadata.
+- Both locales reference the same approved portrait asset, present in dist at 226194 bytes, with localized alternative text. This verifies local asset availability, not HTTP delivery, platform support, crop or real social previews. The portrait/WebP presentation remains unchanged pending public-platform review; no new image or copy is approved by this audit.
+- Reviewed detail metadata resolution and existing EN/ID render/escaping tests. These use synthetic fixtures, not generated production case studies. Content validation, 63 local tests, typecheck, lint, build, output validation and whitespace check passed. Production still contains zero projects and only two indexable homepage routes; publication and draft isolation remain unchanged. No application correction was needed. Existing locally excluded tests still prevent certifying fresh-clone coverage.
+- Real social-platform previews, manual browser confirmation, remaining moderate dependency risk and hosting verification remain open. No browser automation, dependency change, publication, commit, push or deployment was performed for this review.
+
+### Checkpoint BC — owner-approved local publication
+
+- Owner confirmed the refresh and 404 visual review was satisfactory without specifying browser or device coverage. Owner approved publication of all six projects and reconfirmed Semina's React CMS plus backend scope. AGENTS.md now reflects the six-project order and the previously approved caption-display exception. Approval does not authorize deployment or cutover.
+- All six records now use `publication: published`. Local production generated fourteen indexable HTML routes and 404 separately. Exact route-set and sitemap checks passed; twelve detail heads include canonical, Open Graph and x-default tags, and both Semina pages include BuildWithAngga attribution. Output validator checked metadata reciprocity, local assets and internal links. A targeted text scan found no specified local-path or GitLab-host patterns, not an exhaustive privacy review.
+- Content validation and release validation, 63 local tests, typecheck, lint, production build and output validation passed. Older locally excluded tests prevent certification of fresh-clone coverage. No Playwright or deployment was performed. Production detail pages still require owner manual review; hosting, social previews, broader privacy/media review and a decision on the remaining moderate dependency findings remain open.
+
+### Checkpoint BD — production preview browser automation
+
+- At owner request, Playwright CLI Chromium ran 174 checks against local production preview: all fourteen indexable routes at 390, 768, 1024 and 1280px for response, heading, locale and overflow; detail locale links; ReMi locale switch, gallery mount/unmount and related-project pagination; mobile menu and Escape focus; 404 recovery; and selected homepage, Semina and 404 no-JavaScript fallback checks. All passed, with no captured main-page console or page errors.
+- The YouTube iframe response was mocked, so player delivery and actual playback were not tested. This is automated Chromium coverage, not owner visual approval, exhaustive keyboard/accessibility testing, other browsers, real-device testing, social preview or host HTTP-status verification. Production-detail manual review and existing release blockers remain open.
+
 ### Checkpoint D — desktop review gate, owner-owned
 
 
@@ -1369,15 +1400,15 @@ Desktop was the initial review priority; the later responsive work and owner con
 ### Remaining content and release work
 
 - All six project narratives and three experience entries have owner-approved bilingual copy; new localized UI labels still need units 4–5 locale-wide review;
-- publishing, which is required before Selected Work can render in a production manifest; Projects navigation stays omitted while the section is absent;
-- sitemap and robots.txt remain Phase 9 work. Static 404.html is implemented with manual recovery/hosting confirmation pending. Routing, locale switching, static generation, hydration, and route metadata are implemented.
+- six owner-approved projects are published in the local production manifest and require production-preview review;
+- sitemap and robots.txt are generated and validated from eligible routes. The owner accepted the refresh and 404 visual review; hosting HTTP status remains unverified. Routing, locale switching, static generation, hydration, and route metadata are implemented.
 
 ## Current Next Unit
 
-Units 1–5, the manifest-isolation fix, the comment audit, table detection, the publication/locale regression tests, and the six-project content set are closed. Those tests are a local harness only, excluded from git by owner decision. All six approved records — FMS-CREATE, ReMi Mobile, Semina, Mooda App, NKRI, ReMi Web App — now exist as English drafts in the development manifest, each with owner-supplied media at `1280 × 800`.
+Units 1–5, the manifest-isolation fix, the comment audit, table detection, the publication/locale regression tests, and the six-project content set are closed. The older content tests are a local harness excluded from git by owner decision. All six approved bilingual records are published in the local production manifest with owner-supplied media.
 
 The current composition and responsive pagination review gate is closed following the owner's manual confirmation in Checkpoint W. Automation coverage remains separate from that general manual approval; unconfirmed browser-specific and assistive-technology checks remain explicitly unverified.
 
-Next unit: manual static-recovery confirmation, then sitemap and robots.txt from eligible public routes. Owner confirmed the current hero safe. Remaining metadata/sharing review and hosting HTTP-status verification stay separate. Records remain drafts; do not change publication without explicit approval or relax release validation.
+Next unit: owner manual production-preview review of the six localized project pages and a decision on remaining moderate dependency risk. Real social-platform previews and hosting HTTP-status verification stay open.
 
-Release remains blocked by the `draft` state on every project record, sitemap/robots, dependency-audit review, remaining manual confirmation, and hosting verification. Static 404.html implementation is complete, not proof of hosting HTTP behavior. Social-platform sharing remains unverified. Current hero review is owner-confirmed.
+Release remains blocked by review of remaining moderate dependency findings, production-detail manual confirmation, broader privacy/media review, and hosting verification. Static 404.html implementation is complete, not proof of hosting HTTP behavior. Social-platform sharing remains unverified. Publication approval is not deploy or cutover approval.

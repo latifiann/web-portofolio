@@ -1,6 +1,6 @@
 ---
 name: Latifian Editorial Portfolio
-version: 2.26.68
+version: 2.26.69
 status: canonical
 last_updated: 2026-11-01
 description: Canonical UI/UX and implementation specification for latifian.dev.
@@ -549,10 +549,10 @@ Do not invent outcomes, metrics, responsibilities, clients, or technologies. Mar
 ### Hero media
 
 - Exactly one hero image per project; it is required for every published case study.
-- No gallery or thumbnail switcher until a project has at least two approved media assets. Once a gallery exists, each control is a focusable button with a visible selected state, the main caption and alternative text follow the active media, and controls stay inside the content container at every width.
+- No gallery or thumbnail switcher until a project has at least two approved media assets. Once a gallery exists, each control is a focusable button with a visible selected state, the alternative text follows the active media, and controls stay inside the content container at every width.
 - No autoplay, no hover-only switching, and no state conveyed by color alone.
-- The caption renders as visible text below the figure, not only as an overlay label, because it carries the media qualification from `CONTENT.md`. Alternative text describes visible content and does not duplicate the caption. The visible caption is the only place that qualification is repeated; the aside does not duplicate it as a scope note.
-- A failed image must not hide the caption, summary, or narrative.
+- The owner-approved `CONTENT.md` Section 18 exception keeps qualification captions in validated source data without displaying them in the gallery. Preserve approved image alternatives and narrative attribution.
+- A failed image must not hide the summary or narrative.
 
 ### Highlight cards
 

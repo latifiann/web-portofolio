@@ -144,7 +144,7 @@ Static checks remain allowed when relevant:
 
 - Primary public role: `Software Developer`.
 - Strongest specialization: `Mobile Engineering`.
-- Public v1 projects and order: FMS-CREATE, ReMi Mobile, Semina.
+- Public v1 projects and order: FMS-CREATE, ReMi Mobile, Semina, Mooda App, NKRI, ReMi Web App.
 - Published project requires complete English and Indonesian content.
 - English-only content is local draft material. Never expose it in production route, metadata, sitemap, browser bundle, or public preview.
 - Separate personal contribution from team outcomes.
@@ -152,7 +152,8 @@ Static checks remain allowed when relevant:
 - Never expose phone numbers, street addresses, credentials, private URLs, internal evidence, local paths, or draft notes.
 - ReMi awards and Google Play publication are team claims.
 - FMS-CREATE dashboard visual is team or ecosystem context, not personal dashboard ownership.
-- Semina is backend API only and requires BuildWithAngga attribution. `semina.webp` may appear only with its approved qualification caption; it must never imply frontend authorship or full event-platform ownership.
+- Semina covers the React event-management CMS and backend API, with mandatory BuildWithAngga attribution. Participant web checkout is not integrated. Never imply complete event-platform ownership or authorship of the landing page shown in `semina.webp`.
+- Project media follows the approved presentation exception in `docs/CONTENT.md` Section 18: qualification captions remain validated source data but are not displayed in the gallery. Preserve approved image alternatives, existing narrative attribution, and personal/team contribution boundaries. This exception grants no new authorship or media rights.
 
 ## Technical and UI Rules
 
