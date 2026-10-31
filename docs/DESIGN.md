@@ -1,6 +1,6 @@
 ---
 name: Latifian Editorial Portfolio
-version: 2.26.47
+version: 2.26.50
 status: canonical
 last_updated: 2026-10-31
 description: Canonical UI/UX and implementation specification for latifian.dev.
@@ -539,7 +539,7 @@ Do not invent outcomes, metrics, responsibilities, clients, or technologies. Mar
 - Then the hero figure, up to three highlight cards, and the narrative column with a supporting aside.
 - Highlight cards and aside panels carry the standard two-layer surface shadow so they read as distinct surfaces against the page. The hero frame and narrative sections stay flat; the shadow must never turn the page into stacked floating widgets.
 - Blue accent glow is scoped to the intro/hero region and the highlight band. It comes from pseudo-elements behind the content, fades before long-form prose, and never sits behind body paragraphs or individual links.
-- Related projects close the page after the narrative and aside: a top border, the `Explore Related Projects` heading, a `Back to selected work` link returning to `/#projects`, then the cards. Reuse `ProjectCard` unchanged and show at most two in manifest order, excluding the current project. One column below `768px`, two columns from `768px`. One resolvable destination renders one card with no empty slot; zero destinations hides the whole section, including its heading. No placeholder card, no disabled control, no dummy route.
+- Related projects close the page after the narrative and aside: a top border, the `Explore Related Projects` heading, a `Back to selected work` link returning to `/#projects`, then the cards. Reuse `ProjectCard` unchanged and page the candidates in manifest order, excluding the current project: one card per page below `768px`, two per page from `768px`, with two columns from that breakpoint and a final page that may hold one card with no empty slot. The smaller mobile page keeps the section short while still reaching every candidate. When the candidates exceed the page size, a pagination row sits below the grid with `Previous`, a `current page / total pages` indicator carrying `aria-live="polite"`, and `Next`. The row uses three tracks with equal outer columns, so `Previous` sits at the left edge, `Next` at the right edge, and the indicator stays centered at every width even though the two buttons differ in width. Both buttons use `aria-disabled` at their boundary instead of disappearing, so focus never jumps, and pagination restarts at the first page when the active project changes. Candidates that fit on one page render without the pagination row; zero candidates hide the whole section, including its heading. No placeholder card, no dummy route, and no control that acts without a candidate behind it.
 
 ### Hero media
 
@@ -553,7 +553,7 @@ Do not invent outcomes, metrics, responsibilities, clients, or technologies. Mar
 
 - Two or three cards, each with a short label, a short value, and one supporting sentence.
 - Values come from the project record or localized approved content. Reference-style metric cards are not a template requirement; never add a number to fill a slot.
-- Cards share one height on desktop and stack on mobile.
+- Cards share one height on desktop. Below `768px` the cards become a horizontal snap rail, one card per view, reusing the selected-work rail gutter and scrollbar treatment through a page-scoped class so the homepage rail stays untouched. The rail is the only horizontally scrolling element in that region, is reachable by keyboard, and keeps every card in the DOM and reading order. From `768px` the cards return to a three-column grid with no horizontal scrolling.
 
 ### Narrative and aside
 

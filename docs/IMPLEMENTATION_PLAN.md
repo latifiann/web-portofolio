@@ -1,7 +1,7 @@
 ---
 product: latifian.dev
 document: implementation-plan
-version: 1.10.76
+version: 1.10.81
 status: canonical
 last_updated: 2026-10-31
 owner: Latifian Iman
@@ -1064,9 +1064,50 @@ The owner asked for a `playwright-cli` pass, which for this task overrides the m
 - Production preview confirmed zero project cards, no `#projects` section, and no new-project copy in the built bundle. The header `Projects` anchor still has no target in production, which remains the documented pre-routing limitation. Any `/projects/<slug>/` path on the preview falls back to the homepage because static generation does not exist yet.
 - Not tested: intentional-touch gestures on a real device, real browser zoom, and Safari or Firefox scrollbar rendering. Automation results do not replace the owner's visual review of the three new cards and case studies.
 
+### Checkpoint U — related-project pagination
+
+- Owner decision: the related section must reach every other project, and the visitor changes the pair with `Previous` / `Next`. No autoplay, no random selection, no looping.
+- Selector contract changed: `selectRelatedProjectCards` now returns every resolvable candidate except the current slug, in manifest order. Paging moved into `ProjectPage`, so the selector stays a pure list builder. The old `relatedProjectLimit` constant and its `slice` were removed.
+- `RelatedProjects` keeps the heading, the back link, and the `ProjectCard` contract, and hands the list to `RelatedProjectList`, which owns the page index. Two cards per page, three pages for the current five candidates (`2 / 2 / 1`), and the control row hides when candidates fit on one page.
+- Boundary controls use `aria-disabled` with a guarded handler rather than disappearing, which keeps keyboard focus on the button that reached the limit. The page indicator announces through `aria-live="polite"`, and each button points at the card list with `aria-controls`.
+- The control row started left-aligned with `justify-center` below `768` and `md:justify-start` above it, which did not match the owner request. It now uses a three-track grid with `minmax(0,1fr) auto minmax(0,1fr)` and `justify-self` on each child, so `Previous` stays left, `Next` stays right, and the indicator is centered at every width because the outer tracks are equal.
+
+### Checkpoint V — mobile density on the case-study page
+
+- Owner request: cut mobile page length without removing content. Highlights became a horizontal snap rail below `768px`, and related projects dropped to one card per page at the same breakpoint.
+- `ProjectHighlights` keeps one `<ul>` and the same `<li>` cards. The page-scoped `.project-highlights-rail` class in `ProjectPage.css` supplies the flex rail, gutter bleed, snap alignment, and scrollbar treatment copied from the selected-work rail. The homepage `.project-rail` class was not reused or modified.
+- The highlight list becomes a tab stop only below `768px`, so keyboard users can pan the rail while the desktop grid gains no extra stop. The list carries an accessible name and no card receives focus.
+- Related paging now reads the breakpoint through a second `useSyncExternalStore` over `matchMedia("(min-width: 768px)")`, which subscribes to `change` and cleans up on unmount. Page size is one below `768px` and two above it, so five candidates become five or three pages.
+- State moved from a page index to the first visible candidate index. Page and slice derive from it, so resizing across `767 ↔ 768px` keeps the visible candidate on screen and never produces an empty page.
+- `DESIGN.md` 2.26.50 records the mobile rail and the breakpoint-dependent page size. `ARCHITECTURE.md` 1.6.28 records both stores, the anchor state, and the tab-stop rule.
+- `typecheck`, `lint`, and `build` pass. The built CSS contains the six `.project-highlights-rail` rules, and the mobile rail does not rely on a new dependency.
+- At implementation time, device swipe feel, Safari and Firefox scrollbar rendering, and browser resize behavior were pending. Checkpoint W records the later automation and owner manual review; browser-specific coverage is not inferred from the owner's general approval.
+
+### Checkpoint W — owner-requested automation pass on the responsive case-study page
+
+The owner asked for a `playwright-cli` pass, which overrides the manual-first rule for this task. Chrome for Testing was still absent, so the session ran on system Google Chrome; no browser was installed. The development server ran on `http://localhost:5174/` because `5173` was occupied.
+
+- Breakpoint behavior matched the contract at `320`, `390`, `767`, `768`, and `1280`: highlight list was a flex snap rail with `overflow-x: auto` and a tab stop below `768`, and a three-column grid with no horizontal scroll and no tab stop from `768`.
+- Highlight rail at `390`: three cards of `350px` in a `350px` content area, first card flush with the article gutter, scroll range `732`, and the last card fully inside the viewport after scrolling. `ArrowRight` moved the rail by `366` (`350` card plus `16` gap). Page-level width stayed at the viewport in every case.
+- Related paging at `390` produced five pages in manifest order — FMS-CREATE, Semina, Mooda App, NKRI, ReMi Web App — with ReMi Mobile excluded, no duplicates, and a single card per page. At `768` and `1280` it produced three pages of `2 / 2 / 1`.
+- Boundary controls behaved as specified: `aria-disabled` was `true` on `Previous` at page one and on `Next` at the last page, clicking either at its boundary left the page unchanged, and focus stayed on the button. `Enter` on the focused `Next` advanced one page and kept focus. Only the visible card was focusable.
+- Control geometry: `Previous` sat flush with the article left edge and `Next` with the right edge at `390` and `768`, the indicator center equalled the container center (`195` at `390`, `384` at `768`), no element overlapped, and both buttons were `44px` high. `320` showed no overlap and no horizontal overflow.
+- Resize without reload kept the anchored candidate and never produced an empty page: mobile page `4 / 5` (NKRI) became `2 / 3` with `Mooda App` and `NKRI` at `768`; desktop page `3 / 3` (`ReMi Web App`) became `5 / 5` at `767` and returned to `3 / 3` at `768`. Opening a related card from mobile page `4 / 5` landed on the target project at `1 / 5`.
+- All six detail routes at `390` and `768` kept one `h1`, three highlights, a loaded hero, one or two related cards, and no page overflow. Homepage counts held at `3 / 4 / 6` with its rail unchanged at every checked width.
+- No console errors, warnings, or failed local requests on any route, in development or in the production preview. Reduced motion left the rail, the pager, and every section visible.
+- Production preview still renders zero project cards and no related list, and the built bundle contains no new-project copy; the only matched string is `Mitra Informatika`, which belongs to the published experience timeline rather than to a draft record.
+- Not tested: real touch gestures, Safari and Firefox scrollbar rendering, screen-reader announcement of the live region, and any detail page without JavaScript, which stays blocked until static generation exists.
+- Owner manual confirmation (2026-10-31): after receiving the responsive checklist and instructions for accessing the local site from a phone, the owner reported testing complete and everything safe. This closes the current responsive composition and pagination review gate. Exact device, browser, viewport, keyboard, and assistive-technology coverage was not specified; Safari/Firefox rendering and screen-reader announcements are not promoted to passed, and no-JavaScript detail output remains blocked by static generation.
+- Readiness uses `useSyncExternalStore` with a client snapshot of `true` and a server snapshot of `false`. The first implementation set readiness from an effect, and `react-hooks/set-state-in-effect` rejected it; the store pattern removes the effect instead of suppressing the rule. Because the app still ships an empty root element, the no-JavaScript requirement cannot be proven in the browser yet; it depends on prerendered HTML from the static generation phase, which is why the server snapshot stays `false`.
+- `ProjectPage` keys the section by project slug, so opening another case study remounts the list at page one.
+- `DESIGN.md` 2.26.48 replaces the fixed two-card contract with two cards per page, the control row, boundary focus behavior, and the reset rule. `ARCHITECTURE.md` 1.6.27 records the selector change, the paging ownership, and the readiness snapshot.
+- `typecheck`, `lint`, and `build` pass after the store change. The local harness has no related-card test to update, so no expectation changed.
+
 ### Checkpoint D — desktop review gate, owner-owned
 
-Manual check:
+Status: closed for the current composition and responsive pagination following the owner's manual confirmation on 2026-10-31, recorded in Checkpoint W. The checklist below remains a repeatable review reference, not evidence that every individual check or browser was explicitly confirmed.
+
+Manual check reference:
 
 1. Run `npm run dev`.
 2. Open `http://localhost:5173/`.
@@ -1077,20 +1118,21 @@ Manual check:
 7. Confirm no browser-console errors.
 8. Report visual defects, wrong attribution, console errors, and screenshots if broken.
 
-Tablet and mobile widths follow only after desktop approval, because desktop is the owner's review priority; the composition itself was written mobile-first.
+Desktop was the initial review priority; the later responsive work and owner confirmation cover the current composition gate. Browser-specific and assistive-technology checks retain the limits recorded in Checkpoint W.
 
-### Deferred behind this gate
+### Remaining content and release work
 
-- Indonesian narrative, which is required before `publication` may become `published`;
-- Indonesian narratives for every record, including the FMS-CREATE, Semina, Mooda App, NKRI, and ReMi Web drafts;
+- Indonesian narratives for all six project records, starting with `content/projects/fms-create/id.md`, which are required before `publication` may become `published`;
+- Indonesian content for the three experience entries;
 - publishing, which is required before Selected Work can render in a production manifest and before the header `Projects` anchor has a target;
-- related-project tablet and mobile review, which now has six development destinations but has not been checked at those widths;
 - routing, locale switching, static generation, metadata, and `404.html`, which belong to Phase 9.
 
 ## Current Next Unit
 
 Units 1–5, the manifest-isolation fix, the comment audit, table detection, the publication/locale regression tests, and the six-project content set are closed. Those tests are a local harness only, excluded from git by owner decision. All six approved records — FMS-CREATE, ReMi Mobile, Semina, Mooda App, NKRI, ReMi Web App — now exist as English drafts in the development manifest, each with owner-supplied media at `1280 × 800`.
 
-The structural half of that review is now covered by the owner-requested automation pass in Checkpoint T, which found no blocking defect. Next unit: owner visual review of the three new cards and case studies at `1280`, `768`, and `390`, since automation cannot approve composition or copy reading. Then write the Indonesian narratives, which are the remaining content blocker. Do not add routing, locale switching, or static generation before that review, because copy and facts may still change, and do not relax release validation to make the six-project set pass early.
+The current composition and responsive pagination review gate is closed following the owner's manual confirmation in Checkpoint W. Automation coverage remains separate from that general manual approval; unconfirmed browser-specific and assistive-technology checks remain explicitly unverified.
 
-Release remains blocked by static generation, missing Indonesian narratives for all six records, the `draft` state on every record, and the pending owner review of the new composition.
+Next unit: write and review `content/projects/fms-create/id.md` against its approved English narrative and project sources, preserving factual equivalence, personal/team attribution, and the qualified media caption. Continue the remaining five Indonesian project narratives in approved project order, then complete Indonesian content for the three experience entries. Keep records as drafts until bilingual content is complete and reviewed. Routing, locale switching, and static generation follow the bilingual content review; do not relax release validation to make the six-project set pass early.
+
+Release remains blocked by missing Indonesian narratives for all six records and Indonesian experience content, the `draft` state on every project record, and unfinished locale routing, static generation, metadata, and `404.html`. The current responsive composition review is no longer a blocker.

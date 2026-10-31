@@ -3,8 +3,6 @@ import { toProjectCardProps } from "../features/projects/toProjectCardProps";
 import type { Locale, ProjectDetail } from "../types/content";
 import { projectDetailPath } from "./routes";
 
-const relatedProjectLimit = 2;
-
 function collectCards(
   projects: ProjectDetail[],
   locale: Locale,
@@ -42,5 +40,5 @@ export function selectRelatedProjectCards(
     (project) => project.slug !== currentSlug,
   );
 
-  return collectCards(candidates, locale).slice(0, relatedProjectLimit);
+  return collectCards(candidates, locale);
 }

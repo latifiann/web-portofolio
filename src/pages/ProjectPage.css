@@ -62,3 +62,43 @@
     0 1px 2px rgb(15 23 42 / 0.04),
     0 8px 24px rgb(15 23 42 / 0.06);
 }
+
+@media (max-width: 47.9375rem) {
+  .project-highlights-rail {
+    display: flex;
+    gap: var(--space-4);
+    margin-inline: calc(-1 * var(--container-padding-mobile));
+    padding-inline: var(--container-padding-mobile);
+    scroll-padding-inline: var(--container-padding-mobile);
+    padding-bottom: var(--space-2);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+  }
+
+  .project-highlights-rail > * {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+  }
+
+  .project-highlights-rail::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .project-highlights-rail::-webkit-scrollbar-track {
+    margin-inline: var(--container-padding-mobile);
+    background: transparent;
+  }
+
+  .project-highlights-rail::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: var(--radius-full);
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    .project-highlights-rail {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border-strong) transparent;
+    }
+  }
+}

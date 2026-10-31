@@ -1,9 +1,53 @@
-import { FiArrowLeft, FiArrowUpRight } from "react-icons/fi";
+import { useState, useSyncExternalStore } from "react";
+import {
+  FiArrowLeft,
+  FiArrowUpRight,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 import PageContainer from "../components/layout/PageContainer";
 import ActionLink from "../components/ui/ActionLink";
 import ProjectCard from "../features/projects/ProjectCard";
 import type { ProjectCardProps } from "../features/projects/ProjectCard";
 import type { ProjectBlock, ProjectDetail } from "../types/content";
+
+const relatedPageSizeDesktop = 2;
+const relatedPageSizeMobile = 1;
+const desktopLayoutQuery = "(min-width: 768px)";
+
+function subscribeToNothing() {
+  return () => {};
+}
+
+function getClientSnapshot() {
+  return true;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
+function subscribeToLayout(onChange: () => void) {
+  const query = window.matchMedia(desktopLayoutQuery);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
+
+function getDesktopLayoutSnapshot() {
+  return window.matchMedia(desktopLayoutQuery).matches;
+}
+
+function getMobileLayoutSnapshot() {
+  return false;
+}
+
+function useIsDesktopLayout() {
+  return useSyncExternalStore(
+    subscribeToLayout,
+    getDesktopLayoutSnapshot,
+    getMobileLayoutSnapshot,
+  );
+}
 
 type ProjectPageProps = {
   project: ProjectDetail;
@@ -12,8 +56,14 @@ type ProjectPageProps = {
 };
 
 function ProjectHighlights({ project }: { project: ProjectDetail }) {
+  const isDesktop = useIsDesktopLayout();
+
   return (
-    <ul className="m-0 grid list-none gap-(--space-4) p-0 md:grid-cols-3">
+    <ul
+      aria-label="Project highlights"
+      tabIndex={isDesktop ? undefined : 0}
+      className="project-highlights-rail m-0 grid list-none gap-(--space-4) p-0 md:grid-cols-3"
+    >
       {project.content.en.highlights.map((highlight) => (
         <li
           key={highlight.label}
@@ -52,6 +102,85 @@ function ProjectBlockContent({ block }: { block: ProjectBlock }) {
   );
 }
 
+function RelatedProjectList({ projects }: { projects: ProjectCardProps[] }) {
+  const [anchorIndex, setAnchorIndex] = useState(0);
+  const isDesktop = useIsDesktopLayout();
+  const isEnhanced = useSyncExternalStore(
+    subscribeToNothing,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
+
+  const pageSize = isDesktop ? relatedPageSizeDesktop : relatedPageSizeMobile;
+  const pageCount = Math.ceil(projects.length / pageSize);
+  const isPaged = isEnhanced && projects.length > pageSize;
+  const activePageIndex = Math.min(
+    Math.floor(anchorIndex / pageSize),
+    pageCount - 1,
+  );
+  const startIndex = activePageIndex * pageSize;
+  const visibleProjects = isPaged
+    ? projects.slice(startIndex, startIndex + pageSize)
+    : projects;
+
+  return (
+    <>
+      <ul
+        id="related-projects-list"
+        className="m-0 mt-(--space-6) grid list-none gap-(--space-4) p-0 md:grid-cols-2"
+      >
+        {visibleProjects.map((project) => (
+          <li key={project.href}>
+            <ProjectCard {...project} />
+          </li>
+        ))}
+      </ul>
+
+      {isPaged && (
+        <nav
+          aria-label="Related projects pages"
+          className="mt-(--space-6) grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-(--space-2)"
+        >
+          <button
+            type="button"
+            aria-controls="related-projects-list"
+            aria-disabled={activePageIndex === 0}
+            onClick={() => setAnchorIndex(Math.max(0, startIndex - pageSize))}
+            className="inline-flex min-h-11 items-center justify-self-start gap-(--space-2) rounded-md border border-(--color-border-strong) bg-(--color-canvas) px-(--space-4) text-sm font-medium text-(--color-ink) transition-colors duration-(--motion-fast) hover:border-(--color-primary) hover:text-(--color-primary) aria-disabled:cursor-not-allowed aria-disabled:opacity-40 aria-disabled:hover:border-(--color-border-strong) aria-disabled:hover:text-(--color-ink)"
+          >
+            <FiChevronLeft aria-hidden="true" className="size-4" />
+            Previous
+          </button>
+
+          <p
+            aria-live="polite"
+            aria-atomic="true"
+            className="m-0 min-w-14 justify-self-center text-center text-sm font-medium text-(--color-ink-muted)"
+          >
+            <span className="sr-only">Related projects page </span>
+            {activePageIndex + 1} / {pageCount}
+          </p>
+
+          <button
+            type="button"
+            aria-controls="related-projects-list"
+            aria-disabled={activePageIndex === pageCount - 1}
+            onClick={() =>
+              setAnchorIndex(
+                Math.min(projects.length - 1, startIndex + pageSize),
+              )
+            }
+            className="inline-flex min-h-11 items-center justify-self-end gap-(--space-2) rounded-md border border-(--color-border-strong) bg-(--color-canvas) px-(--space-4) text-sm font-medium text-(--color-ink) transition-colors duration-(--motion-fast) hover:border-(--color-primary) hover:text-(--color-primary) aria-disabled:cursor-not-allowed aria-disabled:opacity-40 aria-disabled:hover:border-(--color-border-strong) aria-disabled:hover:text-(--color-ink)"
+          >
+            Next
+            <FiChevronRight aria-hidden="true" className="size-4" />
+          </button>
+        </nav>
+      )}
+    </>
+  );
+}
+
 function RelatedProjects({
   projects,
   homePath,
@@ -82,13 +211,7 @@ function RelatedProjects({
         </a>
       </div>
 
-      <ul className="m-0 mt-(--space-6) grid list-none gap-(--space-4) p-0 md:grid-cols-2">
-        {projects.map((project) => (
-          <li key={project.href}>
-            <ProjectCard {...project} />
-          </li>
-        ))}
-      </ul>
+      <RelatedProjectList projects={projects} />
     </section>
   );
 }
@@ -250,7 +373,11 @@ function ProjectPage({ project, homePath, relatedProjects }: ProjectPageProps) {
             </aside>
           </div>
 
-          <RelatedProjects projects={relatedProjects} homePath={homePath} />
+          <RelatedProjects
+            key={project.slug}
+            projects={relatedProjects}
+            homePath={homePath}
+          />
         </article>
       </PageContainer>
     </main>
