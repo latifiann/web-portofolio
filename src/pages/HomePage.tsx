@@ -7,16 +7,17 @@ import TechnologyStrip from "../components/sections/TechnologyStrip";
 import ContactSection from "../components/sections/ContactSection";
 import HeroSection from "../components/sections/HeroSection";
 import type { ProjectCardProps } from "../features/projects/ProjectCard";
-import type { TimelineEntry } from "../types/content";
+import type { Locale, TimelineEntry } from "../types/content";
 import type { SiteStrings } from "../types/site";
 
 type HomePageProps = {
   strings: SiteStrings;
   projectCards: ProjectCardProps[];
   experienceEntries: TimelineEntry[];
+  locale: Locale;
 };
 
-function HomePage({ strings, projectCards, experienceEntries }: HomePageProps) {
+function HomePage({ strings, projectCards, experienceEntries, locale }: HomePageProps) {
   return (
     <main id="main-content" tabIndex={-1} className="pt-16">
       <HeroSection strings={strings} />
@@ -25,7 +26,7 @@ function HomePage({ strings, projectCards, experienceEntries }: HomePageProps) {
         <EngineeringStatementSection strings={strings} />
       </PageContainer>
 
-      <SelectedWorkSection strings={strings} cards={projectCards} />
+      <SelectedWorkSection strings={strings} cards={projectCards} locale={locale} />
 
       <PageContainer visual>
         <ExperienceSection strings={strings} entries={experienceEntries} />

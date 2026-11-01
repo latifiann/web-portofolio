@@ -14,7 +14,7 @@ function getCapabilities(strings: SiteStrings): Capability[] {
       title: strings.frontendEngineering,
       description:
         strings.frontendDescription,
-      labels: ["React", "JavaScript", "Tailwind CSS"],
+      labels: ["React", "JavaScript", "TypeScript", "Tailwind CSS"],
     },
     {
       title: strings.backendApi,

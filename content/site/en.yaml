@@ -39,6 +39,8 @@ strings:
   swipeProjects: Swipe to see more projects
   projectPreview: Project preview
   exploreProjects: Explore all {count} projects
+  projectCount: "{count} projects"
+  projectIndexDescription: A selection of academic, internship, and personal projects — explore the context, my contributions, and the technical approach behind each one.
   experienceEyebrow: / Career Journey
   viewDetails: View details
   hideDetails: Hide details
@@ -51,7 +53,7 @@ strings:
   previous: Previous
   next: Next
   relatedTitle: Explore Related Projects
-  backToWork: Back to selected work
+  backToWork: Back to projects
   outcome: Outcome
   technologies: Technologies
   technicalStack: Technical stack
@@ -88,7 +90,7 @@ strings:
   qualityAssurance: Software Quality Assurance
   teamCollaboration: Team Collaboration
   frontendEngineering: Frontend Engineering
-  frontendDescription: Build structured interfaces with React, JavaScript, and Tailwind CSS.
+  frontendDescription: Build structured interfaces with React, JavaScript, TypeScript, and Tailwind CSS.
   backendDescription: Integrate and develop REST API boundaries with validation and clear error handling.
   mobileDescription: Build Flutter applications with state management, navigation, and platform integrations.
   databases: Databases

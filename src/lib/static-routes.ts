@@ -1,4 +1,4 @@
-import type { Locale, PublicationState } from "../types/content";
+import type { Locale, PublicationState } from "../types/content.js";
 
 export type StaticRoute = {
   path: string;
@@ -19,6 +19,8 @@ export function listStaticRoutes(projects: RouteProject[]): StaticRoute[] {
   const routes: StaticRoute[] = [
     { path: "/", lang: "en" },
     { path: "/id/", lang: "id" },
+    { path: "/projects/", lang: "en" },
+    { path: "/id/projects/", lang: "id" },
   ];
 
   for (const project of projects) {
