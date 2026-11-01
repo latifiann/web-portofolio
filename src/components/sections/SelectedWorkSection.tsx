@@ -6,10 +6,12 @@ import SectionHeader from "../layout/SectionHeader";
 import ActionLink from "../ui/ActionLink";
 import { projectIndexPath } from "../../lib/routes";
 import type { SiteStrings } from "../../types/site";
+import type { Locale } from "../../types/content";
 
 type SelectedWorkSectionProps = {
   strings: SiteStrings;
   cards: ProjectCardProps[];
+  locale: Locale;
 };
 
 const visibleProjectLimit = 6;
@@ -29,12 +31,14 @@ function cardVisibilityClass(index: number): string {
 function SelectedWorkSection({
   strings,
   cards,
+  locale,
 }: SelectedWorkSectionProps) {
   if (cards.length === 0) return null;
 
   const landingProjects = cards.slice(0, visibleProjectLimit);
   const projectCount = cards.length;
-  const indexHref = projectIndexPath();
+  const indexHref = projectIndexPath(locale);
+  const exploreVisibility = projectCount <= 4 ? "md:hidden" : projectCount <= 6 ? "lg:hidden" : "";
 
   return (
     <section
@@ -67,10 +71,11 @@ function SelectedWorkSection({
           ))}
         </div>
 
-        {indexHref && (
-          <div className="mt-(--space-8) flex justify-center">
+        {projectCount > 3 && (
+          <div className={`mt-(--space-8) flex justify-center ${exploreVisibility}`}>
             <ActionLink
               href={indexHref}
+              internal
               appearance="outline"
               trailingIcon={
                 <svg

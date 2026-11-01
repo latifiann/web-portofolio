@@ -63,7 +63,7 @@ type ProjectPageProps = {
   project: ProjectDetail;
   content: ProjectLocalizedContent;
   strings: SiteStrings;
-  homePath: string;
+  indexPath: string;
   relatedProjects: ProjectCardProps[];
 };
 
@@ -320,11 +320,11 @@ function RelatedProjectList({
 function RelatedProjects({
   projects,
   strings,
-  homePath,
+  indexPath,
 }: {
   projects: ProjectCardProps[];
   strings: SiteStrings;
-  homePath: string;
+  indexPath: string;
 }) {
   if (projects.length === 0) return null;
 
@@ -341,7 +341,7 @@ function RelatedProjects({
           {strings.relatedTitle}
         </h2>
         <Link
-          to={`${homePath}#projects`}
+          to={indexPath}
           className="inline-flex min-h-11 items-center gap-(--space-2) rounded-sm text-sm font-medium text-(--color-ink-muted) no-underline transition-colors duration-(--motion-fast) hover:text-(--color-primary)"
         >
           <FiArrowLeft aria-hidden="true" className="size-4" />
@@ -358,7 +358,7 @@ function ProjectPage({
   project,
   content,
   strings,
-  homePath,
+  indexPath,
   relatedProjects,
 }: ProjectPageProps) {
   const { hero, primaryLink } = project;
@@ -368,7 +368,7 @@ function ProjectPage({
       <PageContainer>
         <article className="mx-auto max-w-5xl pt-(--space-6) pb-(--space-24)">
           <Link
-            to={`${homePath}#projects`}
+            to={indexPath}
             className="group inline-flex min-h-11 items-center gap-(--space-2) rounded-sm text-sm font-medium text-(--color-ink-muted) no-underline transition-colors duration-(--motion-fast) hover:text-(--color-primary)"
           >
             <FiArrowLeft aria-hidden="true" className="size-4" />
@@ -491,7 +491,7 @@ function ProjectPage({
             key={`related:${content.locale}:${project.slug}`}
             projects={relatedProjects}
             strings={strings}
-            homePath={homePath}
+            indexPath={indexPath}
           />
         </article>
       </PageContainer>

@@ -3,6 +3,7 @@ import type { Locale } from "../types/content";
 
 export type AppRoute =
   | { page: "home"; locale: Locale }
+  | { page: "project-index"; locale: Locale }
   | { page: "project"; locale: Locale; slug: string }
   | { page: "not-found"; locale: "en" };
 
@@ -21,13 +22,15 @@ export function projectDetailPath(slug: string, locale: Locale = "en"): string |
   return `${homePath(locale)}projects/${slug}/`;
 }
 
-export function projectIndexPath(): string | null {
-  return null;
+export function projectIndexPath(locale: Locale): string {
+  return `${homePath(locale)}projects/`;
 }
 
 export function resolveLocalRoute(pathname: string): AppRoute {
   if (pathname === "/") return { page: "home", locale: "en" };
   if (pathname === "/id/" || pathname === "/id") return { page: "home", locale: "id" };
+  if (pathname === "/projects/" || pathname === "/projects") return { page: "project-index", locale: "en" };
+  if (pathname === "/id/projects/" || pathname === "/id/projects") return { page: "project-index", locale: "id" };
   const match = /^(\/id)?\/projects\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/.exec(pathname);
   if (match) {
     const locale = match[1] ? "id" : "en";
@@ -39,5 +42,7 @@ export function resolveLocalRoute(pathname: string): AppRoute {
 
 export function equivalentLocalePath(route: AppRoute, locale: Locale): string | null {
   if (route.page === "not-found") return null;
-  return route.page === "home" ? homePath(locale) : projectDetailPath(route.slug, locale);
+  if (route.page === "home") return homePath(locale);
+  if (route.page === "project-index") return projectIndexPath(locale);
+  return projectDetailPath(route.slug, locale);
 }

@@ -4,7 +4,7 @@ export const siteStringKeys = [
   "openMenu", "closeMenu", "open", "close", "getInTouch", "copyright",
   "heroGreeting", "heroRole", "portraitAlt", "availability", "focusLabel", "focusValue", "heroStatement",
   "resume", "resumeAccessible", "engineeringGreeting", "engineeringStatement", "engineeringAccent",
-  "selectedEyebrow", "selectedTitle", "swipeProjects", "exploreProjects", "projectPreview",
+  "selectedEyebrow", "selectedTitle", "swipeProjects", "exploreProjects", "projectPreview", "projectCount", "projectIndexDescription",
   "experienceEyebrow", "viewDetails", "hideDetails", "capabilitiesEyebrow",
   "technologyTitle", "technologyAccessible", "contactTitle", "contactBody", "email",
   "previous", "next", "relatedTitle", "backToWork", "outcome", "technologies", "projectHighlights",

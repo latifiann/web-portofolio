@@ -1,6 +1,7 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
 import { createRobots, createSitemap, validateCrawlFiles } from "./crawl-files.ts";
+import { listStaticRoutes } from "../src/lib/static-routes.ts";
 
 const origin = "https://latifian.dev";
 const paths = ["/", "/id/"];
@@ -29,4 +30,16 @@ test("crawl validator rejects missing or blocking robots policy", () => {
   assert.ok(validateCrawlFiles(origin, paths, sitemap, null).length > 0);
   assert.ok(validateCrawlFiles(origin, paths, sitemap, `${robots}Disallow: /\n`).length > 0);
   assert.ok(validateCrawlFiles(origin, paths, sitemap, robots.replace(origin, "https://example.com")).length > 0);
+});
+
+test("localized project indexes are static and drafts remain excluded", () => {
+  const routes = listStaticRoutes([
+    { slug: "public", publication: "published", content: { en: {}, id: {} } },
+    { slug: "private-draft", publication: "draft", content: { en: {}, id: {} } },
+  ]);
+  assert.deepEqual(routes.map(({ path }) => path), [
+    "/", "/id/", "/projects/", "/id/projects/",
+    "/projects/public/", "/id/projects/public/",
+  ]);
+  assert.deepEqual(validateCrawlFiles(origin, routes.map(({ path }) => path), createSitemap(origin, routes.map(({ path }) => path)), robots), []);
 });

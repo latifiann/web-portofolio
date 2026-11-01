@@ -39,6 +39,8 @@ strings:
   swipeProjects: Geser untuk melihat proyek lainnya
   projectPreview: Pratinjau proyek
   exploreProjects: Jelajahi semua {count} proyek
+  projectCount: "{count} proyek"
+  projectIndexDescription: Pilihan proyek akademik, magang, dan pribadi — telusuri konteks, kontribusi saya, serta pendekatan teknis di balik setiap proyek.
   experienceEyebrow: / Perjalanan Karier
   viewDetails: Lihat detail
   hideDetails: Sembunyikan detail
@@ -51,7 +53,7 @@ strings:
   previous: Sebelumnya
   next: Berikutnya
   relatedTitle: Jelajahi Proyek Terkait
-  backToWork: Kembali ke karya pilihan
+  backToWork: Kembali ke daftar proyek
   outcome: Hasil
   technologies: Teknologi
   technicalStack: Teknologi yang digunakan

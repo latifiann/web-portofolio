@@ -9,6 +9,7 @@ import type { LoadResult } from "./types.ts";
 const stringsSchema = z.record(z.enum(siteStringKeys), z.string().trim().min(1));
 const placeholders = {
   exploreProjects: ["count"],
+  projectCount: ["count"],
   pageIndicator: ["page", "total"],
   viewLink: ["label"],
 };

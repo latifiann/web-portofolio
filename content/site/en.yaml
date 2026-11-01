@@ -39,6 +39,8 @@ strings:
   swipeProjects: Swipe to see more projects
   projectPreview: Project preview
   exploreProjects: Explore all {count} projects
+  projectCount: "{count} projects"
+  projectIndexDescription: A selection of academic, internship, and personal projects — explore the context, my contributions, and the technical approach behind each one.
   experienceEyebrow: / Career Journey
   viewDetails: View details
   hideDetails: Hide details
@@ -51,7 +53,7 @@ strings:
   previous: Previous
   next: Next
   relatedTitle: Explore Related Projects
-  backToWork: Back to selected work
+  backToWork: Back to projects
   outcome: Outcome
   technologies: Technologies
   technicalStack: Technical stack

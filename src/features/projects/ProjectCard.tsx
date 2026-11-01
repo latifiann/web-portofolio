@@ -30,7 +30,9 @@ function ProjectCard({
   preview,
   metadata,
   strings,
-}: ProjectCardProps & { strings: SiteStrings }) {
+  headingLevel = 3,
+}: ProjectCardProps & { strings: SiteStrings; headingLevel?: 2 | 3 }) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
   return (
     <article className="group h-full">
       <Link
@@ -73,9 +75,9 @@ function ProjectCard({
 
         <div className="flex flex-1 flex-col pt-(--space-4)">
           <div className="flex items-center justify-between gap-4">
-            <h3 className="text-xl leading-tight font-semibold tracking-tight text-(--color-ink)">
+            <Heading className="text-xl leading-tight font-semibold tracking-tight text-(--color-ink)">
               {title}
-            </h3>
+            </Heading>
             <p className="whitespace-nowrap text-xs font-normal text-(--color-ink-muted)">
               {metadata.timeline}
             </p>

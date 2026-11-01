@@ -39,7 +39,9 @@ function SiteFooter({ strings, homePath = "", hasSelectedWork }: SiteFooterProps
               <li key={label}>
                 <a
                   href={href}
-                  aria-label={label}
+                  aria-label={`${label} ${strings.newTab}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex size-11 items-center justify-center rounded-sm text-(--color-ink-secondary) no-underline transition-colors duration-(--motion-fast) hover:text-(--color-primary)"
                 >
                   <Icon aria-hidden="true" className="size-6" />
