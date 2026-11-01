@@ -90,7 +90,7 @@ strings:
   qualityAssurance: Penjaminan Kualitas Perangkat Lunak
   teamCollaboration: Kolaborasi Tim
   frontendEngineering: Frontend Engineering
-  frontendDescription: Membangun antarmuka terstruktur dengan React, JavaScript, dan Tailwind CSS.
+  frontendDescription: Membangun antarmuka terstruktur dengan React, JavaScript, TypeScript, dan Tailwind CSS.
   backendDescription: Mengintegrasikan dan mengembangkan REST API dengan validasi dan penanganan error yang jelas.
   mobileDescription: Membangun aplikasi Flutter dengan state management, navigasi, dan integrasi platform.
   databases: Basis Data

@@ -90,7 +90,7 @@ strings:
   qualityAssurance: Software Quality Assurance
   teamCollaboration: Team Collaboration
   frontendEngineering: Frontend Engineering
-  frontendDescription: Build structured interfaces with React, JavaScript, and Tailwind CSS.
+  frontendDescription: Build structured interfaces with React, JavaScript, TypeScript, and Tailwind CSS.
   backendDescription: Integrate and develop REST API boundaries with validation and clear error handling.
   mobileDescription: Build Flutter applications with state management, navigation, and platform integrations.
   databases: Databases

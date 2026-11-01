@@ -76,6 +76,7 @@ entries:
       - "CI/CD"
       - "Linux"
       - "Research"
+      - "AI"
     content:
       en:
         title: "Bachelor of Applied Computer Science (Informatics Engineering)"
