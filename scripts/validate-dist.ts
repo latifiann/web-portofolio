@@ -288,9 +288,17 @@ function main(): void {
     checkAttributes({ path: "/404.html", lang: "en" }, readFileSync(notFoundFile, "utf8"), routePaths, true);
   }
 
+  const verificationName = "google46ddfc7a37208e22.html";
+  const verificationFile = join(clientRoot, verificationName);
+  if (!existsSync(verificationFile)) {
+    fail(`Missing Google verification file: ${verificationName}`);
+  } else if (readFileSync(verificationFile, "utf8").trim() !== `google-site-verification: ${verificationName}`) {
+    fail(`Invalid Google verification file: ${verificationName}`);
+  }
+
   const generatedFiles = new Set(
     listHtmlFiles(clientRoot)
-      .filter((filePath) => filePath !== notFoundFile)
+      .filter((filePath) => filePath !== notFoundFile && filePath !== verificationFile)
       .map((filePath) => routePathForFile(filePath)),
   );
   for (const generatedPath of generatedFiles) {

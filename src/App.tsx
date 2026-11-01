@@ -1,7 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { Link, useLocation, useNavigationType } from "react-router";
 import { experience, findProject, projects, site, siteMetadata } from "@content-manifest";
-import portraitSrc from "../content/site/media/portrait/latifian-iman-portrait.webp";
 import RouteMetadata from "./components/RouteMetadata";
 import { resolvePageMetadata } from "./lib/metadata";
 import SiteFooter from "./components/layout/SiteFooter";
@@ -89,8 +88,8 @@ function App() {
         siteMetadata,
         locale,
         { en: equivalentLocalePath(route, "en"), id: equivalentLocalePath(route, "id") },
-        portraitSrc,
-        strings.portraitAlt,
+        "/social/portfolio-preview-v1.jpg",
+        strings.socialPreviewAlt,
         metadataProject,
       );
 
