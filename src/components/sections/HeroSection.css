@@ -43,6 +43,18 @@
 .hero-availability-dot {
   width: 0.5rem;
   height: 0.5rem;
+  animation: availability-pulse 1.5s ease-in-out 3;
+}
+
+@keyframes availability-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-availability-dot {
+    animation: none;
+  }
 }
 
 @media (max-width: 47.9375rem) {
@@ -58,6 +70,7 @@
 
   .hero-information-grid {
     position: relative;
+    z-index: var(--z-raised);
     margin-top: 0;
   }
 
@@ -139,11 +152,21 @@
 }
 
 .hero-focus-value {
+  display: inline-grid;
   margin-top: 0.5rem;
   color: var(--color-ink);
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.25;
+}
+
+.hero-focus-value-text,
+.hero-focus-value-sizer {
+  grid-area: 1 / 1;
+}
+
+.hero-focus-value-sizer {
+  visibility: hidden;
 }
 
 .hero-supporting-text {

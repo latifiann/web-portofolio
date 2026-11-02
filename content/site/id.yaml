@@ -28,7 +28,9 @@ strings:
   socialPreviewAlt: Pengenalan portofolio Latifian Iman, Software Developer, beserta foto dirinya.
   availability: Terbuka untuk peluang
   focusLabel: Membangun lintas bidang
-  focusValue: Mobile · Frontend · Backend
+  focusValue: Mobile Development
+  focusValueFrontend: Frontend Development
+  focusValueBackend: Backend Development
   heroStatement: Bersemangat membangun digital experience yang intuitif dan software system yang andal untuk memberikan manfaat nyata bagi pengguna.
   resume: Lihat CV
   resumeAccessible: Lihat CV (PDF, dibuka di tab baru)
