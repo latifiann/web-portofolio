@@ -4,19 +4,22 @@ import { useEffect, useRef, useState } from "react";
 import portraitSrc from "../../../content/site/media/portrait/latifian-iman-portrait.webp";
 import type { SiteStrings } from "../../types/site";
 
-const typeIntervalMs = 40;
+const typeIntervalMs = 80;
+const deleteIntervalMs = 25;
+const betweenLabelsPauseMs = 120;
 const initialFocusDwellMs = 250;
 const focusDwellMs = 1250;
-const focusFadeSeconds = 0.25;
 const focusFontTimeoutMs = 2000;
 
-type FocusPhase = "dwell" | "typing" | "fade";
+type FocusPhase = "dwell" | "deleting" | "pause" | "typing";
 
 export default function HeroSection({ strings }: { strings: SiteStrings }) {
   const heroRef = useRef<HTMLElement>(null);
-  const focusTextRef = useRef<HTMLSpanElement>(null);
   const initialDwell = useRef(true);
-  const entranceText = useRef({ greeting: strings.heroGreeting, role: strings.heroRole });
+  const entranceText = useRef({
+    greeting: strings.heroGreeting,
+    role: strings.heroRole,
+  });
   const focusValues = [
     strings.focusValue,
     strings.focusValueFrontend,
@@ -35,6 +38,12 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
     motionReady && !reducedMotion
       ? activeFocusValue.slice(0, typedLength)
       : "Mobile · Frontend · Backend";
+  const showCursor = motionReady && !reducedMotion;
+  const cursorIdle = focusPhase === "dwell" || focusPhase === "pause";
+  const focusTail = showCursor ? visibleFocusValue.slice(-1) : "";
+  const focusHead = showCursor
+    ? visibleFocusValue.slice(0, -1)
+    : visibleFocusValue;
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -69,7 +78,10 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
       try {
         const loaded = await Promise.race([
           Promise.all([
-            document.fonts.load('600 1em "Geist"', entranceText.current.greeting),
+            document.fonts.load(
+              '600 1em "Geist"',
+              entranceText.current.greeting,
+            ),
             document.fonts.load(
               'italic 400 1em "Instrument Serif"',
               entranceText.current.role,
@@ -190,47 +202,43 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
     if (!motionReady || reducedMotion || documentHidden) return;
 
     if (focusPhase === "typing") {
-      const finished = typedLength >= activeFocusValue.length;
       const timer = window.setTimeout(
         () =>
-          finished
+          typedLength >= activeFocusValue.length
             ? setFocusPhase("dwell")
             : setTypedLength((count) => count + 1),
-        finished ? 0 : typeIntervalMs,
+        typedLength >= activeFocusValue.length ? 0 : typeIntervalMs,
       );
       return () => window.clearTimeout(timer);
     }
 
-    if (focusPhase === "dwell") {
+    if (focusPhase === "deleting") {
       const timer = window.setTimeout(
-        () => {
-          initialDwell.current = false;
-          setFocusPhase("fade");
-        },
-        initialDwell.current ? initialFocusDwellMs : focusDwellMs,
+        () =>
+          typedLength <= 0
+            ? setFocusPhase("pause")
+            : setTypedLength((count) => Math.max(0, count - 1)),
+        typedLength <= 0 ? 0 : deleteIntervalMs,
       );
       return () => window.clearTimeout(timer);
     }
 
-    const element = focusTextRef.current;
-    if (!element) return;
-    const control = animate(
-      element,
-      { opacity: [1, 0] },
-      { duration: focusFadeSeconds, ease: "easeOut" },
+    if (focusPhase === "pause") {
+      const timer = window.setTimeout(() => {
+        setFocusIndex((index) => (index + 1) % focusValues.length);
+        setFocusPhase("typing");
+      }, betweenLabelsPauseMs);
+      return () => window.clearTimeout(timer);
+    }
+
+    const timer = window.setTimeout(
+      () => {
+        initialDwell.current = false;
+        setFocusPhase("deleting");
+      },
+      initialDwell.current ? initialFocusDwellMs : focusDwellMs,
     );
-    let cancelled = false;
-    void control.then(() => {
-      if (cancelled) return;
-      setFocusIndex((index) => (index + 1) % focusValues.length);
-      setTypedLength(0);
-      setFocusPhase("typing");
-    });
-    return () => {
-      cancelled = true;
-      control.cancel();
-      element.style.opacity = "";
-    };
+    return () => window.clearTimeout(timer);
   }, [
     activeFocusValue,
     documentHidden,
@@ -284,12 +292,23 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
 
               <p className="hero-focus-label">{strings.focusLabel}</p>
               <p className="hero-focus-value">
-                <span
-                  ref={focusTextRef}
-                  className="hero-focus-value-text"
-                  aria-hidden="true"
-                >
-                  {visibleFocusValue}
+                <span className="hero-focus-active" aria-hidden="true">
+                  <span className="hero-focus-value-text">
+                    {focusHead}
+                    {showCursor && (
+                      <span className="hero-focus-value-tail">
+                        {focusTail}
+                        <span
+                          className={`hero-focus-cursor${cursorIdle ? " hero-focus-cursor--blink" : ""}${documentHidden ? " hero-focus-cursor--paused" : ""}`}
+                        />
+                      </span>
+                    )}
+                  </span>
+                  {showCursor && (
+                    <span className="hero-focus-value-sizer">
+                      {activeFocusValue}
+                    </span>
+                  )}
                 </span>
                 <span className="sr-only">{focusValues.join(" · ")}</span>
                 {focusValues.map((value) => (

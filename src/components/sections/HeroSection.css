@@ -153,6 +153,7 @@
 
 .hero-focus-value {
   display: inline-grid;
+  min-width: 0;
   max-width: 100%;
   margin-top: 0.5rem;
   color: var(--color-ink);
@@ -160,15 +161,69 @@
   font-weight: 600;
   line-height: 1.25;
   overflow-wrap: anywhere;
+  text-align: left;
 }
 
-.hero-focus-value-text,
+.hero-focus-active,
 .hero-focus-value-sizer {
   grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.hero-focus-active {
+  display: inline-grid;
+  min-width: 0;
+  max-width: 100%;
+  justify-self: center;
+}
+
+.hero-focus-value-text {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.hero-focus-value-tail {
+  white-space: nowrap;
 }
 
 .hero-focus-value-sizer {
+  padding-right: calc(2px + 0.08em);
   visibility: hidden;
+}
+
+.hero-focus-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  margin-left: 0.08em;
+  background: currentColor;
+  vertical-align: -0.08em;
+}
+
+.hero-focus-cursor--blink {
+  animation: hero-focus-cursor-blink 1s step-end infinite;
+}
+
+.hero-focus-cursor--paused {
+  animation-play-state: paused;
+}
+
+@keyframes hero-focus-cursor-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-focus-cursor {
+    display: none;
+  }
 }
 
 .hero-supporting-text {
@@ -253,6 +308,10 @@
     text-align: right;
   }
 
+  .hero-focus-active {
+    justify-self: end;
+  }
+
   .hero-right-rail {
     grid-column: 3;
     align-items: flex-start;
@@ -305,6 +364,10 @@
     align-items: flex-start;
     text-align: left;
     pointer-events: auto;
+  }
+
+  .hero-focus-active {
+    justify-self: start;
   }
 
   .hero-right-rail {
