@@ -210,7 +210,7 @@ function SelectedWorkSection({
               data-reveal
               className={cardVisibilityClass(index)}
             >
-              <ProjectCard {...project} strings={strings} />
+              <ProjectCard {...project} strings={strings} tilt />
             </div>
           ))}
         </div>
