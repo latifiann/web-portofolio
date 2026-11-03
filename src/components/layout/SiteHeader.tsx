@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { LayoutGroup, motion, useReducedMotion } from "motion/react";
 import { Link, useLocation } from "react-router";
 import PageContainer from "./PageContainer";
 import type { Locale } from "../../types/content";
@@ -140,6 +141,10 @@ function SiteHeader({
   const location = useLocation();
   const headerRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const reducedMotion = useReducedMotion();
+  const pillTransition = reducedMotion
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 400, damping: 35 };
 
   useEffect(() => {
     if (!isMenuOpen) return;
@@ -254,9 +259,10 @@ function SiteHeader({
   }
 
   return (
-    <header
+    <motion.header
       data-site-header
       ref={headerRef}
+      layoutRoot
       className="fixed top-0 right-0 left-0 z-(--z-sticky) pt-(--space-3)"
     >
       <PageContainer visual>
@@ -323,30 +329,41 @@ function SiteHeader({
             aria-label={strings.primaryNavigation}
             className={`absolute top-full right-0 left-0 z-(--z-dropdown) mt-(--space-2) max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-md border border-(--color-border) bg-(--color-canvas) p-(--space-2) shadow-[0_8px_24px_rgb(15_23_42_/_0.06)] lg:top-0 lg:left-1/2 lg:mt-0 lg:block lg:max-h-none lg:w-fit lg:-translate-x-1/2 lg:overflow-visible lg:rounded-full lg:bg-(--color-ink) lg:p-2 ${isMenuOpen ? "block" : "hidden"}`}
           >
-            <ul className="m-0 flex list-none flex-col gap-1 p-0 lg:flex-row lg:gap-1">
-              {navigationItems.map((item) => {
-                const isActive = item.href === resolvedActiveHref;
-                const href = `${homePath}${item.href}`;
-                return (
-                  <li key={item.href}>
-                    <Link
-                      to={href}
-                      aria-current={isActive ? "location" : undefined}
-                      className="primary-navigation-link flex min-h-10 items-center rounded-md px-(--space-3) text-sm font-medium no-underline md:min-h-11 lg:min-h-0 lg:rounded-full lg:px-3 lg:py-2 lg:leading-6 lg:text-xs lg:font-semibold"
-                      onClick={() => handleNavigation(item.href)}
-                    >
-                      <span
-                        aria-hidden="true"
-                        className={`overflow-hidden transition-all duration-(--motion-base) ease-out [&>svg]:size-full [&>svg]:shrink-0 lg:[&>svg]:size-4 ${isActive ? "mr-2 w-4 scale-100 opacity-100" : "w-0 scale-75 opacity-0"}`}
+            <LayoutGroup id="site-navigation">
+              <ul className="m-0 flex list-none flex-col gap-1 p-0 lg:flex-row lg:gap-1">
+                {navigationItems.map((item) => {
+                  const isActive = item.href === resolvedActiveHref;
+                  const href = `${homePath}${item.href}`;
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        to={href}
+                        aria-current={isActive ? "location" : undefined}
+                        className="primary-navigation-link flex min-h-10 items-center rounded-md px-(--space-3) text-sm font-medium no-underline md:min-h-11 lg:min-h-0 lg:rounded-full lg:px-3 lg:py-2 lg:leading-6 lg:text-xs lg:font-semibold"
+                        onClick={() => handleNavigation(item.href)}
                       >
-                        {item.icon}
-                      </span>
-                      {item.label}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+                        {isActive && (
+                          <motion.span
+                            aria-hidden="true"
+                            layoutId="site-navigation-pill"
+                            initial={false}
+                            transition={pillTransition}
+                            className="primary-navigation-indicator"
+                          />
+                        )}
+                        <span
+                          aria-hidden="true"
+                          className={`overflow-hidden transition-[opacity,transform] duration-(--motion-base) ease-out [&>svg]:size-full [&>svg]:shrink-0 lg:[&>svg]:size-4 ${isActive ? "mr-2 w-4 scale-100 opacity-100" : "w-0 scale-75 opacity-0"}`}
+                        >
+                          {item.icon}
+                        </span>
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </LayoutGroup>
           </nav>
 
           <div className="ml-auto flex items-center gap-(--space-2)">
@@ -417,7 +434,7 @@ function SiteHeader({
           {strings.themeUnavailable}
         </div>
       )}
-    </header>
+    </motion.header>
   );
 }
 
