@@ -1,6 +1,18 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { Link, useLocation, useNavigationType } from "react-router";
-import { experience, findProject, projects, site, siteMetadata } from "@content-manifest";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useNavigationType,
+} from "react-router";
+import { animate } from "motion/mini";
+import {
+  experience,
+  findProject,
+  projects,
+  site,
+  siteMetadata,
+} from "@content-manifest";
 import RouteMetadata from "./components/RouteMetadata";
 import { resolvePageMetadata } from "./lib/metadata";
 import SiteFooter from "./components/layout/SiteFooter";
@@ -24,10 +36,20 @@ import ProjectIndexPage from "./pages/ProjectIndexPage";
 type ReadingPosition = { id: string; offset: number; scrollY: number };
 
 function captureReadingPosition(): ReadingPosition {
-  const sections = Array.from(document.querySelectorAll<HTMLElement>("main section[id]"));
-  const section = sections.filter((element) => element.getBoundingClientRect().top <= 120).at(-1)
-    ?? sections[0] ?? document.getElementById("main-content");
-  return { id: section?.id ?? "main-content", offset: section?.getBoundingClientRect().top ?? 0, scrollY: window.scrollY };
+  const sections = Array.from(
+    document.querySelectorAll<HTMLElement>("main section[id]"),
+  );
+  const section =
+    sections
+      .filter((element) => element.getBoundingClientRect().top <= 120)
+      .at(-1) ??
+    sections[0] ??
+    document.getElementById("main-content");
+  return {
+    id: section?.id ?? "main-content",
+    offset: section?.getBoundingClientRect().top ?? 0,
+    scrollY: window.scrollY,
+  };
 }
 
 function scrollStorageKey(path: string, key: string) {
@@ -35,7 +57,11 @@ function scrollStorageKey(path: string, key: string) {
 }
 
 function saveScrollPosition(key: string) {
-  try { sessionStorage.setItem(key, String(window.scrollY)); } catch { /* Storage may be disabled. */ }
+  try {
+    sessionStorage.setItem(key, String(window.scrollY));
+  } catch {
+    /* Storage may be disabled. */
+  }
 }
 
 function readScrollPosition(key: string): number | null {
@@ -44,13 +70,20 @@ function readScrollPosition(key: string): number | null {
     if (value === null) return null;
     const number = Number(value);
     return Number.isFinite(number) && number >= 0 ? number : null;
-  } catch { return null; }
+  } catch {
+    return null;
+  }
 }
 
 function App() {
   const location = useLocation();
   const navigationType = useNavigationType();
+  const navigate = useNavigate();
   const readingPosition = useRef<ReadingPosition | null>(null);
+  const languageTransition = useRef<{
+    target: string;
+    cancel: () => void;
+  } | null>(null);
   const route = resolveLocalRoute(location.pathname);
   const project =
     route.page === "project" ? findProject(route.slug) : undefined;
@@ -74,20 +107,37 @@ function App() {
         id: equivalentLocalePath(route, "id"),
       };
 
-  const previousLocation = useRef<{ key: string; pathname: string } | null>(null);
+  const previousLocation = useRef<{ key: string; pathname: string } | null>(
+    null,
+  );
   const storageKey = scrollStorageKey(location.pathname, location.key);
+  const switchLanguage = (target: string) => {
+    if (languageTransition.current) return;
+    languageTransition.current = { target, cancel: () => {} };
+    readingPosition.current = captureReadingPosition();
+    void navigate(target);
+  };
   const metadataProject =
     route.page === "project-index"
-      ? { title: strings.projects, seoDescription: siteMetadata.home[locale].description }
+      ? {
+          title: strings.projects,
+          seoDescription: siteMetadata.home[locale].description,
+        }
       : project && projectContent
-      ? { title: project.cardTitle, seoDescription: projectContent.seoDescription }
-      : undefined;
+        ? {
+            title: project.cardTitle,
+            seoDescription: projectContent.seoDescription,
+          }
+        : undefined;
   const metadata = isNotFound
     ? null
     : resolvePageMetadata(
         siteMetadata,
         locale,
-        { en: equivalentLocalePath(route, "en"), id: equivalentLocalePath(route, "id") },
+        {
+          en: equivalentLocalePath(route, "en"),
+          id: equivalentLocalePath(route, "id"),
+        },
         "/social/portfolio-preview-v1.jpg",
         strings.socialPreviewAlt,
         metadataProject,
@@ -107,7 +157,10 @@ function App() {
   useLayoutEffect(() => {
     const previous = previousLocation.current;
     if (previous?.key === location.key) return;
-    previousLocation.current = { key: location.key, pathname: location.pathname };
+    previousLocation.current = {
+      key: location.key,
+      pathname: location.pathname,
+    };
     const position = readingPosition.current;
     readingPosition.current = null;
     if (previous && previous.pathname !== location.pathname) {
@@ -115,13 +168,19 @@ function App() {
     }
     if (position) {
       const element = document.getElementById(position.id);
-      const top = element ? window.scrollY + element.getBoundingClientRect().top - position.offset : position.scrollY;
+      const top = element
+        ? window.scrollY + element.getBoundingClientRect().top - position.offset
+        : position.scrollY;
       window.scrollTo({ top, behavior: "instant" });
       return;
     }
     const entry = performance.getEntriesByType("navigation")[0];
-    const reload = entry !== undefined && "type" in entry && entry.type === "reload";
-    const saved = navigationType === "POP" && (previous || reload) ? readScrollPosition(storageKey) : null;
+    const reload =
+      entry !== undefined && "type" in entry && entry.type === "reload";
+    const saved =
+      navigationType === "POP" && (previous || reload)
+        ? readScrollPosition(storageKey)
+        : null;
     if (saved !== null) {
       window.scrollTo({ top: saved, behavior: "instant" });
     } else if (location.hash) {
@@ -129,7 +188,67 @@ function App() {
     } else if (previous) {
       window.scrollTo({ top: 0, behavior: "instant" });
     }
-  }, [location.key, location.pathname, location.hash, navigationType, storageKey]);
+  }, [
+    location.key,
+    location.pathname,
+    location.hash,
+    navigationType,
+    storageKey,
+  ]);
+
+  useLayoutEffect(() => {
+    const transition = languageTransition.current;
+    if (!transition) return;
+    if (location.pathname !== transition.target) {
+      transition.cancel();
+      languageTransition.current = null;
+      return;
+    }
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const main = document.getElementById("main-content");
+    if (reduced.matches || !main) {
+      languageTransition.current = null;
+      return;
+    }
+    const previousTransform = main.style.transform;
+    const previousOpacity = main.style.opacity;
+    const computedTransform = window.getComputedStyle(main).transform;
+    const baseTransform = computedTransform === "none" ? "" : computedTransform;
+    const control = animate(
+      main,
+      {
+        opacity: [0.7, 1],
+        transform: [
+          `translateY(24px) ${baseTransform}`,
+          baseTransform || "none",
+        ],
+      },
+      { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+    );
+    const cleanup = () => {
+      reduced.removeEventListener("change", onMotionChange);
+      control.cancel();
+      main.style.transform = previousTransform;
+      main.style.opacity = previousOpacity;
+      if (languageTransition.current === transition)
+        languageTransition.current = null;
+    };
+    const onMotionChange = () => {
+      if (reduced.matches) cleanup();
+    };
+    transition.cancel = cleanup;
+    reduced.addEventListener("change", onMotionChange);
+    void Promise.resolve(control).then(cleanup, cleanup);
+    return cleanup;
+  }, [location.key, location.pathname]);
+
+  useEffect(
+    () => () => {
+      languageTransition.current?.cancel();
+      languageTransition.current = null;
+    },
+    [],
+  );
 
   useEffect(() => {
     const save = () => saveScrollPosition(storageKey);
@@ -145,56 +264,64 @@ function App() {
     <>
       <RouteMetadata metadata={metadata} />
       <div className={isNotFound ? "flex min-h-screen flex-col" : undefined}>
-      <a className="skip-link" href="#main-content">
-        {strings.skip}
-      </a>
+        <a className="skip-link" href="#main-content">
+          {strings.skip}
+        </a>
 
-      <SiteHeader
-        strings={strings}
-        locale={locale}
-        languagePaths={languagePaths}
-        homePath={homePath}
-        hasSelectedWork={hasSelectedWork}
-        isNotFound={isNotFound}
-        onLanguageSwitch={() => { readingPosition.current = captureReadingPosition(); }}
-        activeNavigationHref={(project || route.page === "project-index") && hasSelectedWork ? "#projects" : undefined}
-      />
-
-      {isNotFound ? (
-        <main id="main-content" tabIndex={-1} className="flex-1 pt-32 pb-24">
-          <PageContainer>
-            <h1 className="text-4xl">{site.en.notFoundTitle}</h1>
-            <p className="mt-4">{site.en.notFoundBody}</p>
-            <Link to={localeHomePath("en")} className="mt-4 inline-block">
-              {site.en.notFoundHome}
-            </Link>
-          </PageContainer>
-        </main>
-      ) : route.page === "project-index" ? (
-        <ProjectIndexPage strings={strings} cards={projectCards} homePath={homePath} />
-      ) : project && projectContent ? (
-        <ProjectPage
-          key={`${locale}:${project.slug}`}
-          project={project}
-          content={projectContent}
+        <SiteHeader
           strings={strings}
-          indexPath={projectIndexPath(locale)}
-          relatedProjects={relatedProjects}
-        />
-      ) : (
-        <HomePage
-          strings={strings}
-          projectCards={projectCards}
-          experienceEntries={timelineEntries}
           locale={locale}
+          languagePaths={languagePaths}
+          homePath={homePath}
+          hasSelectedWork={hasSelectedWork}
+          isNotFound={isNotFound}
+          onLanguageSwitch={switchLanguage}
+          activeNavigationHref={
+            (project || route.page === "project-index") && hasSelectedWork
+              ? "#projects"
+              : undefined
+          }
         />
-      )}
 
-      <SiteFooter
-        strings={strings}
-        homePath={homePath}
-        hasSelectedWork={hasSelectedWork}
-      />
+        {isNotFound ? (
+          <main id="main-content" tabIndex={-1} className="flex-1 pt-32 pb-24">
+            <PageContainer>
+              <h1 className="text-4xl">{site.en.notFoundTitle}</h1>
+              <p className="mt-4">{site.en.notFoundBody}</p>
+              <Link to={localeHomePath("en")} className="mt-4 inline-block">
+                {site.en.notFoundHome}
+              </Link>
+            </PageContainer>
+          </main>
+        ) : route.page === "project-index" ? (
+          <ProjectIndexPage
+            strings={strings}
+            cards={projectCards}
+            homePath={homePath}
+          />
+        ) : project && projectContent ? (
+          <ProjectPage
+            key={`${locale}:${project.slug}`}
+            project={project}
+            content={projectContent}
+            strings={strings}
+            indexPath={projectIndexPath(locale)}
+            relatedProjects={relatedProjects}
+          />
+        ) : (
+          <HomePage
+            strings={strings}
+            projectCards={projectCards}
+            experienceEntries={timelineEntries}
+            locale={locale}
+          />
+        )}
+
+        <SiteFooter
+          strings={strings}
+          homePath={homePath}
+          hasSelectedWork={hasSelectedWork}
+        />
       </div>
     </>
   );

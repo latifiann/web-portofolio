@@ -2,7 +2,7 @@ export const siteStringKeys = [
   "skip", "home", "about", "projects", "experience", "capabilities", "technology", "contact",
   "primaryNavigation", "footerNavigation", "socialLinks", "switchToEnglish", "switchToIndonesian", "theme", "themeUnavailable",
   "openMenu", "closeMenu", "open", "close", "getInTouch", "copyright",
-  "heroGreeting", "heroRole", "portraitAlt", "socialPreviewAlt", "availability", "focusLabel", "focusValue", "heroStatement",
+  "heroGreeting", "heroRole", "portraitAlt", "socialPreviewAlt", "availability", "focusLabel", "focusValue", "focusValueFrontend", "focusValueBackend", "heroStatement",
   "resume", "resumeAccessible", "engineeringGreeting", "engineeringStatement", "engineeringAccent",
   "selectedEyebrow", "selectedTitle", "swipeProjects", "exploreProjects", "projectPreview", "projectCount", "projectIndexDescription",
   "experienceEyebrow", "viewDetails", "hideDetails", "capabilitiesEyebrow",

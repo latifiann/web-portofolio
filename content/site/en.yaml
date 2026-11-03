@@ -28,7 +28,9 @@ strings:
   socialPreviewAlt: Portfolio introduction for Latifian Iman, Software Developer, with his portrait.
   availability: Open to opportunities
   focusLabel: Building across
-  focusValue: Mobile · Frontend · Backend
+  focusValue: Mobile Development
+  focusValueFrontend: Frontend Development
+  focusValueBackend: Backend Development
   heroStatement: Passionate about creating intuitive digital experiences and reliable software systems that connect people with meaningful value.
   resume: View resume
   resumeAccessible: View resume (PDF, opens in a new tab)

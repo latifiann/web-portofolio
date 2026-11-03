@@ -1,96 +1,112 @@
+.primary-navigation-indicator {
+    display: none;
+}
+
 .primary-navigation-link {
-  color: var(--color-ink-secondary);
-  background: transparent;
-  transition:
-    color var(--motion-base) ease-out,
-    background-color var(--motion-base) ease-out;
+    color: var(--color-ink-secondary);
+    background: transparent;
+    transition:
+        color var(--motion-base) ease-out,
+        background-color var(--motion-base) ease-out;
 }
 
 .primary-navigation-link:hover {
-  color: var(--color-primary);
-  background: var(--color-surface-soft);
+    color: var(--color-primary);
+    background: var(--color-surface-soft);
 }
 
 .primary-navigation-link[aria-current="location"] {
-  color: var(--color-canvas);
-  background: var(--color-ink);
+    color: var(--color-canvas);
+    background: var(--color-ink);
 }
 
 .primary-navigation-link[aria-current="location"]:hover {
-  color: var(--color-canvas);
-  background: var(--color-ink);
+    color: var(--color-canvas);
+    background: var(--color-ink);
 }
 
 @media (min-width: 64rem) {
-  .primary-navigation-link {
-    color: var(--color-canvas);
-    background: transparent;
-  }
+    .primary-navigation-link {
+        position: relative;
+        isolation: isolate;
+        color: var(--color-canvas);
+        background: transparent;
+    }
 
-  .primary-navigation-link:hover {
-    color: var(--color-canvas);
-    background: rgb(255 255 255 / 0.15);
-  }
+    .primary-navigation-indicator {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        display: block;
+        border-radius: inherit;
+        background: var(--color-canvas);
+        pointer-events: none;
+    }
 
-  .primary-navigation-link[aria-current="location"] {
-    color: var(--color-ink);
-    background: var(--color-canvas);
-  }
+    .primary-navigation-link:hover {
+        color: var(--color-canvas);
+        background: rgb(255 255 255 / 0.15);
+    }
 
-  .primary-navigation-link[aria-current="location"]:hover {
-    color: var(--color-ink);
-    background: var(--color-canvas);
-  }
+    .primary-navigation-link[aria-current="location"] {
+        color: var(--color-ink);
+        background: transparent;
+    }
 
-  .header-contact-link {
-    border-color: var(--color-ink);
-    background: var(--color-ink);
-    color: var(--color-canvas);
-    font-family: var(--font-sans);
-  }
+    .primary-navigation-link[aria-current="location"]:hover {
+        color: var(--color-ink);
+        background: transparent;
+    }
 
-  .header-contact-link:hover {
-    border-color: var(--color-ink-secondary);
-    background: var(--color-ink-secondary);
-    color: var(--color-canvas);
-  }
+    .header-contact-link {
+        border-color: var(--color-ink);
+        background: var(--color-ink);
+        color: var(--color-canvas);
+        font-family: var(--font-sans);
+    }
 
-  .header-contact-link:active {
-    border-color: var(--color-ink);
-    background: var(--color-ink);
-    color: var(--color-canvas);
-  }
+    .header-contact-link:hover {
+        border-color: var(--color-ink-secondary);
+        background: var(--color-ink-secondary);
+        color: var(--color-canvas);
+    }
+
+    .header-contact-link:active {
+        border-color: var(--color-ink);
+        background: var(--color-ink);
+        color: var(--color-canvas);
+    }
 }
-/* The default survives disabled JavaScript and a failed browser bundle. */
+
 html:not([data-react-ready="true"]) [data-js-only]:not([data-header-control]) {
-  display: none !important;
+    display: none !important;
 }
 
 html:not([data-react-ready="true"]) [data-header-control] {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 @media (max-width: 63.999rem) {
-  html:not([data-react-ready="true"]) body {
-    padding-bottom: 4rem;
-  }
+    html:not([data-react-ready="true"]) body {
+        padding-bottom: 4rem;
+    }
 
-  html:not([data-react-ready="true"]) #primary-navigation {
-    position: fixed;
-    top: auto;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: block;
-    max-height: 40vh;
-    margin: 0;
-    overflow-x: auto;
-    overflow-y: auto;
-    border-radius: 0;
-  }
+    html:not([data-react-ready="true"]) #primary-navigation {
+        position: fixed;
+        top: auto;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: block;
+        max-height: 40vh;
+        margin: 0;
+        overflow-x: auto;
+        overflow-y: auto;
+        border-radius: 0;
+    }
 
-  html:not([data-react-ready="true"]) #primary-navigation > ul {
-    width: max-content;
-    flex-direction: row;
-  }
+    html:not([data-react-ready="true"]) #primary-navigation > ul {
+        width: max-content;
+        flex-direction: row;
+    }
 }

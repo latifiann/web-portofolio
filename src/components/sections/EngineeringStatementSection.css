@@ -4,6 +4,14 @@
   font-style: normal;
 }
 
+.about-title-scroll-color {
+  color: color-mix(in srgb, var(--color-primary), var(--color-ink) var(--about-color-progress));
+}
+
+.about-title-scroll-color .about-title-accent {
+  color: color-mix(in srgb, var(--color-primary), var(--color-primary-active) var(--about-color-progress));
+}
+
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .about-title-accent {
     background-image: linear-gradient(
@@ -16,6 +24,15 @@
     -webkit-background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
+  }
+
+  .about-title-scroll-color .about-title-accent {
+    background-image: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-primary), #172554 var(--about-color-progress)) 0%,
+      var(--color-primary) 48%,
+      color-mix(in srgb, var(--color-primary), #3b82f6 var(--about-color-progress)) 100%
+    );
   }
 }
 

@@ -1,10 +1,257 @@
 import PageContainer from "../layout/PageContainer";
+import { animate } from "motion/mini";
+import { useEffect, useRef, useState } from "react";
 import portraitSrc from "../../../content/site/media/portrait/latifian-iman-portrait.webp";
 import type { SiteStrings } from "../../types/site";
 
+const typeIntervalMs = 80;
+const deleteIntervalMs = 25;
+const betweenLabelsPauseMs = 120;
+const initialFocusDwellMs = 250;
+const focusDwellMs = 1250;
+const focusFontTimeoutMs = 2000;
+
+type FocusPhase = "dwell" | "deleting" | "pause" | "typing";
+
 export default function HeroSection({ strings }: { strings: SiteStrings }) {
+  const heroRef = useRef<HTMLElement>(null);
+  const initialDwell = useRef(true);
+  const entranceText = useRef({
+    greeting: strings.heroGreeting,
+    role: strings.heroRole,
+  });
+  const focusValues = [
+    strings.focusValue,
+    strings.focusValueFrontend,
+    strings.focusValueBackend,
+  ];
+  const [focusIndex, setFocusIndex] = useState(0);
+  const [typedLength, setTypedLength] = useState(strings.focusValue.length);
+  const [focusPhase, setFocusPhase] = useState<FocusPhase>("dwell");
+  const [motionReady, setMotionReady] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [documentHidden, setDocumentHidden] = useState(false);
+
+  const activeFocusValue =
+    focusValues[reducedMotion ? 0 : focusIndex] ?? strings.focusValue;
+  const visibleFocusValue =
+    motionReady && !reducedMotion
+      ? activeFocusValue.slice(0, typedLength)
+      : "Mobile · Frontend · Backend";
+  const showCursor = motionReady && !reducedMotion;
+  const cursorIdle = focusPhase === "dwell" || focusPhase === "pause";
+  const focusTail = showCursor ? visibleFocusValue.slice(-1) : "";
+  const focusHead = showCursor
+    ? visibleFocusValue.slice(0, -1)
+    : visibleFocusValue;
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    const reducedMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+    if (
+      !hero ||
+      reducedMotionQuery.matches ||
+      (window.location.hash && window.location.hash !== "#home") ||
+      window.scrollY > 1
+    )
+      return;
+
+    let active = true;
+    let cancelled = false;
+    let timeout: number | undefined;
+    let controls: (() => void)[] = [];
+    const stopAnimations = () => {
+      cancelled = true;
+      if (timeout !== undefined) window.clearTimeout(timeout);
+      controls.forEach((restore) => restore());
+    };
+    const handleMotionChange = (event: MediaQueryListEvent) => {
+      if (event.matches) stopAnimations();
+    };
+    reducedMotionQuery.addEventListener("change", handleMotionChange);
+    window.addEventListener("resize", stopAnimations);
+
+    const startWhenFontsReady = async () => {
+      if (!document.fonts) return;
+      try {
+        const loaded = await Promise.race([
+          Promise.all([
+            document.fonts.load(
+              '600 1em "Geist"',
+              entranceText.current.greeting,
+            ),
+            document.fonts.load(
+              'italic 400 1em "Instrument Serif"',
+              entranceText.current.role,
+            ),
+          ]).then((faces) => faces.every((face) => face.length > 0)),
+          new Promise<false>((resolve) => {
+            timeout = window.setTimeout(
+              () => resolve(false),
+              focusFontTimeoutMs,
+            );
+          }),
+        ]);
+        if (timeout !== undefined) window.clearTimeout(timeout);
+        if (
+          !loaded ||
+          !active ||
+          cancelled ||
+          reducedMotionQuery.matches ||
+          (window.location.hash && window.location.hash !== "#home") ||
+          window.scrollY > 1
+        )
+          return;
+
+        const groups = [
+          { selector: ".hero-title", distance: 20, duration: 0.55, delay: 0 },
+          {
+            selector: ".hero-portrait",
+            distance: 16,
+            duration: 0.9,
+            delay: 0.12,
+          },
+          {
+            selector: ".hero-information-grid",
+            distance: 16,
+            duration: 0.5,
+            delay: 0.24,
+          },
+        ];
+        const completions: Promise<void>[] = [];
+        controls = groups.flatMap(({ selector, distance, duration, delay }) =>
+          Array.from(
+            hero.querySelectorAll<HTMLElement>(selector),
+            (element) => {
+              const previousTransform = element.style.transform;
+              const previousOpacity = element.style.opacity;
+              const originalTransform =
+                window.getComputedStyle(element).transform;
+              const baseTransform =
+                originalTransform === "none" ? "" : originalTransform;
+              const control = animate(
+                element,
+                {
+                  opacity: [0.7, 1],
+                  transform: [
+                    `translateY(${distance}px) ${baseTransform}`,
+                    baseTransform || "none",
+                  ],
+                },
+                {
+                  duration,
+                  delay,
+                  ease: [0.22, 1, 0.36, 1],
+                },
+              );
+              let restored = false;
+              const restore = () => {
+                if (restored) return;
+                restored = true;
+                control.cancel();
+                element.style.transform = previousTransform;
+                element.style.opacity = previousOpacity;
+              };
+              completions.push(Promise.resolve(control).then(restore));
+              return restore;
+            },
+          ),
+        );
+
+        await Promise.all(completions);
+      } catch {
+        if (timeout !== undefined) window.clearTimeout(timeout);
+      }
+    };
+    void startWhenFontsReady();
+    return () => {
+      active = false;
+      reducedMotionQuery.removeEventListener("change", handleMotionChange);
+      window.removeEventListener("resize", stopAnimations);
+      stopAnimations();
+    };
+  }, []);
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => {
+      setReducedMotion(query.matches);
+      setMotionReady(true);
+      if (query.matches) {
+        setFocusIndex(0);
+        setTypedLength(strings.focusValue.length);
+        setFocusPhase("dwell");
+      }
+    };
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, [strings.focusValue]);
+
+  useEffect(() => {
+    const update = () =>
+      setDocumentHidden(document.visibilityState === "hidden");
+    update();
+    document.addEventListener("visibilitychange", update);
+    return () => document.removeEventListener("visibilitychange", update);
+  }, []);
+
+  useEffect(() => {
+    if (!motionReady || reducedMotion || documentHidden) return;
+
+    if (focusPhase === "typing") {
+      const timer = window.setTimeout(
+        () =>
+          typedLength >= activeFocusValue.length
+            ? setFocusPhase("dwell")
+            : setTypedLength((count) => count + 1),
+        typedLength >= activeFocusValue.length ? 0 : typeIntervalMs,
+      );
+      return () => window.clearTimeout(timer);
+    }
+
+    if (focusPhase === "deleting") {
+      const timer = window.setTimeout(
+        () =>
+          typedLength <= 0
+            ? setFocusPhase("pause")
+            : setTypedLength((count) => Math.max(0, count - 1)),
+        typedLength <= 0 ? 0 : deleteIntervalMs,
+      );
+      return () => window.clearTimeout(timer);
+    }
+
+    if (focusPhase === "pause") {
+      const timer = window.setTimeout(() => {
+        setFocusIndex((index) => (index + 1) % focusValues.length);
+        setFocusPhase("typing");
+      }, betweenLabelsPauseMs);
+      return () => window.clearTimeout(timer);
+    }
+
+    const timer = window.setTimeout(
+      () => {
+        initialDwell.current = false;
+        setFocusPhase("deleting");
+      },
+      initialDwell.current ? initialFocusDwellMs : focusDwellMs,
+    );
+    return () => window.clearTimeout(timer);
+  }, [
+    activeFocusValue,
+    documentHidden,
+    focusPhase,
+    focusValues.length,
+    motionReady,
+    reducedMotion,
+    typedLength,
+  ]);
+
   return (
     <section
+      ref={heroRef}
       id="home"
       aria-labelledby="hero-title"
       className="hero-section relative scroll-mt-(--anchor-offset) overflow-hidden bg-(--color-canvas) pt-(--hero-padding-top-mobile) pb-(--hero-padding-bottom-mobile) md:pt-(--hero-padding-top-desktop) md:pb-(--hero-padding-bottom-desktop)"
@@ -45,7 +292,34 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
 
               <p className="hero-focus-label">{strings.focusLabel}</p>
               <p className="hero-focus-value">
-                {strings.focusValue}
+                <span className="hero-focus-active" aria-hidden="true">
+                  <span className="hero-focus-value-text">
+                    {focusHead}
+                    {showCursor && (
+                      <span className="hero-focus-value-tail">
+                        {focusTail}
+                        <span
+                          className={`hero-focus-cursor${cursorIdle ? " hero-focus-cursor--blink" : ""}${documentHidden ? " hero-focus-cursor--paused" : ""}`}
+                        />
+                      </span>
+                    )}
+                  </span>
+                  {showCursor && (
+                    <span className="hero-focus-value-sizer">
+                      {activeFocusValue}
+                    </span>
+                  )}
+                </span>
+                <span className="sr-only">{focusValues.join(" · ")}</span>
+                {focusValues.map((value) => (
+                  <span
+                    className="hero-focus-value-sizer"
+                    aria-hidden="true"
+                    key={value}
+                  >
+                    {value}
+                  </span>
+                ))}
               </p>
             </div>
 
