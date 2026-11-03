@@ -16,6 +16,7 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
   const heroRef = useRef<HTMLElement>(null);
   const focusTextRef = useRef<HTMLSpanElement>(null);
   const initialDwell = useRef(true);
+  const entranceText = useRef({ greeting: strings.heroGreeting, role: strings.heroRole });
   const focusValues = [
     strings.focusValue,
     strings.focusValueFrontend,
@@ -24,16 +25,16 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
   const [focusIndex, setFocusIndex] = useState(0);
   const [typedLength, setTypedLength] = useState(strings.focusValue.length);
   const [focusPhase, setFocusPhase] = useState<FocusPhase>("dwell");
-  const [heroReady, setHeroReady] = useState(false);
+  const [motionReady, setMotionReady] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [documentHidden, setDocumentHidden] = useState(false);
 
   const activeFocusValue =
     focusValues[reducedMotion ? 0 : focusIndex] ?? strings.focusValue;
   const visibleFocusValue =
-    heroReady && !reducedMotion
+    motionReady && !reducedMotion
       ? activeFocusValue.slice(0, typedLength)
-      : strings.focusValue;
+      : "Mobile · Frontend · Backend";
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -43,7 +44,7 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
     if (
       !hero ||
       reducedMotionQuery.matches ||
-      window.location.hash ||
+      (window.location.hash && window.location.hash !== "#home") ||
       window.scrollY > 1
     )
       return;
@@ -68,10 +69,10 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
       try {
         const loaded = await Promise.race([
           Promise.all([
-            document.fonts.load('600 1em "Geist"', strings.heroGreeting),
+            document.fonts.load('600 1em "Geist"', entranceText.current.greeting),
             document.fonts.load(
               'italic 400 1em "Instrument Serif"',
-              strings.heroRole,
+              entranceText.current.role,
             ),
           ]).then((faces) => faces.every((face) => face.length > 0)),
           new Promise<false>((resolve) => {
@@ -87,7 +88,7 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
           !active ||
           cancelled ||
           reducedMotionQuery.matches ||
-          window.location.hash ||
+          (window.location.hash && window.location.hash !== "#home") ||
           window.scrollY > 1
         )
           return;
@@ -148,8 +149,6 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
         );
 
         await Promise.all(completions);
-        if (active && !cancelled && !reducedMotionQuery.matches)
-          setHeroReady(true);
       } catch {
         if (timeout !== undefined) window.clearTimeout(timeout);
       }
@@ -161,12 +160,13 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
       window.removeEventListener("resize", stopAnimations);
       stopAnimations();
     };
-  }, [strings.heroGreeting, strings.heroRole]);
+  }, []);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => {
       setReducedMotion(query.matches);
+      setMotionReady(true);
       if (query.matches) {
         setFocusIndex(0);
         setTypedLength(strings.focusValue.length);
@@ -187,7 +187,7 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
   }, []);
 
   useEffect(() => {
-    if (!heroReady || reducedMotion || documentHidden) return;
+    if (!motionReady || reducedMotion || documentHidden) return;
 
     if (focusPhase === "typing") {
       const finished = typedLength >= activeFocusValue.length;
@@ -236,7 +236,7 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
     documentHidden,
     focusPhase,
     focusValues.length,
-    heroReady,
+    motionReady,
     reducedMotion,
     typedLength,
   ]);

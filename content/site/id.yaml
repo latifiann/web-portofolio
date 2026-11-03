@@ -90,7 +90,7 @@ strings:
   frontendDevelopment: Pengembangan Frontend
   backendApi: Backend & REST API
   realtimeIntegration: Integrasi Real-time
-  qualityAssurance: Penjaminan Kualitas Perangkat Lunak
+  qualityAssurance: Pengujian Perangkat Lunak
   teamCollaboration: Kolaborasi Tim
   frontendEngineering: Frontend Engineering
   frontendDescription: Membangun antarmuka terstruktur dengan React, JavaScript, TypeScript, dan Tailwind CSS.

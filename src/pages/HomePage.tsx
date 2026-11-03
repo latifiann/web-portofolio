@@ -20,7 +20,7 @@ type HomePageProps = {
 function HomePage({ strings, projectCards, experienceEntries, locale }: HomePageProps) {
   return (
     <main id="main-content" tabIndex={-1} className="pt-16">
-      <HeroSection key={locale} strings={strings} />
+      <HeroSection strings={strings} />
 
       <PageContainer visual>
         <EngineeringStatementSection strings={strings} />

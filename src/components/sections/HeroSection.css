@@ -153,11 +153,13 @@
 
 .hero-focus-value {
   display: inline-grid;
+  max-width: 100%;
   margin-top: 0.5rem;
   color: var(--color-ink);
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .hero-focus-value-text,
@@ -299,6 +301,7 @@
     position: absolute;
     left: 0;
     top: 60%;
+    width: min(18rem, 30%);
     align-items: flex-start;
     text-align: left;
     pointer-events: auto;

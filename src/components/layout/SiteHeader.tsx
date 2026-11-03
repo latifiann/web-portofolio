@@ -115,7 +115,7 @@ type SiteHeaderProps = {
   activeNavigationHref?: string;
   hasSelectedWork: boolean;
   isNotFound: boolean;
-  onLanguageSwitch: () => void;
+  onLanguageSwitch: (target: string) => void;
 };
 
 function SiteHeader({
@@ -276,7 +276,10 @@ function SiteHeader({
                 }
                 onClick={(event) => {
                   setIsMenuOpen(false);
-                  if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) onLanguageSwitch();
+                  if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+                    event.preventDefault();
+                    onLanguageSwitch(languageTarget);
+                  }
                 }}
                 className="inline-flex min-h-10 items-center gap-1 rounded-full border border-(--color-border) bg-(--color-canvas)/95 px-(--space-3) font-sans text-xs font-medium tracking-wide no-underline shadow-[0_1px_2px_rgb(15_23_42_/_0.04)] backdrop-blur-sm transition-colors hover:border-(--color-primary) hover:bg-(--color-surface-soft) md:min-h-11 lg:min-h-14 lg:px-(--space-4)"
               >
