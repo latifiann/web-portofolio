@@ -41,6 +41,7 @@ strings:
   selectedTitle: Selected Works
   swipeProjects: Swipe to see more projects
   projectPreview: Project preview
+  viewProject: View project
   exploreProjects: Explore all {count} projects
   projectCount: "{count} projects"
   projectIndexDescription: A selection of academic, internship, and personal projects — explore the context, my contributions, and the technical approach behind each one.
