@@ -2,6 +2,7 @@ import PageContainer from "../layout/PageContainer";
 import { animate } from "motion/mini";
 import { useEffect, useRef, useState } from "react";
 import portraitSrc from "../../../content/site/media/portrait/latifian-iman-portrait.webp";
+import portraitColorSrc from "../../../content/site/media/portrait/latifian-iman-portrait-color.webp";
 import type { SiteStrings } from "../../types/site";
 
 const typeIntervalMs = 80;
@@ -15,6 +16,8 @@ type FocusPhase = "dwell" | "deleting" | "pause" | "typing";
 
 export default function HeroSection({ strings }: { strings: SiteStrings }) {
   const heroRef = useRef<HTMLElement>(null);
+  const portraitRef = useRef<HTMLDivElement>(null);
+  const portraitEntranceReady = useRef(true);
   const initialDwell = useRef(true);
   const entranceText = useRef({
     greeting: strings.heroGreeting,
@@ -58,14 +61,70 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
     )
       return;
 
+    portraitEntranceReady.current = false;
     let active = true;
     let cancelled = false;
     let timeout: number | undefined;
     let controls: (() => void)[] = [];
+    const groups = [
+      {
+        selector: ".hero-title",
+        distance: 20,
+        duration: 0.55,
+        delay: 0,
+        startOpacity: 0.7,
+      },
+      {
+        selector: ".hero-information-grid",
+        distance: 16,
+        duration: 0.5,
+        delay: 0.24,
+        startOpacity: 0.7,
+      },
+      {
+        selector: ".hero-portrait",
+        distance: 32,
+        duration: 0.9,
+        delay: 0.4,
+        startOpacity: 0,
+      },
+    ];
+    const targets = groups.flatMap(
+      ({ selector, distance, duration, delay, startOpacity }) =>
+        Array.from(hero.querySelectorAll<HTMLElement>(selector), (element) => ({
+          element,
+          distance,
+          duration,
+          delay,
+          startOpacity,
+        })),
+    );
+    const previousStyles = new Map(
+      targets.map(({ element }) => [
+        element,
+        {
+          transform: element.style.transform,
+          opacity: element.style.opacity,
+        },
+      ]),
+    );
+    const restoreStyles = () => {
+      previousStyles.forEach((style, element) => {
+        element.style.transform = style.transform;
+        element.style.opacity = style.opacity;
+      });
+    };
+    const hideDelayedTargets = () => {
+      targets.forEach(({ element, startOpacity }) => {
+        if (startOpacity === 0) element.style.opacity = "0";
+      });
+    };
     const stopAnimations = () => {
       cancelled = true;
+      portraitEntranceReady.current = true;
       if (timeout !== undefined) window.clearTimeout(timeout);
       controls.forEach((restore) => restore());
+      restoreStyles();
     };
     const handleMotionChange = (event: MediaQueryListEvent) => {
       if (event.matches) stopAnimations();
@@ -74,7 +133,11 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
     window.addEventListener("resize", stopAnimations);
 
     const startWhenFontsReady = async () => {
-      if (!document.fonts) return;
+      if (!document.fonts) {
+        portraitEntranceReady.current = true;
+        return;
+      }
+      hideDelayedTargets();
       try {
         const loaded = await Promise.race([
           Promise.all([
@@ -102,67 +165,54 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
           reducedMotionQuery.matches ||
           (window.location.hash && window.location.hash !== "#home") ||
           window.scrollY > 1
-        )
+        ) {
+          restoreStyles();
+          portraitEntranceReady.current = true;
           return;
+        }
 
-        const groups = [
-          { selector: ".hero-title", distance: 20, duration: 0.55, delay: 0 },
-          {
-            selector: ".hero-portrait",
-            distance: 16,
-            duration: 0.9,
-            delay: 0.12,
-          },
-          {
-            selector: ".hero-information-grid",
-            distance: 16,
-            duration: 0.5,
-            delay: 0.24,
-          },
-        ];
         const completions: Promise<void>[] = [];
-        controls = groups.flatMap(({ selector, distance, duration, delay }) =>
-          Array.from(
-            hero.querySelectorAll<HTMLElement>(selector),
-            (element) => {
-              const previousTransform = element.style.transform;
-              const previousOpacity = element.style.opacity;
-              const originalTransform =
-                window.getComputedStyle(element).transform;
-              const baseTransform =
-                originalTransform === "none" ? "" : originalTransform;
-              const control = animate(
-                element,
-                {
-                  opacity: [0.7, 1],
-                  transform: [
-                    `translateY(${distance}px) ${baseTransform}`,
-                    baseTransform || "none",
-                  ],
-                },
-                {
-                  duration,
-                  delay,
-                  ease: [0.22, 1, 0.36, 1],
-                },
-              );
-              let restored = false;
-              const restore = () => {
-                if (restored) return;
-                restored = true;
-                control.cancel();
-                element.style.transform = previousTransform;
-                element.style.opacity = previousOpacity;
-              };
-              completions.push(Promise.resolve(control).then(restore));
-              return restore;
-            },
-          ),
+        controls = targets.map(
+          ({ element, distance, duration, delay, startOpacity }) => {
+            const previous = previousStyles.get(element);
+            const originalTransform =
+              window.getComputedStyle(element).transform;
+            const baseTransform =
+              originalTransform === "none" ? "" : originalTransform;
+            const control = animate(
+              element,
+              {
+                opacity: [startOpacity, 1],
+                transform: [
+                  `translateY(${distance}px) ${baseTransform}`,
+                  baseTransform || "none",
+                ],
+              },
+              {
+                duration,
+                delay,
+                ease: [0.22, 1, 0.36, 1],
+              },
+            );
+            let restored = false;
+            const restore = () => {
+              if (restored) return;
+              restored = true;
+              control.cancel();
+              element.style.transform = previous?.transform ?? "";
+              element.style.opacity = previous?.opacity ?? "";
+              if (element === portraitRef.current) portraitEntranceReady.current = true;
+            };
+            completions.push(Promise.resolve(control).then(restore));
+            return restore;
+          },
         );
 
         await Promise.all(completions);
       } catch {
         if (timeout !== undefined) window.clearTimeout(timeout);
+        restoreStyles();
+        portraitEntranceReady.current = true;
       }
     };
     void startWhenFontsReady();
@@ -171,6 +221,61 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
       reducedMotionQuery.removeEventListener("change", handleMotionChange);
       window.removeEventListener("resize", stopAnimations);
       stopAnimations();
+    };
+  }, []);
+
+  useEffect(() => {
+    const portrait = portraitRef.current;
+    if (!portrait) return;
+    const pointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+    const reset = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      portrait.removeAttribute("data-color-active");
+    };
+    const move = (event: PointerEvent) => {
+      if (
+        event.pointerType === "touch" ||
+        !pointerQuery.matches ||
+        motionQuery.matches ||
+        !portraitEntranceReady.current ||
+        document.hidden
+      ) return;
+      const bounds = portrait.getBoundingClientRect();
+      x = event.clientX - bounds.left;
+      y = event.clientY - bounds.top;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        portrait.style.setProperty("--portrait-x", `${x}px`);
+        portrait.style.setProperty("--portrait-y", `${y}px`);
+        portrait.setAttribute("data-color-active", "");
+        frame = 0;
+      });
+    };
+    portrait.addEventListener("pointermove", move);
+    portrait.addEventListener("pointerleave", reset);
+    portrait.addEventListener("pointercancel", reset);
+    window.addEventListener("resize", reset);
+    window.addEventListener("scroll", reset, { passive: true });
+    window.addEventListener("blur", reset);
+    document.addEventListener("visibilitychange", reset);
+    pointerQuery.addEventListener("change", reset);
+    motionQuery.addEventListener("change", reset);
+    return () => {
+      reset();
+      portrait.removeEventListener("pointermove", move);
+      portrait.removeEventListener("pointerleave", reset);
+      portrait.removeEventListener("pointercancel", reset);
+      window.removeEventListener("resize", reset);
+      window.removeEventListener("scroll", reset);
+      window.removeEventListener("blur", reset);
+      document.removeEventListener("visibilitychange", reset);
+      pointerQuery.removeEventListener("change", reset);
+      motionQuery.removeEventListener("change", reset);
     };
   }, []);
 
@@ -270,14 +375,10 @@ export default function HeroSection({ strings }: { strings: SiteStrings }) {
           </h1>
 
           <div className="hero-portrait-wrapper relative z-(--z-raised) -mt-4 flex w-full flex-1 items-end justify-center md:-mt-16 md:-translate-y-4">
-            <img
-              src={portraitSrc}
-              alt={strings.portraitAlt}
-              width={1084}
-              height={1451}
-              fetchPriority="high"
-              className="hero-portrait w-auto object-contain"
-            />
+            <div ref={portraitRef} className="hero-portrait">
+              <img src={portraitSrc} alt={strings.portraitAlt} width={1084} height={1451} fetchPriority="high" className="hero-portrait-base" />
+              <img src={portraitColorSrc} alt="" aria-hidden="true" width={1084} height={1451} className="hero-portrait-color" />
+            </div>
           </div>
 
           <div className="hero-information-grid">

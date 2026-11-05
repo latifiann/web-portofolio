@@ -47,6 +47,87 @@ function SelectedWorkSection({
 
   useEffect(() => {
     const section = sectionRef.current;
+    if (!section) return;
+    const cursor = document.createElement("span");
+    cursor.className = "project-cursor";
+    cursor.setAttribute("aria-hidden", "true");
+    cursor.textContent = strings.viewProject;
+    document.body.appendChild(cursor);
+    const pointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const forced = window.matchMedia("(forced-colors: active)");
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+    let activeLink: Element | null = null;
+    let pendingLink: Element | null = null;
+    const hide = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      activeLink?.removeAttribute("data-cursor-active");
+      activeLink = null;
+      pendingLink = null;
+      cursor.removeAttribute("data-active");
+    };
+    const move = (event: PointerEvent) => {
+      const link = event.target instanceof Element
+        ? event.target.closest("[data-project-cursor] .project-card-link")
+        : null;
+      if (!link || !pointer.matches || reduced.matches || forced.matches || event.pointerType !== "mouse" || document.hidden) {
+        hide();
+        return;
+      }
+      if (activeLink && activeLink !== link) {
+        activeLink.removeAttribute("data-cursor-active");
+        activeLink = null;
+      }
+      pendingLink = link;
+      x = event.clientX;
+      y = event.clientY;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        const width = cursor.offsetWidth;
+        const height = cursor.offsetHeight;
+        const left = Math.max(0, Math.min(x - width / 2, window.innerWidth - width));
+        const top = Math.max(0, Math.min(y - height / 2, window.innerHeight - height));
+        cursor.style.left = `${left}px`;
+        cursor.style.top = `${top}px`;
+        cursor.setAttribute("data-active", "");
+        activeLink = pendingLink;
+        activeLink?.setAttribute("data-cursor-active", "");
+        frame = 0;
+      });
+    };
+    section.addEventListener("pointermove", move);
+    section.addEventListener("pointerleave", hide);
+    section.addEventListener("pointercancel", hide);
+    section.addEventListener("click", hide);
+    window.addEventListener("scroll", hide, true);
+    window.addEventListener("resize", hide);
+    window.addEventListener("blur", hide);
+    document.addEventListener("visibilitychange", hide);
+    pointer.addEventListener("change", hide);
+    reduced.addEventListener("change", hide);
+    forced.addEventListener("change", hide);
+    return () => {
+      hide();
+      section.removeEventListener("pointermove", move);
+      section.removeEventListener("pointerleave", hide);
+      section.removeEventListener("pointercancel", hide);
+      section.removeEventListener("click", hide);
+      window.removeEventListener("scroll", hide, true);
+      window.removeEventListener("resize", hide);
+      window.removeEventListener("blur", hide);
+      document.removeEventListener("visibilitychange", hide);
+      pointer.removeEventListener("change", hide);
+      reduced.removeEventListener("change", hide);
+      forced.removeEventListener("change", hide);
+      cursor.remove();
+    };
+  }, [locale, strings.viewProject]);
+
+  useEffect(() => {
+    const section = sectionRef.current;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (
       !section ||
@@ -208,6 +289,7 @@ function SelectedWorkSection({
             <div
               key={project.href}
               data-reveal
+              data-project-cursor
               className={cardVisibilityClass(index)}
             >
               <ProjectCard {...project} strings={strings} tilt />

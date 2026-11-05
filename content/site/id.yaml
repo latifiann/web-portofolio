@@ -41,6 +41,7 @@ strings:
   selectedTitle: Karya Pilihan
   swipeProjects: Geser untuk melihat proyek lainnya
   projectPreview: Pratinjau proyek
+  viewProject: Lihat proyek
   exploreProjects: Jelajahi semua {count} proyek
   projectCount: "{count} proyek"
   projectIndexDescription: Pilihan proyek akademik, magang, dan pribadi — telusuri konteks, kontribusi saya, serta pendekatan teknis di balik setiap proyek.
